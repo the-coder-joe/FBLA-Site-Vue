@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "@primeuix/themes": "^1.0.0",
+    "@primevue/themes": "^4.3.1",
+    "primevue": "^4.3.1",
     "vue-router": "^4.5.0"
   }
 }

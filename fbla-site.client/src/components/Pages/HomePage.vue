@@ -1,6 +1,11 @@
 <script setup lang="ts">
-  </script>
+import { ref } from 'vue';
+
+
+</script>
 
 <template>
-  <h1>hello world</h1>
+  <div>
+    <h1>Home Page</h1>
+  </div>
 </template>

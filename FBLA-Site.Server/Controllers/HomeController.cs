@@ -8,5 +8,10 @@ namespace FBLA_Site.Server.Controllers
         {
             return View();
         }
+
+        public JsonResult thing()
+        {
+            return new JsonResult(new { });
+        }
     }
 }
