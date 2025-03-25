@@ -6,7 +6,7 @@
 <template>
     <nav class="navbar">
     <RouterLink class="nav-link" to="/">Go to Home</RouterLink>
-    <RouterLink class="nav-link" to="/about">Go to About</RouterLink>
+    <RouterLink class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
   </nav>
   <main>
     <RouterView />

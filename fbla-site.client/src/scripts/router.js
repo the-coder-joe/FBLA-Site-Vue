@@ -8,7 +8,7 @@ import NotFound from '@/components/Pages/NotFound.vue';
 const routes = [
   { path: '/', component: HomePage },
   { path: '/AddPosting', component: AddPosting },
-  { path: '/:pathMatch(.*)*', component: NotFound } 
+  { path: '/:pathMatch(.*)*', component: NotFound }
 ]
 
 const router = createRouter({
