@@ -1,6 +1,9 @@
 export class Posting {
   public title: string;
+  public employer: string;
+  public requirements: string;
   public description: string;
+  public additionalInformation?: string;
   public questions: string[];
 }
 

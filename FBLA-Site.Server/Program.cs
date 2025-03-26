@@ -7,7 +7,28 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
+// Add services to the container.
+// Add a service to handle CORS.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5173") // Allow requests from this origin.
+                .AllowAnyHeader() // Allow any header in the request.
+                .AllowAnyMethod(); // Allow any HTTP method.
+        });
+});
+
+builder.Services.AddControllers();
+
 var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+// Enable CORS. Must come before app.MapControllers.
+
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -19,6 +40,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 
 }
+
+app.UseCors("AllowSpecificOrigin");
+
 
 app.UseRouting();
 
