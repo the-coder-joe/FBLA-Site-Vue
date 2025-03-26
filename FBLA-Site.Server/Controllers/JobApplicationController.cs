@@ -5,7 +5,7 @@ using System.Text.Json;
 namespace FBLA_Site.Server.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[Action]")]
     public class JobApplicationController : Controller
 
     {
