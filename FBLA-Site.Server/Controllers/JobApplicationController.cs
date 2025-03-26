@@ -18,19 +18,24 @@ namespace FBLA_Site.Server.Controllers
         [HttpPost]
         public JsonResult AddPosting(Posting posting)
         {
-            Posting[] postings;
-            using (StreamReader r = new StreamReader("postings.json"))
+            List<Posting> postings;
+            try
             {
-                string json = r.ReadToEnd();
-                postings = JsonSerializer.Deserialize<Posting[]>(json) ?? [];
+                using (StreamReader r = new StreamReader("/ApplicationData/postings.json"))
+                {
+                    string json = r.ReadToEnd();
+                    postings = JsonSerializer.Deserialize<List<Posting>>(json) ?? new List<Posting>();
+                }
+            } catch (Exception e)
+            {
+                postings = new List<Posting>();
             }
 
+            postings.Add(posting);
 
-            postings.Append(posting);
-
-            using (StreamWriter File1 = new("postings.json"))
+            using (StreamWriter File1 = new("./ApplicationData/postings.json"))
             {
-                string newJson = JsonSerializer.Serialize<Posting[]>(postings, new JsonSerializerOptions() { WriteIndented = true });
+                string newJson = JsonSerializer.Serialize(postings);
                 File1.Write(newJson);
             }
             return Json(new { Success = true });

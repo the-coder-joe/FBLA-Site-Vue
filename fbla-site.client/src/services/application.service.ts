@@ -8,15 +8,15 @@ export default class ApplicationService {
   }
 
   public async addPosting (posting: Posting): Promise<any> {
-    const url = new URL(`${BASE_URL}/api/addPosting`);
+    const url = new URL(`${BASE_URL}/api/JobApplication/AddPosting`);
 
-    const request = {
+    const request = new Request(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(posting)
-    }
+    });
 
     const response = await fetch(url, request);
 
