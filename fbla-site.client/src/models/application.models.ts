@@ -1,9 +1,11 @@
 export class Posting {
+  public id: number;
   public title: string;
   public employer: string;
   public requirements: string;
   public description: string;
   public additionalInformation?: string;
+  public contactInformation: string;
   public questions: string[];
 }
 

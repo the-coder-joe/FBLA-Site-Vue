@@ -13,6 +13,7 @@ const jobDescription = ref('');
 const jobRequirements = ref('');
 const additionalInfo = ref('');
 const employerName = ref('');
+const contactInformation = ref('');
 
 const questions = ref([]);
 
@@ -26,12 +27,14 @@ function removeQuestion(index: number) {
 
 function submitForm() {
   const postingData: Posting = {
+    id: -1,
     title: jobTitle.value,
     description: jobDescription.value,
     questions: questions.value.map(q => q.question),
     requirements: jobRequirements.value,
     additionalInformation: additionalInfo.value,
-    employer: employerName.value
+    employer: employerName.value,
+    contactInformation: ''
   };
 
   applicationService.addPosting(postingData);
