@@ -4,10 +4,11 @@ import { RouterLink, RouterView } from 'vue-router';
 
 <template>
   <nav class="navbar">
-    <div class="brand">Summer Spring's high school or something</div>
+    <div class="School-Title">Summer Vally</div>
     <div class="nav-links">
       <RouterLink class="nav-link" to="/">Home</RouterLink>
       <RouterLink class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
+      <RouterLink class="nav-link" to="/LoginPage">Login</RouterLink>
     </div>
   </nav>
 
@@ -21,7 +22,7 @@ import { RouterLink, RouterView } from 'vue-router';
 .navbar {
   position: fixed;
   top: 0;
-  z-index: 1000; /*The overlay power (lower < higher)*/
+  z-index: 1000; /*The overlay hierarchy (lower < higher)*/
   width: 100%;
   background: linear-gradient(to right, #1a1a1a, #2a2b2b); /*Changes NavBar background color*/
   padding: .75rem 1rem; 
@@ -32,7 +33,7 @@ import { RouterLink, RouterView } from 'vue-router';
 }
 
 /*School Text*/
-.brand {
+.School-Title {
   color: #ffffff;
   font-size: 1.5rem;
   font-weight: 750; /*100-1000 higher = more bold*/
@@ -41,7 +42,7 @@ import { RouterLink, RouterView } from 'vue-router';
 /*Container*/
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: .5rem;
 }
 
 /* LINKS */
