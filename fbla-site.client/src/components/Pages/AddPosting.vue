@@ -5,6 +5,7 @@ import { ref } from 'vue';
 import InputText from 'primevue/inputtext'
 import { Textarea } from 'primevue';
 import { Posting } from '@/models/application.models';
+import PostingDisplay from '../PostingDisplay.vue';
 
 const applicationService: ApplicationService = new ApplicationService();
 
@@ -105,11 +106,11 @@ function submitForm() {
         <TransitionGroup name="fade" tag="div">
         <div v-for="(question, index) in questions" :key="question.id" class="dynamic-question-container">
           <Textarea class="field dynamic-question" v-model="questions[index].question" />
-          <Button @click="removeQuestion(index)" icon="pi pi-times" />
+          <Button class="btn" @click="removeQuestion(index)" icon="pi pi-times" />
         </div>
         </TransitionGroup>
       </div>
-      <Button @click="submitForm" label="Submit" />
+      <Button class="btn" @click="submitForm" label="Submit" />
     </div>
 
   </div>
@@ -133,6 +134,14 @@ function submitForm() {
   flex-direction: column;
   align-items: center;
   margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 50px;
+}
+
+.header p {
+  font-size: 16px;
 }
 
 .page {

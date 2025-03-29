@@ -2,24 +2,24 @@
 import { ref, onMounted } from 'vue';
 import ApplicationService from '@/services/application.service';
 import { Posting } from '@/models/application.models';
+import PostingDisplay from '../PostingDisplay.vue';
 
 const applicationService = new ApplicationService();
 
 const postings = ref<Posting[]>([]);
 const loading = ref(true);
 
-const fetchPostings = async () => {
+
+onMounted(async () => {
   try {
-    const response = await applicationService.getPostings();
+    const response: Posting[] = await applicationService.getPostings();
     postings.value = response;
   } catch (error) {
     console.error('Error fetching postings:', error);
   } finally {
     loading.value = false;
   }
-};
-
-onMounted(fetchPostings);
+});
 </script>
 
 <template>
@@ -30,13 +30,15 @@ onMounted(fetchPostings);
     </div>
 
     <div v-if="loading" class="loading">Loading...</div>
-    <div v-else-if="postings.length === 0" class="no-postings">No postings available.</div>
+    <div v-if="postings.length === 0" class="no-postings">No postings available.</div>
     <div v-else class="postings-list">
-      <Posting v-for="posting in postings" :key="posting.id" :posting="posting">
-        <template #actions>
-          <RouterLink :to="{ name: 'Application', params: { postingId: posting.id } }">Apply</RouterLink>
-        </template>
-        </Posting>
+      <template v-for="posting in postings" :key="posting.id">
+        <PostingDisplay :posting="posting">
+          <template #actions>
+
+          </template>
+        </PostingDisplay>
+      </template>
     </div>
   </div>
 </template>
