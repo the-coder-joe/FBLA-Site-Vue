@@ -9,6 +9,8 @@ const props = defineProps(
     }
   }
 )
+
+console.log(props.posting);
 </script>
 
 <template>
