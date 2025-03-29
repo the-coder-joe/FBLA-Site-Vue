@@ -1,114 +1,305 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { ref, computed } from 'vue'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
+import Dropdown from 'primevue/dropdown'
 
-// Fields
+// Switch between Sign In and Create Account modes
+const isSignUp = ref(false)
+
+// Allows redirect after successful sign-in
+const router = useRouter()
+
+// Sign In form fields
 const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
-const errorMessage = ref('')
+const signInErrorMessage = ref('')
 
-// Button enable logic
-const isLoginDisabled = computed(() =>
+// Disable Sign In button if fields are empty
+const isSignInDisabled = computed(() =>
   email.value.trim() === '' || password.value.trim() === ''
 )
 
-// Dummy login logic
-function submitLogin() {
-  if (email.value === 'user@example.com' && password.value === 'password123') {
-    console.log('Logged in!')
-    errorMessage.value = ''
+// Dummy sign in logic
+function submitSignIn() {
+  if (email.value === 'Test@gmail.com' && password.value === 'password') {
+    signInErrorMessage.value = ''
+    showToast('Successfully signed in.') // This currently dosen't work due to router push
+    clearAllFields()
+    router.push('/') // Navigate to home
   } else {
-    errorMessage.value = 'Invalid email or password.'
+    signInErrorMessage.value = 'Invalid email or password.'
     password.value = ''
   }
+}
+
+
+// Create Account form fields 
+const signUpEmail = ref('')
+const signUpPassword = ref('')
+const confirmPassword = ref('')
+const showSignUpPassword = ref(false)
+const signUpErrorMessage = ref('')
+
+// Role selection for Create Account
+const roles = ref([
+  { label: 'Student', value: 'student' },
+  { label: 'Employer', value: 'employer' },
+  { label: 'Admin', value: 'admin' }
+])
+const signUpRole = ref(null)
+
+// Disable Create Account button only if any field is empty.
+const isSignUpDisabled = computed(() =>
+  !signUpRole.value ||
+  signUpEmail.value.trim() === '' ||
+  signUpPassword.value.trim() === '' ||
+  confirmPassword.value.trim() === ''
+)
+
+// Toast message
+const toastMessage = ref('')
+
+// Show a toast
+function showToast(message) {
+  toastMessage.value = message
+  setTimeout(() => {
+    toastMessage.value = ''
+  }, 3000)
+}
+
+// Dummy logic
+function submitSignUp() {
+  if (signUpPassword.value !== confirmPassword.value) {
+    signUpErrorMessage.value = "Account passwords don't match."
+    signUpPassword.value = ''
+    confirmPassword.value = ''
+    return
+  }
+  console.log('Account created for:', signUpEmail.value, 'with role:', signUpRole.value)
+  signUpErrorMessage.value = ''
+  showToast('Account created successfully. Please sign in.')
+  clearAllFields() // Clear all fields after account creation
+  isSignUp.value = false
+}
+
+// Clear all fields and error messages.
+function clearAllFields() {
+  // Sign In fields
+  email.value = ''
+  password.value = ''
+  signInErrorMessage.value = ''
+  showPassword.value = false
+  // Create Account fields
+  signUpEmail.value = ''
+  signUpPassword.value = ''
+  confirmPassword.value = ''
+  signUpErrorMessage.value = ''
+  showSignUpPassword.value = false
+  signUpRole.value = null
+}
+
+// Swich between Sign In and Create Account forms
+function switchToSignUp() {
+  clearAllFields()
+  isSignUp.value = true
+}
+
+function switchToSignIn() {
+  clearAllFields()
+  isSignUp.value = false
 }
 </script>
 
 <template>
   <div class="page">
+    <Transition name="toast">
+      <div class="toast" v-if="toastMessage">{{ toastMessage }}</div>
+    </Transition>
+
     <div class="header">
-      <h1>Login</h1>
-      <p>Use your credentials to access the job portal.</p>
+      <h1 v-if="!isSignUp">Sign In</h1>
+      <h1 v-else>Create Account</h1>
+      <p v-if="!isSignUp">Use your credentials to access your account.</p>
+      <p v-else>Create a new account to get started.</p>
     </div>
     <div class="form">
-      <!-- Email Field -->
-      <div class="form-group">
-        <div class="field-description">
-          <label for="email" class="field-label">Email</label>
-          <span>Enter your school or employer email.</span>
+      <!-- SIGN IN FORM -->
+      <template v-if="!isSignUp">
+        <div class="form-group">
+          <div class="field-description">
+            <label for="email" class="field-label">Email</label>
+            <span>Enter your email address.</span>
+          </div>
+          <InputText id="email" v-model="email" class="field" />
         </div>
-        <InputText id="email" v-model="email" class="field" />
-      </div>
-
-      <!-- Password Field -->
-      <div class="form-group">
-        <div class="field-description">
-          <label for="password" class="field-label">Password</label>
-          <span>Your secure password for login.</span>
+        <div class="form-group">
+          <div class="field-description">
+            <label for="password" class="field-label">Password</label>
+            <span>Your secure password.</span>
+          </div>
+          <InputText
+            :type="showPassword ? 'text' : 'password'"
+            id="password"
+            v-model="password"
+            class="field"
+          />
+          <div class="show-password">
+            <input type="checkbox" id="showPassword" v-model="showPassword" />
+            <label for="showPassword">Show Password</label>
+          </div>
+          <div v-if="signInErrorMessage" class="error-message">
+            {{ signInErrorMessage }}
+          </div>
         </div>
-        <InputText
-          :type="showPassword ? 'text' : 'password'"
-          id="password"
-          v-model="password"
-          class="field"
+        <Button
+          @click="submitSignIn"
+          :disabled="isSignInDisabled"
+          label="Sign In"
+          class="login-button"
+          :class="{ active: !isSignInDisabled }"
         />
-        <div class="show-password">
-          <input type="checkbox" id="showPassword" v-model="showPassword" />
-          <label for="showPassword">Show Password</label>
+        <div class="toggle">
+          <span>Don't have an account?</span>
+          <a href="#" @click.prevent="switchToSignUp">Create one</a>
         </div>
-        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
-      </div>
+      </template>
 
-      <!-- Submit -->
-      <Button
-        @click="submitLogin"
-        :disabled="isLoginDisabled"
-        label="Login"
-        class="login-button"
-        :class="{ active: !isLoginDisabled }"
-      />
+      <!-- CREATE ACCOUNT FORM -->
+      <template v-else>
+        <!-- Role Selection -->
+        <div class="form-group">
+          <div class="field-description">
+            <label for="role" class="field-label">Role</label>
+            <span>Select your account type.</span>
+          </div>
+          <Dropdown
+            id="role"
+            v-model="signUpRole"
+            :options="roles"
+            optionLabel="label"
+            placeholder="Select a role"
+            class="field"
+          />
+        </div>
+        <div class="form-group">
+          <div class="field-description">
+            <label for="signUpEmail" class="field-label">Email</label>
+            <span>Enter your email address.</span>
+          </div>
+          <InputText id="signUpEmail" v-model="signUpEmail" class="field" />
+        </div>
+        <div class="form-group">
+          <div class="field-description">
+            <label for="signUpPassword" class="field-label">Password</label>
+            <span>Create a strong password.</span>
+          </div>
+          <InputText
+            :type="showSignUpPassword ? 'text' : 'password'"
+            id="signUpPassword"
+            v-model="signUpPassword"
+            class="field"
+          />
+        </div>
+        <div class="form-group">
+          <div class="field-description">
+            <label for="confirmPassword" class="field-label">Confirm Password</label>
+            <span>Re-enter your password.</span>
+          </div>
+          <InputText
+            :type="showSignUpPassword ? 'text' : 'password'"
+            id="confirmPassword"
+            v-model="confirmPassword"
+            class="field"
+          />
+          <div class="show-password">
+            <input type="checkbox" id="showSignUpPassword" v-model="showSignUpPassword" />
+            <label for="showSignUpPassword">Show Password</label>
+          </div>
+          <div v-if="signUpErrorMessage" class="error-message">
+            {{ signUpErrorMessage }}
+          </div>
+        </div>
+        <Button
+          @click="submitSignUp"
+          :disabled="isSignUpDisabled"
+          label="Create Account"
+          class="login-button"
+          :class="{ active: !isSignUpDisabled }"
+        />
+        <div class="toggle">
+          <span>Already have an account?</span>
+          <a href="#" @click.prevent="switchToSignIn">Sign In</a>
+        </div>
+      </template>
     </div>
   </div>
 </template>
 
 <style scoped>
-
-/*Page*/
 .page {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
+  box-sizing: border-box;
 }
+
+/* Toast message */
+.toast {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1a1a1a;
+  color: #9be9ff;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.toast-enter-active,
+.toast-leave-active {
+  transition: opacity 0.5s;
+}
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+}
+.toast-enter-to,
+.toast-leave-from {
+  opacity: 1;
+}
+
+/* Header styling */
 .header {
   margin-top: 10px;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin-bottom: 2rem;
 }
 
-/*Form styling*/
+/* Form styling */
 .form {
   padding: 30px;
   display: flex;
   flex-direction: column;
   width: 50%;
-  background-color: #111111;
   box-shadow: #404040 5px 5px 20px;
+  background: linear-gradient(145deg, #12121b, #0a1418);
   border-radius: 10px;
 }
 
-/*Container*/
+/* Field container styling */
 .form-group {
   border: 1px solid rgba(128, 128, 128, 0.235);
   border-radius: 10px;
   padding: 10px;
-  display: flex;
-  flex-direction: column;
   margin-bottom: 1rem;
   box-shadow: #2e2e2e53 5px 5px 5px;
   background-color: #1414174b;
@@ -120,8 +311,9 @@ function submitLogin() {
   background-color: #1a202faa;
 }
 
-/*Changes field looks*/
+/* Field appearance */
 .field {
+  width: 100%;
   border: 1px solid gray;
   border-radius: 5px;
   margin: 0.2rem 0;
@@ -136,7 +328,7 @@ function submitLogin() {
   margin: 0.2rem 0;
 }
 
-/*Label and prompt*/
+/* Label and prompt styling */
 .field-label {
   font-size: 2rem;
   color: lightblue;
@@ -152,7 +344,7 @@ function submitLogin() {
   color: gray;
 }
 
-/*Show password logic*/
+/* Password toggle styling */
 .show-password {
   margin-top: 0.5rem;
   display: flex;
@@ -161,14 +353,14 @@ function submitLogin() {
   color: lightblue;
 }
 
-/*Requires filled pass/email*/
+/* Error message styling */
 .error-message {
-  margin-top: 0.5rem;
+  margin-top: 0.2rem;
   color: red;
   font-size: 1rem;
 }
 
-/*Button styling*/
+/* Button styling */
 .login-button {
   background-color: #333;
   border: none;
@@ -192,5 +384,23 @@ function submitLogin() {
   background-color: #00bfff;
   color: white;
   box-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+}
+
+/* Toggle link styling */
+.toggle {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1rem;
+  color: lightblue;
+}
+.toggle a {
+  margin-left: 0.5rem;
+  color: #9be9ff;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+.toggle a:hover {
+  color: #00bfff;
 }
 </style>
