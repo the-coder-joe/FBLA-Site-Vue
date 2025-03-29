@@ -1,1 +1,41 @@
-[]
+[
+  {
+    "Id": 1,
+    "Title": "Software Engineer",
+    "Employer": "TechCorp",
+    "Requirements": "Bachelor's degree in Computer Science, 3+ years of experience in C#",
+    "Description": "Develop and maintain software applications.",
+    "AdditionalInformation": "Remote work available.",
+    "ContactInformation": "hr@techcorp.com",
+    "Questions": [
+      "What is your experience with C#?",
+      "Have you worked with cloud platforms?"
+    ]
+  },
+  {
+    "Id": 2,
+    "Title": "Data Analyst",
+    "Employer": "DataSolutions",
+    "Requirements": "Proficiency in SQL, Python, and data visualization tools.",
+    "Description": "Analyze business data and generate insights.",
+    "AdditionalInformation": "Hybrid work schedule.",
+    "ContactInformation": "recruiting@datasolutions.com",
+    "Questions": [
+      "Can you describe a data project you've worked on?",
+      "What tools do you prefer for data visualization?"
+    ]
+  },
+  {
+    "Id": 3,
+    "Title": "Marketing Coordinator",
+    "Employer": "BrandX",
+    "Requirements": "Experience in digital marketing and social media management.",
+    "Description": "Coordinate marketing campaigns and analyze performance.",
+    "AdditionalInformation": "Full-time, in-office position.",
+    "ContactInformation": "jobs@brandx.com",
+    "Questions": [
+      "How do you measure the success of a marketing campaign?",
+      "What platforms have you managed in previous roles?"
+    ]
+  }
+]

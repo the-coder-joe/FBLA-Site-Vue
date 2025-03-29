@@ -2,14 +2,14 @@
 {
     public class Posting
     {
-        public int id;
-        public string title;
-        public string employer;
-        public string requirements;
-        public string description;
-        public string additionalInformation;
-        public string contactInformation;
-        public List<string> questions;
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Employer { get; set; }
+        public string Requirements { get; set; }
+        public string Description { get; set; }
+        public string AdditionalInformation { get; set; }
+        public string ContactInformation { get; set; }
+        public List<string> Questions { get; set; }
 
     }
 }
