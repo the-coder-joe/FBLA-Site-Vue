@@ -23,6 +23,18 @@ export default class ApplicationService {
     return response.json();
   }
 
+  public async getPostings (): Promise<Posting[]> {
+    const url = new URL(`${BASE_URL}/api/JobApplication/GetPostings`);
 
+    const request = new Request(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
 
+    const response = await fetch(url, request);
+
+    return response.json();
+  }
 }

@@ -2,9 +2,14 @@
 {
     public class Posting
     {
-        public string title { get; set; }
-        public string description { get; set; }
-        public string[] questions { get; set; }
+        public int id;
+        public string title;
+        public string employer;
+        public string requirements;
+        public string description;
+        public string additionalInformation;
+        public string contactInformation;
+        public List<string> questions;
 
     }
 }
