@@ -32,7 +32,7 @@ import Carousel from 'primevue/carousel';
 
   <section class="information-container">
     <div class="about-container">
-      <h1 id="aboutus">Our Values</h1>
+      <h1 id="about-us">Our Values</h1>
       <p>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  At Summit Valley School District, we are committed to fostering a community of respect, collaboration, and
         excellence. Our core values center around providing a safe and inclusive learning environment where every
@@ -71,35 +71,42 @@ import Carousel from 'primevue/carousel';
 
 .main-bg-pic {
   width: 100%;
-  height: 90vh;
+  height: 75vh;
   object-position: 50% 100%;
   object-fit: cover;
-  border-bottom: 1px solid rgb(197 129 123);
+  border-bottom: var(--primary-color) solid 1px;
   margin-bottom: 150px;
+  overflow: hidden;
 }
 
 #mainbgpic {
   width: 100%;
+  filter: brightness(80%);
 }
+
 
 .title-container {
   position: absolute;
     top: 85%;
     left: 50%;
     transform: translate(-50%, -60%);
-    background: rgb(147 147 147 / 50%);
-    backdrop-filter: blur(1px);
     border-radius: 50px;
     padding-inline: 15px;
 }
 
 .main-title {
-  color: rgb(0 0 0);
-  font-size: 90px;
+  color: rgb(255, 255, 255);
+  font-size: 140px;
+  font-weight:700;
+  text-wrap: nowrap;
 }
 
 .title-subtitle {
-  color: rgb(0 0 0);
+  color: var(--primary-color);
+  font-size: 50px;
+  font-weight: 600;
+  position: relative;
+  top: -50px;
 }
 
 @media (max-width: 500px) {
@@ -114,11 +121,14 @@ import Carousel from 'primevue/carousel';
 }
 
 .about-container {
+  color: rgb(218, 218, 218);
   min-width: 28rem;
-  padding: 20px;
   max-width: 50%;
-
-
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  padding: 20px;
+  border-radius: 40px;
+  box-shadow: 0px 0px 20px rgba(75, 75, 75, 0.611);
 }
 
 #home-carousel {
@@ -127,9 +137,12 @@ import Carousel from 'primevue/carousel';
   border-radius: 20px;
 }
 
-#aboutus {
+#about-us {
   text-align: center;
   margin-inline: 20px;
+  margin-bottom: 10px;
+  font-size: 30px;
+  color: var(--primary-color)
 }
 
 .carousel {
@@ -138,19 +151,13 @@ import Carousel from 'primevue/carousel';
   position: relative;
 }
 
-
-
-.slide.active {
-  display: block;
-}
-
-
 .information-container {
   margin: 20px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-around;
+  margin-top: -70px;
 }
 
 

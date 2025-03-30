@@ -1,4 +1,5 @@
 ﻿using FBLA_Site.Server.Models;
+using FBLA_Site.Server.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -9,6 +10,9 @@ namespace FBLA_Site.Server.Controllers
     public class JobApplicationController : Controller
 
     {
+        private JsonUtils<List<Posting>> postingUtils = new JsonUtils<List<Posting>>("postings");
+        private JsonUtils<List<Posting>> postingQueue = new JsonUtils<List<Posting>>("postingQueue");
+
         [HttpGet]
         public JsonResult GetJobApplications(Application app)
         {
@@ -18,38 +22,17 @@ namespace FBLA_Site.Server.Controllers
         [HttpPost]
         public JsonResult AddPosting(Posting posting)
         {
-            List<Posting> postings;
-            try
-            {
-                using (StreamReader r = new StreamReader("/ApplicationData/postings.json"))
-                {
-                    string json = r.ReadToEnd();
-                    postings = JsonSerializer.Deserialize<List<Posting>>(json) ?? new List<Posting>();
-                }
-            } catch (Exception e)
-            {
-                postings = new List<Posting>();
-            }
-
+            List<Posting> postings = postingUtils.GetData() ?? new List<Posting>();
             postings.Add(posting);
 
-            using (StreamWriter File1 = new("./ApplicationData/postings.json"))
-            {
-                string newJson = JsonSerializer.Serialize(postings);
-                File1.Write(newJson);
-            }
+            postingUtils.SetData(postings);
             return Json(new { Success = true });
         }
 
         [HttpGet]
         public JsonResult GetPostings()
         {
-            Posting[] postings;
-            using (StreamReader r = new StreamReader("postings.json"))
-            {
-                string json = r.ReadToEnd();
-                postings = JsonSerializer.Deserialize<Posting[]>(json) ?? [];
-            }
+            List<Posting> postings = postingUtils.GetData() ?? new List<Posting>();
 
             return Json(postings);
         }
