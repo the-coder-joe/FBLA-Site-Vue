@@ -11,7 +11,18 @@
         <p>📞 (715) 123-4567</p>
         <p>✉️ guidance@summitvalleyschool.org</p>
       </div>
+
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><RouterLink to="/SourcesPage">Sources</RouterLink></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Contact Form</a></li>
+        </ul>
+      </div>
     </div>
+
     <div class="footer-bottom">
       <p>&copy; 2025 Summit Valley School District. All rights reserved.</p>
     </div>
@@ -19,7 +30,7 @@
 </template>
 
 <script setup>
-// No logic needed
+import { RouterLink } from 'vue-router'
 </script>
 
 <style scoped>
@@ -34,29 +45,33 @@
 
 .footer-content {
   display: flex;
-  justify-content: center;
-  gap: 4rem;
   flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
   max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
+  margin: auto;
 }
 
 .footer-section {
-  flex: 1 1 300px;
-  min-width: 200px;
+  flex: 1 1 250px;
 }
 
 .footer-section h3 {
   margin-bottom: 0.5rem;
   color: lightblue;
-  font-size: 1.25rem;
 }
 
-.footer-section p {
-  margin: 0.3rem 0;
-  line-height: 1.5;
+.footer-section p,
+.footer-section a,
+.footer-section ul li a {
   color: #cceeff;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.footer-section a:hover {
+  text-decoration: underline;
+  color: white;
 }
 
 .footer-bottom {
@@ -66,5 +81,14 @@
   font-size: 0.85rem;
   border-top: 1px solid #444;
   padding-top: 1rem;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li {
+  margin-bottom: 0.5rem;
 }
 </style>

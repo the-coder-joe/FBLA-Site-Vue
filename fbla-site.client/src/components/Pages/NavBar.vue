@@ -5,6 +5,7 @@
         <RouterLink class="nav-link" to="/">Home</RouterLink>
         <RouterLink class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
         <RouterLink class="nav-link" to="/LoginPage">Sign in</RouterLink>
+        <RouterLink class="nav-link" to="/Postings">View Postings</RouterLink>
       </div>
     </nav>
   </template>
