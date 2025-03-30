@@ -24,6 +24,8 @@ const isSignInDisabled = computed(() =>
 
 // Dummy sign in logic
 function submitSignIn() {
+
+
   if (email.value === 'Test@gmail.com' && password.value === 'password') {
     signInErrorMessage.value = ''
     showToast('Successfully signed in.') // This currently dosen't work due to router push
@@ -36,7 +38,7 @@ function submitSignIn() {
 }
 
 
-// Create Account form fields 
+// Create Account form fields
 const signUpEmail = ref('')
 const signUpPassword = ref('')
 const confirmPassword = ref('')

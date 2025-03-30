@@ -31,11 +31,6 @@ const props = defineProps(
       </div>
     </div>
   </div>
-
-
-
-
-
 </template>
 
 <style scoped>
