@@ -281,9 +281,14 @@ function switchToSignIn() {
 
 /* Header styling */
 .header {
-  margin-top: 10px;
+  margin-top: 30px;
   text-align: center;
   margin-bottom: 2rem;
+  font-size: 25px;
+}
+
+.header p {
+  font-size: 18px;
 }
 
 /* Form styling */

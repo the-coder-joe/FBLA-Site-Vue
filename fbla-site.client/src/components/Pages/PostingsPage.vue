@@ -73,6 +73,8 @@ onMounted(async () => {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
+  margin-left: 120px;
+
 }
 
 .posting-item {
@@ -81,14 +83,19 @@ onMounted(async () => {
   border-radius: 5px;
 }
 
-.header {
-  margin-top: 10px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 2rem;
-}
+  .header {
+    margin-top: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: 25px;
+  }
+
+  .header p {
+    font-size: 18px;
+  }
 
 .apply-button {
   border: 1px solid rgb(0 0 0);
