@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue';
 import ApplicationService from '@/services/application.service';
 import { Posting } from '@/models/application.models';
 import PostingDisplay from '../PostingDisplay.vue';
+import Button from 'primevue/button';
+import { RouterLink } from 'vue-router';
 
 const applicationService = new ApplicationService();
 
@@ -33,8 +35,13 @@ onMounted(async () => {
     <div v-if="postings.length === 0" class="no-postings">No postings available.</div>
     <div v-else class="postings-list">
       <template v-for="posting in postings" :key="posting.id">
-        <PostingDisplay :posting="posting">
-          <template #actions>
+          <PostingDisplay :posting="posting">
+            <template #actions>
+              <RouterLink :to="`/Apply/${posting.id}`" class="apply-link">
+            <div class="apply-button">
+              Apply
+            </div>
+          </RouterLink>
 
           </template>
         </PostingDisplay>
@@ -44,9 +51,12 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.postings {
-  padding: 20px;
-}
+  .postings {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
 .loading {
   font-size: 18px;
@@ -60,7 +70,8 @@ onMounted(async () => {
 
 .postings-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 20px;
 }
 
@@ -68,5 +79,39 @@ onMounted(async () => {
   border: 1px solid #ccc;
   padding: 15px;
   border-radius: 5px;
+}
+
+  .header {
+    margin-top: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .apply-button {
+  border: 1px solid rgb(0 0 0);
+  padding: 10px;
+  color: rgb(250 250 250);
+  background-color: black;
+  border-radius: 10px;
+  }
+
+  .apply-link {
+  display: inline-block;
+  transition: transform 0.3s ease, width 0.3s ease;
+}
+a:hover {
+  background: none !important;
+}
+.apply-link:hover {
+  transform: scale(1.05);
+}
+.sticky-container:hover {
+  transform: scale(1.05);
+}
+.sticky-container {
+  transition: transform 0.3s ease, width 0.3s ease;
 }
 </style>
