@@ -11,26 +11,13 @@ namespace FBLA_Site.Server.Utils
             WriteIndented = true
         };
 
-        private readonly String postingPath = "./ApplicationData/postings.json";
-        private readonly String postingQueuePath = "./ApplicationData/postingsQueue.json";
+        private readonly string basePath = "./ApplicationData/";
 
-        private String path;
+        private string path;
 
-        public JsonUtils (String data)
-        {  
-            switch(data)
-            {
-                case "postings":
-                    path = postingPath;
-                    break;
-
-                case "postingQueue":
-                    path = postingQueuePath;
-                    break;
-                default: 
-                    throw new Exception("Invalid data type");
-            }
-
+        public JsonUtils (string filename)
+        {
+            path = basePath + filename + ".json";
         }
 
         public T? GetData()
