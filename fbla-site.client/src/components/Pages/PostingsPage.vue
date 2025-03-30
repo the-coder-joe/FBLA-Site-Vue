@@ -35,13 +35,13 @@ onMounted(async () => {
     <div v-if="postings.length === 0" class="no-postings">No postings available.</div>
     <div v-else class="postings-list">
       <template v-for="posting in postings" :key="posting.id">
-          <PostingDisplay :posting="posting">
-            <template #actions>
-              <RouterLink :to="`/Apply/${posting.id}`" class="apply-link">
-            <div class="apply-button">
-              Apply
-            </div>
-          </RouterLink>
+        <PostingDisplay :posting="posting">
+          <template #actions>
+            <RouterLink :to="{ name: 'apply', params: { postingId: posting.id } }" class="apply-link">
+              <div class="apply-button">
+                Apply
+              </div>
+            </RouterLink>
 
           </template>
         </PostingDisplay>
@@ -51,12 +51,12 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-  .postings {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.postings {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .loading {
   font-size: 18px;
@@ -97,27 +97,31 @@ onMounted(async () => {
     font-size: 18px;
   }
 
-  .apply-button {
+.apply-button {
   border: 1px solid rgb(0 0 0);
   padding: 10px;
   color: rgb(250 250 250);
   background-color: black;
   border-radius: 10px;
-  }
+}
 
-  .apply-link {
+.apply-link {
   display: inline-block;
   transition: transform 0.3s ease, width 0.3s ease;
 }
+
 a:hover {
   background: none !important;
 }
+
 .apply-link:hover {
   transform: scale(1.05);
 }
+
 .sticky-container:hover {
   transform: scale(1.05);
 }
+
 .sticky-container {
   transition: transform 0.3s ease, width 0.3s ease;
 }

@@ -37,4 +37,13 @@ export default class ApplicationService {
 
     return response.json();
   }
+
+  public async getPosting (postingId: number): Promise<Posting> {
+    const postings = await this.getPostings();
+    const posting = postings.find((posting) => posting.id === postingId);
+    if (!posting) {
+      throw new Error(`Posting with id ${postingId} not found`);
+    }
+    return posting;
+  }
 }
