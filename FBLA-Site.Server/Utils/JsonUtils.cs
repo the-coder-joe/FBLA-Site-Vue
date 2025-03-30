@@ -39,7 +39,7 @@ namespace FBLA_Site.Server.Utils
             using (StreamReader r = new StreamReader(path))
             {
                 string json = r.ReadToEnd();
-                data = JsonSerializer.Deserialize<T>(json);
+                data = JsonSerializer.Deserialize<T>(json, options);
             }
 
             return data;
