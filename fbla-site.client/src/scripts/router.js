@@ -7,6 +7,7 @@ import NotFound from '@/components/Pages/NotFound.vue';
 import PostingsPage from '@/components/Pages/PostingsPage.vue';
 import ApplicationPage from '@/components/Pages/ApplicationPage.vue';
 import AdminPage from '@/components/Pages/AdminPage.vue';
+import SourcesPage from '@/components/Pages/SourcesPage.vue';
 
 
 
@@ -16,6 +17,7 @@ const routes = [
   { path: '/Postings', component: PostingsPage, meta: { authRequired: false } },
   { path: '/Apply:postingId', name: 'apply', component: ApplicationPage, meta: { authRequired: false } },
   { path: '/LoginPage', component: LoginPage, meta: { authRequired: false } },
+  { path: '/SourcesPage', component: SourcesPage, meta: { authRequired: false } },
   { path: '/Admin', name: 'admin', component: AdminPage, meta: { authRequired: true } },
   { path: '/:pathMatch(.*)*', component: NotFound, meta: { authRequired: false } }
 ]
