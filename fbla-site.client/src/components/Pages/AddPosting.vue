@@ -128,20 +128,17 @@ function submitForm() {
 }
 
 .header {
-  margin-top: 10px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.header h1 {
-  font-size: 50px;
+  margin-top: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: 25px;
 }
 
 .header p {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .page {
@@ -158,7 +155,8 @@ function submitForm() {
   background-color: #111111;
   box-shadow: #404040 5px 5px 20px;
   background: linear-gradient(145deg, #12121b, #0a1418);
-
+  margin-bottom: 80px;
+  border-radius: 10px;
 }
 
 .field {
