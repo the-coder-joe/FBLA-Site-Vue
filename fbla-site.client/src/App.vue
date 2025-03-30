@@ -4,12 +4,16 @@ import { RouterLink, RouterView } from 'vue-router';
 
 <template>
   <nav class="navbar">
-    <div class="School-Title">Summit Valley School District</div>
-    <div class="nav-links">
-      <RouterLink class="nav-link" to="/">Home</RouterLink>
-      <RouterLink class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
-      <RouterLink class="nav-link" to="/LoginPage">Login</RouterLink>
+    <div class="School-Title"><RouterLink class="nav-link" to="/">
+      <div class="logo-name">
+        <img src="../src/assets/Logo.png" class="logo"/> Summit Valley School District
+      </div>
+    </RouterLink>
+    <RouterLink class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
       <RouterLink class="nav-link" to="/Postings">View Postings</RouterLink>
+  </div>
+    <div class="nav-links">
+      <RouterLink class="nav-link" to="/LoginPage">Login</RouterLink>
     </div>
   </nav>
 
@@ -26,7 +30,9 @@ import { RouterLink, RouterView } from 'vue-router';
   z-index: 1000; /*The overlay hierarchy (lower < higher)*/
   width: 100%;
   background: linear-gradient(to right, #1a1a1a, #2a2b2b); /*Changes NavBar background color*/
-  padding: .75rem 1rem; 
+  padding: .75rem 1rem;
+  padding-top: 3px;
+  padding-bottom: 3px;
   display: flex;
   align-items: center; /*Just makes values in middle vertically*/
   justify-content: space-between;
@@ -38,6 +44,9 @@ import { RouterLink, RouterView } from 'vue-router';
   color: #ffffff;
   font-size: 1.5rem;
   font-weight: 750; /*100-1000 higher = more bold*/
+  text-align: center;
+  display: flex;
+  align-items: center;
 }
 
 /*Container*/
@@ -49,9 +58,9 @@ import { RouterLink, RouterView } from 'vue-router';
 /* LINKS */
 .nav-link {
   color: #9be9ff;
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 1.3rem;
   transition: color 0.55s ease;
+  display: block;
 }
 
 /*Simply highlights what link/tab their on*/
@@ -73,5 +82,17 @@ import { RouterLink, RouterView } from 'vue-router';
 <style>
 body {
   padding-top: 64px;
+}
+
+.logo {
+  border-radius: 50%;
+  height: 65px;
+  padding-right: 10px;
+}
+
+.logo-name {
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 </style>
