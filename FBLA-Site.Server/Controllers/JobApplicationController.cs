@@ -1,6 +1,7 @@
 ﻿using FBLA_Site.Server.Models;
 using FBLA_Site.Server.Utils;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
 namespace FBLA_Site.Server.Controllers
@@ -33,6 +34,43 @@ namespace FBLA_Site.Server.Controllers
         public JsonResult GetPostings()
         {
             List<Posting> postings = postingUtils.GetData() ?? new List<Posting>();
+
+            return Json(postings);
+        }
+
+        [HttpGet]
+        public JsonResult GetPostingQueue()
+        {
+            List<Posting> postingQ = postingQueue.GetData() ?? new List<Posting>();
+
+            return Json(postingQ);
+        }
+
+        [HttpPost]
+        public IActionResult PostingApproval(ApplicationApproval approval)
+        {
+            List<Posting> postingsQ = postingQueue.GetData() ?? new List<Posting>();
+            List<Posting> postings = postingUtils.GetData() ?? new List<Posting>();
+
+            Posting? posting = postingsQ.FirstOrDefault(p => p.Id == approval.Id);
+
+            if (posting == null)
+            {
+                return Json(new ErrorResponse { Success = false, Message = $"Application with Id {approval.Id} does not exist." });
+            }
+
+            if (approval.IsApproved)
+            {
+                postings.Add(posting);
+                postingUtils.SetData(postings);
+
+            }
+
+
+
+
+            postingsQ.Remove(posting);
+            postingQueue.SetData(postingsQ);
 
             return Json(postings);
         }
