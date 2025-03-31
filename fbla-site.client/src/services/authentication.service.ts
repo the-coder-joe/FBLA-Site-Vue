@@ -1,14 +1,45 @@
 import { BASE_URL } from "@/models/constants";
-import { pbkdf2Sync, randomBytes } from 'crypto';
+import * as crypto from 'crypto';
+import { useAuthStore } from "@/stores/authentication.store";
 
-class AuthenticationService {
+export class AuthenticationService {
   private baseUrl: string;
+  private authStore = useAuthStore();
 
   public async login(username: string, password: string): Promise<any> {
+    const hashedPassword = this.hashPassword(password);
+    const resopnse = await this.verifyPassword(username, hashedPassword);
+    const success = resopnse.success;
+    const role = resopnse.role;
 
+    if (!success)
+      return false;
+
+    this.authStore.authenticated = true;
+    this.authStore.role = role;
+    return true;
   }
 
-  public async register(username: string, password: string, email: string): Promise<any> {
+  public async register(username: string, password: string, role: string): Promise<any> {
+    const hashedPassword = this.hashPassword(password);
+
+    const body = {
+      Email: username,
+      PartiallyHashedPassword: hashedPassword,
+      Role: role
+    }
+
+    const request = new Request(`${BASE_URL}/api/Users/AddUser`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+    });
+
+    const response = await fetch(request);
+    const r = await response.json();
+    return { success: r.success, role: r.role };
   }
 
   logout(): void {
@@ -16,21 +47,29 @@ class AuthenticationService {
     console.log('User logged out');
   }
 
-  private hashPassword(password: string): { salt: string; hashedPassword: string } {
-    const salt = randomBytes(16).toString('hex'); // Generate a random salt
+  private hashPassword(password: string): string {
     const iterations = 100000;
     const keylen = 64; // Length of derived key in bytes
     const digest = 'sha512'; // Hash algorithm
 
-    const hashedPassword = pbkdf2Sync(password, salt, iterations, keylen, digest).toString('hex');
 
-    return { salt, hashedPassword };
+    return password;
   }
 
-  private async verifyPassword(hash: string): Promise<boolean> {
-    const url= new URL(`${BASE_URL}/api/Authentication/VerifyPassword`);
-    return false;
+  private async verifyPassword(email: string, hash: string): Promise<{ success: boolean, role: string }> {
+    const url = new URL(`${BASE_URL}/api/Users/Authenticate`);
+    const response = await fetch(url.toString(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: email,
+        partiallyHashedPassword: hash,
+      }),
+    });
+
+    const r = await response.json();
+    return { success: r.success, role: r.role };;
   }
 }
-
-export const authenticationService = new AuthenticationService();

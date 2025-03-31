@@ -1,3 +1,12 @@
+<script setup>
+import { RouterLink } from 'vue-router'
+import { useAuthStore } from '@/stores/authentication.store'
+
+const authStore = useAuthStore();
+
+</script>
+
+
 <template>
   <nav class="navbar">
     <div class="School-Title">
@@ -8,7 +17,8 @@
       </RouterLink>
       <RouterLink class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
       <RouterLink class="nav-link" to="/Postings">View Postings</RouterLink>
-      <RouterLink class="nav-link" to="/Admin">Admin</RouterLink>
+      <RouterLink v-if="authStore.authenticated" class="nav-link" to="/Admin">Admin Page
+      </RouterLink>
     </div>
     <div class="nav-links">
       <RouterLink class="nav-link" to="/LoginPage">Login</RouterLink>
@@ -16,10 +26,6 @@
   </nav>
 
 </template>
-
-<script setup>
-import { RouterLink } from 'vue-router'
-</script>
 
 <style scoped>
 /*NavBar Styling*/
@@ -57,7 +63,7 @@ import { RouterLink } from 'vue-router'
   align-items: center;
   /*Just makes values in middle vertically*/
   justify-content: space-between;
-  box-shadow: 0 2px 8px rgba(0, 255, 255, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 255, 255, 0.247);
   /*Gives ambiance*/
 }
 

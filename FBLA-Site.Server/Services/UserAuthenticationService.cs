@@ -1,5 +1,6 @@
 ﻿using FBLA_Site.Server.Models;
 using FBLA_Site.Server.Utils;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -7,24 +8,33 @@ namespace FBLA_Site.Server.Services
 {
     public class UserAuthenticationService
     {
-        private readonly JsonUtils<User> userUtils = new JsonUtils<User>("users");
+        private readonly JsonUtils<List<User>> userUtils = new JsonUtils<List<User>>("users");
         private readonly int hashIters = 100000;
-        public void CreateUser()
+        public void CreateUser(string username, string partiallyHashedPassword, string role)
         {
+            string hashedPassword = HashPassword(partiallyHashedPassword);
 
+            User user = new User
+            {
+                Email = username,
+                Hash = hashedPassword,
+                Role = role
+            };
 
+            List<User> users = userUtils.GetData() ?? new List<User>();
+            users.Add(user);
+            userUtils.SetData(users);
         }
-        public bool Authenticate(string username, string partiallyHashedPassword)
+        public User? Authenticate(string username, string partiallyHashedPassword)
         {
-
-            User? user = userUtils.GetData();
+            User? user = this.userUtils.GetData()?.FirstOrDefault(p => p?.Email == username);
             if (user == null)
-                return false;
+                return null;
 
-            return user.Hash == HashPassword(partiallyHashedPassword);
+            if (user.Hash == HashPassword(partiallyHashedPassword))
+                return user;
 
-
-
+            return null;
         }
 
         private string HashPassword(string partiallyHashedPassword)

@@ -45,6 +45,7 @@ app.UseCors("AllowSpecificOrigin");
 
 
 app.UseRouting();
+app.UseCors("AllowSpecificOrigin");
 
 app.UseHttpsRedirection();
 
