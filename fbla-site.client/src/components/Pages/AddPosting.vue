@@ -31,8 +31,8 @@ const toastMessage = ref('')
 // Form validation (required: title, employer, description)
 const isFormValid = computed(() => {
   return jobTitle.value.trim() !== '' &&
-         employerName.value.trim() !== '' &&
-         jobDescription.value.trim() !== ''
+  employerName.value.trim() !== '' &&
+  jobDescription.value.trim() !== ''
 })
 
 // Access the ApplicationService
@@ -56,10 +56,10 @@ async function submitForm() {
   try {
     const result = await applicationService.addPosting(postingData)
     console.log('Server response:', result)
-    
+
     // Show toast confirmation
     toastMessage.value = 'Posting submitted successfully!'
-    
+
     // Clear form fields on success
     employerName.value = ''
     jobTitle.value = ''
