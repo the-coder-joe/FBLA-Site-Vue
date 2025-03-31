@@ -19,7 +19,8 @@ function logout() {
     <div class="School-Title">
       <RouterLink class="nav-link" to="/">
         <div class="logo-name">
-          <img src="../../assets/Logo.png" class="logo" /> Summit Valley School District
+          <img src="../../assets/Logo.png" class="logo" />
+          <span class="logo-text"> Summit Valley School District</span>
         </div>
       </RouterLink>
       <RouterLink v-if="authStore.role === 'employer' || authStore.role === 'admin'" class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
@@ -133,5 +134,26 @@ body {
   align-items: center;
   display: flex;
   justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .logo-text {
+    display: none;
+  }
+
+  .nav-link {
+    font-size: 0.8rem !important;
+    margin-inline: 5px;
+  }
+
+  .navbar {
+      padding: 0 !important;
+  }
+
+  .logo {
+    padding: 0 !important;
+    height: 50px !important;
+  }
+
 }
 </style>

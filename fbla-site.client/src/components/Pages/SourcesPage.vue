@@ -57,7 +57,7 @@
   }
 
   .sources-container {
-    width: 50%;
+    width: 90%;max-width: 1000px;
     background-color: #111111;
     box-shadow: 2px 2px 20px #404040;
     padding: 2rem;

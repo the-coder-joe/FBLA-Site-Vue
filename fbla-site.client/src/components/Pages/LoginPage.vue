@@ -288,8 +288,8 @@ function switchToSignIn() {
   padding: 30px;
   display: flex;
   flex-direction: column;
-  width: 50%;
-  box-shadow: #404040 5px 5px 20px;
+  width: 90%;max-width: 1000px;
+  box-shadow: #4040408f 0px 0px 20px;
   background: linear-gradient(145deg, #12121b, #0a1418);
   border-radius: 10px;
 }
@@ -409,5 +409,12 @@ function switchToSignIn() {
 
 .toggle a:hover {
   color: #00bfff;
+}
+
+@media (max-width: 700px)  {
+  .field-description {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 </style>

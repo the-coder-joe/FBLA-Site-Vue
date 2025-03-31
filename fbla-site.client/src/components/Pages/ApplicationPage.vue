@@ -119,9 +119,9 @@ function submitApplication() {
 }
 
 .posting-details {
-  width: 50%;
+  width: 90%;max-width: 1000px;
   background-color: rgba(17, 17, 17, 0.85);
-  box-shadow: #404040 5px 5px 20px;
+  box-shadow: #4040408f 0px 0px 20px;
   padding: 2rem;
   margin-bottom: 2rem;
   border-radius: 10px;
@@ -148,9 +148,9 @@ function submitApplication() {
 }
 
 .application-form {
-  width: 50%;
+  width: 90%;max-width: 1000px;
   background-color: rgba(17, 17, 17, 0.85);
-  box-shadow: #404040 5px 5px 20px;
+  box-shadow: #4040408f 0px 0px 20px;
   padding: 2rem;
   border-radius: 10px;
 }

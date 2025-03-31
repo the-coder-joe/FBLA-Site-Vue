@@ -190,7 +190,7 @@ async function submitForm() {
   flex-direction: column;
   width: 90%;
   max-width: 1200px;
-  box-shadow: #404040 5px 5px 20px;
+  box-shadow: #4040408f 0px 0px 20px;
   background: linear-gradient(145deg, #12121b, #0a1418);
   margin-bottom: 80px;
   border-radius: 10px;
