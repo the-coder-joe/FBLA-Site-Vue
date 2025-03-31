@@ -2,13 +2,8 @@ import { Posting } from '@/models/application.models.js'; // Import the Posting 
 import { BASE_URL } from '../models/constants'; // Import the base URL for API requests
 
 export default class ApplicationService {
-  constructor() {
-    // Constructor (currently empty, could be used for initialization if needed)
-  }
-
-  // Function to add a new job posting
-  public async addPosting(posting: Posting): Promise<any> {
-    const url = new URL(`${BASE_URL}/api/JobApplication/AddPosting`); // Construct the URL for adding a posting
+  public async addPosting (posting: Posting): Promise<any> {
+    const url = new URL(`${BASE_URL}/api/JobApplication/AddPosting`);
 
     const request = new Request(url, {
       method: 'POST', // Use the POST method to submit data

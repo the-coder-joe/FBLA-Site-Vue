@@ -9,6 +9,10 @@ class AuthenticationService {
   }
 
   public async register(username: string, password: string, email: string): Promise<any> {
+    const hashedPassword = this.hashPassword(password).hashedPassword;
+
+
+
   }
 
   logout(): void {
@@ -29,7 +33,15 @@ class AuthenticationService {
 
   private async verifyPassword(hash: string): Promise<boolean> {
     const url= new URL(`${BASE_URL}/api/Authentication/VerifyPassword`);
-    return false;
+    const response = await fetch(url.toString(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ hash }),
+    });
+
+    return response.json();
   }
 }
 
