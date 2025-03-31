@@ -53,26 +53,6 @@
     ]
   },
   {
-    "Id": 5,
-    "Title": "a",
-    "Employer": "a",
-    "Requirements": "",
-    "Description": "a",
-    "AdditionalInformation": "",
-    "ContactInformation": "",
-    "Questions": []
-  },
-  {
-    "Id": 6,
-    "Title": "fdsa",
-    "Employer": "afdsa",
-    "Requirements": "fd",
-    "Description": "fdsafdsafdsa",
-    "AdditionalInformation": "",
-    "ContactInformation": "",
-    "Questions": []
-  },
-  {
     "Id": 8,
     "Title": "Software Engineer",
     "Employer": "Google",
