@@ -88,10 +88,7 @@ function deny(posting: Posting) {
                 <div class="describer">Job Description:</div> {{ posting.description }}
               </div>
               <div class="modal-list-item">
-                Additional Information: {{ posting.additionalInformation }}
-              </div>
-              <div class="modal-list-item">
-                <div class="describer">Contact Info:</div> {{ posting.contactInformation }}
+               <div class="describer"> Additional Information:</div> {{ posting.additionalInformation }}
               </div>
               <div class="modal-list-item">
                 <div class="describer">Questions For Applicants:</div>
