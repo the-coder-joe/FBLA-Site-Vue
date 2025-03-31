@@ -1,4 +1,5 @@
-﻿namespace FBLA_Site.Server.Models
+﻿// Posting.cs
+namespace FBLA_Site.Server.Models
 {
     public class Posting
     {
@@ -10,6 +11,5 @@
         public string AdditionalInformation { get; set; }
         public string ContactInformation { get; set; }
         public List<string> Questions { get; set; }
-
     }
 }
