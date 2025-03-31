@@ -119,6 +119,7 @@ function deny(posting: Posting) {
   flex-direction: column;
   align-items: center;
   min-height: 800px;
+  margin-bottom: 100px;
 }
 
 /* Loading message styling */

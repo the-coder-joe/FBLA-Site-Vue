@@ -6,6 +6,7 @@ import InputText from 'primevue/inputtext'
 import Dropdown from 'primevue/dropdown'
 import ApplicationService from '@/services/application.service'
 import { AuthenticationService } from '@/services/authentication.service'
+import { useAuthStore } from '@/stores/authentication.store'
 
 const authenticationService = new AuthenticationService();
 
@@ -14,6 +15,8 @@ const isSignUp = ref(false)
 
 // Allows redirect after successful sign-in
 const router = useRouter()
+
+const authStore = useAuthStore();
 
 // Sign In form fields
 const email = ref('')
@@ -29,8 +32,17 @@ const isSignInDisabled = computed(() =>
 function submitSignIn() {
   authenticationService.login(email.value, password.value)
     .then((success) => {
-      if (success)
+      if (success){
+        if(authStore.role == 'admin') {
         router.push('/Admin')
+        }
+        if(authStore.role == 'employer') {
+          router.push('/AddPosting')
+        }
+        if(authStore.role == 'student') {
+          router.push('/Postings')
+        }
+      }
       else
         signInErrorMessage.value = 'Invalid email or password.'
     })
@@ -219,12 +231,13 @@ function switchToSignIn() {
 
 <style scoped>
 .page {
-  min-height: 100vh;
+  min-height: 70.29vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding-top: 2rem;
   box-sizing: border-box;
+  padding-bottom: -10%;
 }
 
 /* Toast message */
