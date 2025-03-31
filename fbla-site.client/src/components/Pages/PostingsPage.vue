@@ -83,8 +83,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
-    margin-left: 120px;
     margin-bottom: 290px;
+    justify-content: center;
   }
 
   /* Individual posting item styling */

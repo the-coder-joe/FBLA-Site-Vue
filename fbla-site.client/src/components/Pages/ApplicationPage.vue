@@ -88,16 +88,16 @@ function submitApplication() {
         <label for="studentContact">Contact Information</label>
         <InputText id="studentContact" v-model="studentContact" class="field" placeholder="Enter your email or phone" />
       </div>
-      
+
       <div v-for="(question, index) in posting.questions" :key="index" class="form-group question-group">
         <label :for="'question' + index">{{ question }}</label>
         <Textarea :id="'question' + index" v-model="studentAnswers[index]" class="field" placeholder="Your answer" />
       </div>
-      
-      <Button 
-        @click="submitApplication" 
-        label="Submit Application" 
-        class="btn submit-btn" 
+
+      <Button
+        @click="submitApplication"
+        label="Submit Application"
+        class="btn submit-btn"
         :disabled="!isAppFormValid"
       />
     </div>
@@ -141,10 +141,10 @@ function submitApplication() {
 .posting-details p {
   font-size: 1.1rem;
   margin-bottom: 1rem;
-  color: #fff; 
+  color: #fff;
 }
 .posting-details p strong {
-  color: #9be9ff; 
+  color: #9be9ff;
 }
 
 .application-form {
