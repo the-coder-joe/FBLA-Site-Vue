@@ -21,6 +21,12 @@
           <li>
             <a href="https://vite.dev/" target="_blank">Vite Documentation</a>
           </li>
+          <li>
+            <a href="https://github.com/" target="_blank">Github</a>
+          </li>
+          <li>
+            <a href="https://visualstudio.microsoft.com/" target="_blank">Visual Studio</a>
+          </li>
         </ul>
       </div>
     </div>
