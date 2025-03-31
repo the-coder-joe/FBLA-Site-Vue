@@ -66,7 +66,7 @@
   /* Background image container */
   .main-bg-pic {
     width: 100%;
-    height: 75vh;
+    max-height: 75vh;
     object-position: 50% 100%;
     object-fit: cover;
     border-bottom: var(--primary-color) solid 1px;
@@ -78,6 +78,7 @@
   #mainbgpic {
     width: 100%;
     filter: brightness(80%);
+    margin-bottom: -6px;
   }
 
   /* Title container positioned within the main background */
@@ -108,13 +109,13 @@
   }
 
   /* Responsive adjustments for smaller screens */
-  @media (max-width: 500px) {
+  @media (max-width: 1000px) {
     .main-title {
       font-size: 50px;
+      margin-bottom: 30px;
     }
 
     .title-subtitle {
-      color: rgb(0 0 0);
       font-size: 40px;
     }
   }
@@ -123,7 +124,8 @@
   .about-container {
     color: rgb(218, 218, 218);
     min-width: 28rem;
-    max-width: 50%;
+    max-width: 90%;
+    max-width: 1000px;
     background-color: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(5px);
     padding: 20px;
@@ -150,7 +152,7 @@
 
   /* Carousel container styling */
   .carousel {
-    width: 50%;
+    width: 90%;max-width: 1000px;
     overflow: hidden;
     position: relative;
   }
