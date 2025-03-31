@@ -1,11 +1,18 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authentication.store'
 
 const authStore = useAuthStore();
 
-</script>
+const router=useRouter();
 
+function logout() {
+  authStore.authenticated = false;
+  authStore.role = '';
+  authStore.username = '';
+  router.push({name: 'home'});
+}
+</script>
 
 <template>
   <nav class="navbar">
@@ -15,13 +22,14 @@ const authStore = useAuthStore();
           <img src="../../assets/Logo.png" class="logo" /> Summit Valley School District
         </div>
       </RouterLink>
-      <RouterLink class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
+      <RouterLink v-if="authStore.role === 'employer' || authStore.role === 'admin'" class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
       <RouterLink class="nav-link" to="/Postings">View Postings</RouterLink>
-      <RouterLink v-if="authStore.authenticated" class="nav-link" to="/Admin">Admin Page
+      <RouterLink v-if="authStore.role === 'admin'" class="nav-link" to="/Admin">Admin Page
       </RouterLink>
     </div>
     <div class="nav-links">
-      <RouterLink class="nav-link" to="/LoginPage">Login</RouterLink>
+      <RouterLink v-if="!authStore.authenticated" class="nav-link" to="/LoginPage">Login</RouterLink>
+      <a v-else class="nav-link" @click="logout()">Log Out</a>
     </div>
   </nav>
 
@@ -90,6 +98,8 @@ const authStore = useAuthStore();
   font-size: 1.3rem;
   transition: color 0.55s ease;
   display: block;
+  user-select: none;
+  cursor: pointer;
 }
 
 /*Simply highlights what link/tab their on*/

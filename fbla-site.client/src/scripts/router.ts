@@ -23,7 +23,7 @@ export default class Router {
     const authStore = useAuthStore();
 
     const routes = [
-      { path: '/', component: HomePage, meta: { authRequired: false } },
+      { path: '/', name: 'home', component: HomePage, meta: { authRequired: false } },
       { path: '/AddPosting', component: AddPosting, meta: { authRequired: false } },
       { path: '/Postings', component: PostingsPage, meta: { authRequired: false } },
       { path: '/Apply:postingId', name: 'apply', component: ApplicationPage, meta: { authRequired: false } },
@@ -36,6 +36,12 @@ export default class Router {
     this.router = createRouter({
       history: createMemoryHistory(),
       routes,
+      scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+          return savedPosition
+        }
+        return { top: 0}
+      }
     });
 
 

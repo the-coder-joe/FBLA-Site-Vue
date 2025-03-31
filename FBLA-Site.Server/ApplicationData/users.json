@@ -73,5 +73,15 @@
     "Email": "Test@gmail.com",
     "Role": "admin",
     "Hash": "58eaac71b9d8bd8f4c9ce8bae21b81431a450c768be11554254971c06268ba3fcda60bc4de3c3e21a868bc39e460d105c2aefcb13c3b64bfb8b4ca126156f1c2"
+  },
+  {
+    "Email": "Bigemail",
+    "Role": "employer",
+    "Hash": "541691c145ccc34dec8bbe5753471844be0926c4d775b899a7e5d558932a6056ae972e7d1511e532e967a0304d293039736f0e866f4a99185d367f6cf20fa39d"
+  },
+  {
+    "Email": "Bigemaila",
+    "Role": "student",
+    "Hash": "541691c145ccc34dec8bbe5753471844be0926c4d775b899a7e5d558932a6056ae972e7d1511e532e967a0304d293039736f0e866f4a99185d367f6cf20fa39d"
   }
 ]
