@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import { Posting } from '@/models/application.models'; // Import Posting model for type definition
 
-// Define the component's props, which expects a 'posting' object of type 'Posting'
-const props = defineProps(
-  {
-    posting: {
-      type: Posting, // The 'posting' prop must be of the Posting type
-      required: true // This prop is required
-    }
-  }
-)
+const props = defineProps<{
+  posting: Posting;
+}>();
+
 </script>
 
 <template>

@@ -21,14 +21,34 @@ namespace FBLA_Site.Server.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddPosting(Posting posting)
-        {
-            List<Posting> postings = postingUtils.GetData() ?? new List<Posting>();
-            postings.Add(posting);
+public JsonResult AddPosting([FromBody] Posting posting)
+{
+    // 1. Log the incoming data
+    Console.WriteLine("Posting data: " + JsonSerializer.Serialize(posting));
 
-            postingUtils.SetData(postings);
-            return Json(new { Success = true });
-        }
+    // 2. Load existing postings from JSON
+    List<Posting> postings = postingUtils.GetData() ?? new List<Posting>();
+
+    // 3. Assign an ID if none is set yet (or if it’s -1)
+    if (posting.Id <= 0)
+    {
+        if (postings.Count == 0)
+            posting.Id = 1;
+        else
+            posting.Id = postings.Max(p => p.Id) + 1;
+    }
+
+    // 4. Add the new posting
+    postings.Add(posting);
+
+    // 5. Save postings back to JSON
+    postingUtils.SetData(postings);
+
+    // 6. Return success
+    return Json(new { Success = true, CreatedId = posting.Id });
+}
+
+ 
 
         [HttpGet]
         public JsonResult GetPostings()

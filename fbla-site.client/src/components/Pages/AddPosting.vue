@@ -1,56 +1,81 @@
 <script setup lang="ts">
-import Button from 'primevue/button'; // PrimeVue Button component
-import ApplicationService from '@/services/application.service'; // Service for interacting with job postings
-import { ref } from 'vue'; // Vue ref to create reactive data
-import InputText from 'primevue/inputtext'; // PrimeVue InputText component
-import { Textarea } from 'primevue'; // PrimeVue Textarea component
-import { Posting } from '@/models/application.models'; // Interface for Posting model
-import PostingDisplay from '../PostingDisplay.vue'; // Component to display posting details
+import { ref, computed } from 'vue'
+import ApplicationService from '@/services/application.service'
+import InputText from 'primevue/inputtext'
+import Textarea from 'primevue/textarea'
+import Button from 'primevue/button'
+import { Posting } from '@/models/application.models'
 
-const applicationService: ApplicationService = new ApplicationService(); // Create instance of application service
+// Form fields
+const employerName = ref('')
+const jobTitle = ref('')  // Swapped order: now employerName comes first, then jobTitle
+const jobDescription = ref('')
+const jobRequirements = ref('')
+const additionalInfo = ref('')
 
-// Reactive form fields for job posting data
-const jobTitle = ref('');
-const jobDescription = ref('');
-const jobRequirements = ref('');
-const additionalInfo = ref('');
-const employerName = ref('');
-const contactInformation = ref('');
-const questions = ref([]); // Array to store dynamic questions
+// Dynamic questions array
+const questions = ref<{ id: string; question: string }[]>([])
 
-// Function to add a new question input field
 function addQuestion() {
-  questions.value.push({id:Math.random().toString(36).substring(7), question: ''});
+  questions.value.push({ id: Math.random().toString(36).substring(7), question: '' })
 }
 
 // Function to remove a question input field
 function removeQuestion(index: number) {
-  questions.value.splice(index, 1);
+  questions.value.splice(index, 1)
 }
 
-// Function to handle form submission and send data to the service
-function submitForm() {
+// Toast message state
+const toastMessage = ref('')
+
+// Form validation (required: title, employer, description)
+const isFormValid = computed(() => {
+  return jobTitle.value.trim() !== '' &&
+         employerName.value.trim() !== '' &&
+         jobDescription.value.trim() !== ''
+})
+
+// Access the ApplicationService
+const applicationService = new ApplicationService()
+
+async function submitForm() {
+  // Build Posting object (id: 0 indicates new posting)
   const postingData: Posting = {
-    id: -1,
+    id: 0,
     title: jobTitle.value,
+    employer: employerName.value,
     description: jobDescription.value,
-    questions: questions.value.map(q => q.question),
     requirements: jobRequirements.value,
     additionalInformation: additionalInfo.value,
-    employer: employerName.value,
-    contactInformation: ''
-  };
+    contactInformation: '',  // Removed contact info (sent as blank)
+    questions: questions.value.map(q => q.question).filter(q => q.trim() !== '')
+  }
 
-  applicationService.addPosting(postingData); // Add posting via service
-  // Reset form fields after submission
-  jobTitle.value = '';
-  jobDescription.value = '';
-  jobRequirements.value = '';
-  additionalInfo.value = '';
-  employerName.value = '';
-  questions.value = [];
+  console.log('📤 Payload being sent:', postingData)
+
+  try {
+    const result = await applicationService.addPosting(postingData)
+    console.log('Server response:', result)
+    
+    // Show toast confirmation
+    toastMessage.value = 'Posting submitted successfully!'
+    
+    // Clear form fields on success
+    employerName.value = ''
+    jobTitle.value = ''
+    jobDescription.value = ''
+    jobRequirements.value = ''
+    additionalInfo.value = ''
+    questions.value = []
+
+    // Hide toast after 3 seconds
+    setTimeout(() => {
+      toastMessage.value = ''
+    }, 3000)
+  } catch (err) {
+    console.error('Error adding posting:', err)
+  }
 }
-
 </script>
 
 <template>
@@ -63,16 +88,7 @@ function submitForm() {
 
     <!-- Job posting form -->
     <div class="form">
-      <!-- Job Title Input -->
-      <div class="form-group">
-        <div class="field-description">
-          <label for="title" class="field-label">Job Title</label>
-          <span>Enter the title of the job posting.</span>
-        </div>
-        <InputText class="field" id="title" v-model="jobTitle" />
-      </div>
-
-      <!-- Employer Name Input -->
+      <!-- Employer Name (now first) -->
       <div class="form-group">
         <div class="field-description">
           <label for="employer" class="field-label">Employer Name</label>
@@ -80,8 +96,15 @@ function submitForm() {
         </div>
         <InputText class="field" id="employer" v-model="employerName" />
       </div>
-
-      <!-- Job Description Input -->
+      <!-- Job Title (now second) -->
+      <div class="form-group">
+        <div class="field-description">
+          <label for="title" class="field-label">Job Title</label>
+          <span>Enter the title of the job posting.</span>
+        </div>
+        <InputText class="field" id="title" v-model="jobTitle" />
+      </div>
+      <!-- Job Description -->
       <div class="form-group">
         <div class="field-description">
           <label for="description" class="field-label">Job Description</label>
@@ -89,8 +112,7 @@ function submitForm() {
         </div>
         <InputText class="field" id="description" v-model="jobDescription" />
       </div>
-
-      <!-- Job Requirements Input -->
+      <!-- Job Requirements -->
       <div class="form-group">
         <div class="field-description">
           <label for="requirements" class="field-label">Job Requirements</label>
@@ -98,8 +120,7 @@ function submitForm() {
         </div>
         <InputText class="field" id="requirements" v-model="jobRequirements" />
       </div>
-
-      <!-- Additional Information Input -->
+      <!-- Additional Information -->
       <div class="form-group">
         <div class="field-description">
           <label for="additionalInfo" class="field-label">Additional Information</label>
@@ -107,39 +128,35 @@ function submitForm() {
         </div>
         <InputText class="field" id="additionalInfo" v-model="additionalInfo" />
       </div>
-
-      <!-- Questions Section -->
+      <!-- Questions -->
       <div class="form-group">
         <div class="field-description">
           <label for="questions" class="field-label">Questions</label>
           <span>Provide any additional questions for applicants.</span>
           <div style="display: flex; flex-direction: row-reverse; flex-grow: 1">
-            <Button @click="addQuestion" label="Add Question" style="width: fit-content; margin-inline: 10px; flex: end;" />
+            <Button @click="addQuestion" label="Add Question" style="width: fit-content; margin-inline: 10px;"/>
           </div>
         </div>
-        <!-- Dynamic list of questions -->
-        <TransitionGroup name="fade" tag="div">
+        <transition-group name="fade" tag="div">
           <div v-for="(question, index) in questions" :key="question.id" class="dynamic-question-container">
             <Textarea class="field dynamic-question" v-model="questions[index].question" />
-            <Button class="btn" @click="removeQuestion(index)" icon="pi pi-times" />
+            <Button @click="removeQuestion(index)" icon="pi pi-times" />
           </div>
-        </TransitionGroup>
+        </transition-group>
       </div>
-
-      <!-- Submit Button -->
-      <Button class="btn" @click="submitForm" label="Submit" />
+      <!-- Submit Button (disabled if form is invalid) -->
+      <Button @click="submitForm" label="Submit" :disabled="!isFormValid" />
     </div>
+    <!-- Toast Confirmation -->
+    <div v-if="toastMessage" class="toast-message">{{ toastMessage }}</div>
   </div>
 </template>
 
 <style scoped>
-/* Transition effects for dynamic elements */
-.fade-enter-active,
-.fade-leave-active {
+.fade-enter-active, .fade-leave-active {
   transition: all 0.5s ease;
 }
-.fade-enter-from,
-.fade-leave-to {
+.fade-enter-from, .fade-leave-to {
   opacity: 0;
   transform: translateX(30px);
 }
@@ -171,7 +188,6 @@ function submitForm() {
   display: flex;
   flex-direction: column;
   width: 50%;
-  background-color: #111111;
   box-shadow: #404040 5px 5px 20px;
   background: linear-gradient(145deg, #12121b, #0a1418);
   margin-bottom: 80px;
@@ -190,6 +206,7 @@ function submitForm() {
 .field:hover, .field:focus {
   padding: 0.6rem;
   border-color: lightblue;
+  margin-block: 0;
 }
 
 /* Form group styling */
@@ -239,5 +256,15 @@ function submitForm() {
 .dynamic-question {
   width: 100%;
   margin-inline: 10px;
+}
+
+/* Toast styling */
+.toast-message {
+  margin-top: 1rem;
+  background-color: #1a90ff;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  text-align: center;
 }
 </style>
