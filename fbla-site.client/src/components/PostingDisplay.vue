@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import { Posting } from '@/models/application.models';
 
-const props = defineProps(
-  {
-    posting: {
-      type: Posting,
-      required: true
-    }
-  }
-)
+const props = defineProps<{
+  posting: Posting;
+}>();
+
 </script>
 
 <template>
