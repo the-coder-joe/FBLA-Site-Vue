@@ -21,34 +21,37 @@ namespace FBLA_Site.Server.Controllers
         }
 
         [HttpPost]
-public JsonResult AddPosting([FromBody] Posting posting)
-{
-    // 1. Log the incoming data
-    Console.WriteLine("Posting data: " + JsonSerializer.Serialize(posting));
+        public JsonResult AddPosting([FromBody] Posting posting)
+        {
+            // 1. Log the incoming data
+            Console.WriteLine("Posting data: " + JsonSerializer.Serialize(posting));
 
-    // 2. Load existing postings from JSON
-    List<Posting> postings = postingUtils.GetData() ?? new List<Posting>();
+            // 2. Load existing postings from JSON
+            List<Posting> postings = postingUtils.GetData() ?? new List<Posting>();
+            List<Posting> postingQ = postingQueue.GetData() ?? new List<Posting>();
 
-    // 3. Assign an ID if none is set yet (or if it’s -1)
-    if (posting.Id <= 0)
-    {
-        if (postings.Count == 0)
-            posting.Id = 1;
-        else
-            posting.Id = postings.Max(p => p.Id) + 1;
-    }
+            // 3. Assign an ID if none is set yet (or if it’s -1)
+            if (posting.Id <= 0)
+            {
+                if (postings.Count == 0 && postingQ.Count == 0)
+                    posting.Id = 1;
+                else
+                    posting.Id = postings.Concat(postingQ).Max(p => p.Id) + 1;
+            }
 
-    // 4. Add the new posting
-    postings.Add(posting);
+            // 4. Add the new posting
 
-    // 5. Save postings back to JSON
-    postingUtils.SetData(postings);
 
-    // 6. Return success
-    return Json(new { Success = true, CreatedId = posting.Id });
-}
+            postingQ.Add(posting);
 
- 
+            // 5. Save postings back to JSON
+            postingQueue.SetData(postingQ);
+
+            // 6. Return success
+            return Json(new { Success = true, CreatedId = posting.Id });
+        }
+
+
 
         [HttpGet]
         public JsonResult GetPostings()
@@ -85,9 +88,6 @@ public JsonResult AddPosting([FromBody] Posting posting)
                 postingUtils.SetData(postings);
 
             }
-
-
-
 
             postingsQ.Remove(posting);
             postingQueue.SetData(postingsQ);

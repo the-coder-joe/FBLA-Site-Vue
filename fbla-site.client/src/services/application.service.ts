@@ -2,7 +2,7 @@ import { Posting } from '@/models/application.models.js'; // Import the Posting 
 import { BASE_URL } from '../models/constants'; // Import the base URL for API requests
 
 export default class ApplicationService {
-  public async addPosting (posting: Posting): Promise<any> {
+  public async addPosting(posting: Posting): Promise<any> {
     const url = new URL(`${BASE_URL}/api/JobApplication/AddPosting`);
 
     const request = new Request(url, {
@@ -45,5 +45,36 @@ export default class ApplicationService {
     }
 
     return posting; // Return the found posting
+  }
+
+  public async getPostingsQueue(): Promise<Posting[]> {
+    const url = new URL(`${BASE_URL}/api/JobApplication/GetPostingQueue`); // Construct the URL for fetching the postings queue
+    const request = new Request(url, {
+      method: 'GET', // Use the GET method to retrieve data
+      headers: {
+        'Content-Type': 'application/json', // Indicate that the expected response is JSON
+      }
+    });
+    const response = await fetch(url, request); // Send the request to the server
+    return response.json(); // Return the response as a JSON array of postings
+  }
+
+  public async approvalPosting(postingId: number, approve: boolean): Promise<any> {
+    const url = new URL(`${BASE_URL}/api/JobApplication/PostingApproval`); // Construct the URL for approving a posting
+
+    const request = new Request(url, {
+      method: 'POST', // Use the POST method to approve the posting
+      headers: {
+        'Content-Type': 'application/json', // Indicate that the body is JSON
+      },
+      body: JSON.stringify({
+        id: postingId,
+        isApproved: approve // Set the approved flag to true
+      }) // Convert the postingId to a JSON string for the request body
+    });
+
+    const response = await fetch(url, request); // Send the request to the server
+
+    return await response.json(); // Return the response as a JSON object
   }
 }
