@@ -68,5 +68,10 @@
     "Email": "abc",
     "Role": "admin",
     "Hash": "a0e5b9b434cceeaba219029d02a0a610a58660173b97ae918738beb68548b3b333d2e7414119a603b9cdff07aefdf7db03e82f26bf4f0fa7d60299faf6e20257"
+  },
+  {
+    "Email": "Test@gmail.com",
+    "Role": "admin",
+    "Hash": "58eaac71b9d8bd8f4c9ce8bae21b81431a450c768be11554254971c06268ba3fcda60bc4de3c3e21a868bc39e460d105c2aefcb13c3b64bfb8b4ca126156f1c2"
   }
 ]

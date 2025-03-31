@@ -187,7 +187,8 @@ async function submitForm() {
   padding: 30px;
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 90%;
+  max-width: 1200px;
   box-shadow: #404040 5px 5px 20px;
   background: linear-gradient(145deg, #12121b, #0a1418);
   margin-bottom: 80px;
@@ -238,6 +239,13 @@ async function submitForm() {
   margin-bottom: 1rem;
   display: flex;
   align-items: baseline;
+}
+
+@media (max-width: 700px)  {
+  .field-description {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .field-description span {

@@ -122,7 +122,7 @@ onMounted(async () => {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
-  margin-left: 120px;
+  justify-content: center;
 }
 
 /* Individual posting item styling */

@@ -129,11 +129,12 @@
     padding: 20px;
     border-radius: 40px;
     box-shadow: 0px 0px 20px rgba(75, 75, 75, 0.611);
+    font-size: 20px;
   }
 
   /* Styling for the carousel container */
   #home-carousel {
-    width: 500px;
+    width: 1000px;
     margin-inline: 20px;
     border-radius: 20px;
   }
