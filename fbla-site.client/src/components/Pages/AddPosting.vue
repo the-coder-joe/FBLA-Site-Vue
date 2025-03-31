@@ -32,7 +32,8 @@ const toastMessage = ref('')
 const isFormValid = computed(() => {
   return jobTitle.value.trim() !== '' &&
   employerName.value.trim() !== '' &&
-  jobDescription.value.trim() !== ''
+  jobDescription.value.trim() !== '' &&
+  jobRequirements.value.trim() !== ''
 })
 
 // Access the ApplicationService
