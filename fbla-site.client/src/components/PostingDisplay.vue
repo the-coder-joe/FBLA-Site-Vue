@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Posting } from '@/models/application.models';
+import { Posting } from '@/models/application.models'; // Import Posting model for type definition
 
 const props = defineProps<{
   posting: Posting;
@@ -9,8 +9,11 @@ const props = defineProps<{
 
 <template>
   <div class="sticky-container">
+    <!-- Outer container for positioning the sticky element -->
     <div class="sticky-outer">
+      <!-- Inner container for the sticky element -->
       <div class="sticky">
+        <!-- Invisible SVG used for clipping the sticky note -->
         <svg width="0" height="0">
           <defs>
             <clipPath id="stickyClip" clipPathUnits="objectBoundingBox">
@@ -19,9 +22,11 @@ const props = defineProps<{
             </clipPath>
           </defs>
         </svg>
+        <!-- Sticky note content -->
         <div class="posting">
           <h2>{{ posting.title }} at {{ posting.employer }}</h2>
           <p>{{ posting.description }}</p>
+          <!-- Slot for rendering additional action buttons (like apply buttons) -->
           <slot name="actions"></slot>
         </div>
       </div>
@@ -30,19 +35,21 @@ const props = defineProps<{
 </template>
 
 <style scoped>
+/* Outer container that defines the size and positioning of the sticky note */
 .sticky-container {
   position: relative;
   width: 350px;
 }
 
+/* Container that creates the flexible space for the sticky note */
 .sticky-outer {
   display: flex;
-  padding-top: 92.5925926%;
+  padding-top: 92.5925926%; /* Aspect ratio control */
   position: relative;
-
   width: 100%;
 }
 
+/* Sticky element's absolute positioning to make it stay fixed */
 .sticky {
   position: absolute;
   top: 0;
@@ -51,19 +58,19 @@ const props = defineProps<{
   bottom: 0;
 }
 
-/* Shadow behind the sticky note */
+/* Shadow effect behind the sticky note */
 .sticky:before {
   box-shadow: -2px 2px 15px 0 rgba(0, 0, 0, 0.5);
   background-color: rgba(0, 0, 0, 0.25);
   content: '';
   width: 90%;
   left: 5px;
-  height: 83%;
+  height: 83%; /* Adjust shadow height */
   position: absolute;
   top: 30%;
 }
 
-/* The sticky note itself */
+/* The sticky note appearance and layout */
 .posting {
   background: linear-gradient(180deg,
       rgba(187, 235, 255, 1) 0%,
@@ -72,19 +79,18 @@ const props = defineProps<{
       rgba(195, 229, 244, 1) 100%);
   width: 100%;
   height: 100%;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Kalam', cursive;
+  font-family: 'Kalam', cursive; /* Font style for sticky note text */
   font-size: 1rem;
   color: black;
-  clip-path: url(#stickyClip);
+  clip-path: url(#stickyClip); /* Applying the clipping path for rounded sticky note edges */
   padding: 20px;
 }
 
-/* Add responsiveness */
+/* Responsive design: Adjust sticky shadow height and font size on larger screens */
 @media screen and (min-width: 640px) {
   .sticky:before {
     height: 79%;

@@ -20,6 +20,7 @@ function addQuestion() {
   questions.value.push({ id: Math.random().toString(36).substring(7), question: '' })
 }
 
+// Function to remove a question input field
 function removeQuestion(index: number) {
   questions.value.splice(index, 1)
 }
@@ -79,10 +80,13 @@ async function submitForm() {
 
 <template>
   <div class="page">
+    <!-- Page Header with instructions for adding a job posting -->
     <div class="header">
       <h1>Add Posting</h1>
       <p>Here, you can create a new job posting by providing a title, description, and any additional questions for applicants.</p>
     </div>
+
+    <!-- Job posting form -->
     <div class="form">
       <!-- Employer Name (now first) -->
       <div class="form-group">
@@ -157,26 +161,28 @@ async function submitForm() {
   transform: translateX(30px);
 }
 
+/* Header section styling */
 .header {
   margin-top: 30px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 2rem;
-    font-size: 25px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-size: 25px;
 }
-
 .header p {
   font-size: 18px;
 }
 
+/* Page styling */
 .page {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/* Form container styling */
 .form {
   padding: 30px;
   display: flex;
@@ -188,6 +194,7 @@ async function submitForm() {
   border-radius: 10px;
 }
 
+/* Input field styling */
 .field {
   border: 1px solid gray;
   border-radius: 5px;
@@ -196,13 +203,13 @@ async function submitForm() {
   font-size: large;
   transition: all 0.3s;
 }
-
 .field:hover, .field:focus {
   padding: 0.6rem;
   border-color: lightblue;
   margin-block: 0;
 }
 
+/* Form group styling */
 .form-group {
   border: 1px solid rgba(128, 128, 128, 0.235);
   border-radius: 10px;
@@ -215,11 +222,13 @@ async function submitForm() {
   transition: all 0.5s;
 }
 
+/* Form group hover effect */
 .form-group:hover, .form-group:focus-within {
   box-shadow: #2e2e2eb7 5px 5px 20px;
   background-color: #1a202faa;
 }
 
+/* Label and description styling */
 .field-label {
   font-size: 2rem;
   color: lightblue;
@@ -237,6 +246,7 @@ async function submitForm() {
   color: gray;
 }
 
+/* Styling for dynamic question inputs */
 .dynamic-question-container {
   display: flex;
   align-items: center;
