@@ -15,9 +15,11 @@ namespace FBLA_Site.Server.Controllers
 
 
         [HttpPost]
-        public JsonResult Authenticate()
+        public JsonResult Authenticate(AuthenticationRequest request)
         {
-            return Json(new { });
+            User? user = userAuthentication.Authenticate(request.Username, request.PartiallyHashedPassword);
+            bool authenticated = user is not null;
+            return Json(new { success = authenticated, role = user?.Role });
         }
 
         [HttpPost]

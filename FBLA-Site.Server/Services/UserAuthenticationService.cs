@@ -25,13 +25,16 @@ namespace FBLA_Site.Server.Services
             users.Add(user);
             userUtils.SetData(users);
         }
-        public bool Authenticate(string username, string partiallyHashedPassword)
+        public User? Authenticate(string username, string partiallyHashedPassword)
         {
             User? user = this.userUtils.GetData()?.FirstOrDefault(p => p?.Email == username);
             if (user == null)
-                return false;
+                return null;
 
-            return user.Hash == HashPassword(partiallyHashedPassword);
+            if (user.Hash == HashPassword(partiallyHashedPassword))
+                return user;
+
+            return null;
         }
 
         private string HashPassword(string partiallyHashedPassword)

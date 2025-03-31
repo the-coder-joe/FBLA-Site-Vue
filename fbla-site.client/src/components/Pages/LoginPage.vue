@@ -4,6 +4,10 @@ import { ref, computed } from 'vue'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Dropdown from 'primevue/dropdown'
+import ApplicationService from '@/services/application.service'
+import { AuthenticationService } from '@/services/authentication.service'
+
+const authenticationService = new AuthenticationService();
 
 // Switch between Sign In and Create Account modes
 const isSignUp = ref(false)
@@ -22,19 +26,14 @@ const isSignInDisabled = computed(() =>
   email.value.trim() === '' || password.value.trim() === ''
 )
 
-// Dummy sign in logic
 function submitSignIn() {
-
-
-  if (email.value === 'Test@gmail.com' && password.value === 'password') {
-    signInErrorMessage.value = ''
-    showToast('Successfully signed in.') // This currently dosen't work due to router push
-    clearAllFields()
-    router.push('/') // Navigate to home
-  } else {
-    signInErrorMessage.value = 'Invalid email or password.'
-    password.value = ''
-  }
+  authenticationService.login(email.value, password.value)
+    .then((success) => {
+      if (success)
+        router.push('/Admin')
+      else
+        signInErrorMessage.value = 'Invalid email or password.'
+    })
 }
 
 
@@ -74,17 +73,24 @@ function showToast(message) {
 
 // Dummy logic
 function submitSignUp() {
-  if (signUpPassword.value !== confirmPassword.value) {
-    signUpErrorMessage.value = "Account passwords don't match."
-    signUpPassword.value = ''
-    confirmPassword.value = ''
-    return
-  }
-  console.log('Account created for:', signUpEmail.value, 'with role:', signUpRole.value)
-  signUpErrorMessage.value = ''
-  showToast('Account created successfully. Please sign in.')
-  clearAllFields() // Clear all fields after account creation
-  isSignUp.value = false
+  authenticationService.register(
+    signUpEmail.value,
+    signUpPassword.value,
+    signUpRole.value.value
+  )
+    .then((success) => {
+      if (success.success) {
+        showToast('Account created successfully!')
+        clearAllFields()
+        isSignUp.value = false
+      } else {
+        signUpErrorMessage.value = 'Failed to create account. Please try again.'
+      }
+    })
+    .catch((error) => {
+      console.error('Error during registration:', error)
+      signUpErrorMessage.value = 'An error occurred. Please try again later.'
+    })
 }
 
 // Clear all fields and error messages.
@@ -142,12 +148,7 @@ function switchToSignIn() {
             <label for="password" class="field-label">Password</label>
             <span>Your secure password.</span>
           </div>
-          <InputText
-            :type="showPassword ? 'text' : 'password'"
-            id="password"
-            v-model="password"
-            class="field"
-          />
+          <InputText :type="showPassword ? 'text' : 'password'" id="password" v-model="password" class="field" />
           <div class="show-password">
             <input type="checkbox" id="showPassword" v-model="showPassword" />
             <label for="showPassword">Show Password</label>
@@ -156,13 +157,8 @@ function switchToSignIn() {
             {{ signInErrorMessage }}
           </div>
         </div>
-        <Button
-          @click="submitSignIn"
-          :disabled="isSignInDisabled"
-          label="Sign In"
-          class="login-button"
-          :class="{ active: !isSignInDisabled }"
-        />
+        <Button @click="submitSignIn" :disabled="isSignInDisabled" label="Sign In" class="login-button"
+          :class="{ active: !isSignInDisabled }" />
         <div class="toggle">
           <span>Don't have an account?</span>
           <a href="#" @click.prevent="switchToSignUp">Create one</a>
@@ -177,14 +173,8 @@ function switchToSignIn() {
             <label for="role" class="field-label">Role</label>
             <span>Select your account type.</span>
           </div>
-          <Dropdown
-            id="role"
-            v-model="signUpRole"
-            :options="roles"
-            optionLabel="label"
-            placeholder="Select a role"
-            class="field"
-          />
+          <Dropdown id="role" v-model="signUpRole" :options="roles" optionLabel="label" placeholder="Select a role"
+            class="field" />
         </div>
         <div class="form-group">
           <div class="field-description">
@@ -198,24 +188,16 @@ function switchToSignIn() {
             <label for="signUpPassword" class="field-label">Password</label>
             <span>Create a strong password.</span>
           </div>
-          <InputText
-            :type="showSignUpPassword ? 'text' : 'password'"
-            id="signUpPassword"
-            v-model="signUpPassword"
-            class="field"
-          />
+          <InputText :type="showSignUpPassword ? 'text' : 'password'" id="signUpPassword" v-model="signUpPassword"
+            class="field" />
         </div>
         <div class="form-group">
           <div class="field-description">
             <label for="confirmPassword" class="field-label">Confirm Password</label>
             <span>Re-enter your password.</span>
           </div>
-          <InputText
-            :type="showSignUpPassword ? 'text' : 'password'"
-            id="confirmPassword"
-            v-model="confirmPassword"
-            class="field"
-          />
+          <InputText :type="showSignUpPassword ? 'text' : 'password'" id="confirmPassword" v-model="confirmPassword"
+            class="field" />
           <div class="show-password">
             <input type="checkbox" id="showSignUpPassword" v-model="showSignUpPassword" />
             <label for="showSignUpPassword">Show Password</label>
@@ -224,13 +206,8 @@ function switchToSignIn() {
             {{ signUpErrorMessage }}
           </div>
         </div>
-        <Button
-          @click="submitSignUp"
-          :disabled="isSignUpDisabled"
-          label="Create Account"
-          class="login-button"
-          :class="{ active: !isSignUpDisabled }"
-        />
+        <Button @click="submitSignUp" :disabled="isSignUpDisabled" label="Create Account" class="login-button"
+          :class="{ active: !isSignUpDisabled }" />
         <div class="toggle">
           <span>Already have an account?</span>
           <a href="#" @click.prevent="switchToSignIn">Sign In</a>
@@ -270,10 +247,12 @@ function switchToSignIn() {
 .toast-leave-active {
   transition: opacity 0.5s;
 }
+
 .toast-enter-from,
 .toast-leave-to {
   opacity: 0;
 }
+
 .toast-enter-to,
 .toast-leave-from {
   opacity: 1;
@@ -312,6 +291,7 @@ function switchToSignIn() {
   background-color: #1414174b;
   transition: all 0.5s;
 }
+
 .form-group:hover,
 .form-group:focus-within {
   box-shadow: #2e2e2eb7 5px 5px 20px;
@@ -328,6 +308,7 @@ function switchToSignIn() {
   font-size: large;
   transition: all 0.3s;
 }
+
 .field:hover,
 .field:focus {
   padding: 0.6rem;
@@ -340,11 +321,13 @@ function switchToSignIn() {
   font-size: 2rem;
   color: lightblue;
 }
+
 .field-description {
   margin-bottom: 1rem;
   display: flex;
   align-items: baseline;
 }
+
 .field-description span {
   margin-left: 1rem;
   font-size: 1rem;
@@ -381,12 +364,14 @@ function switchToSignIn() {
   cursor: not-allowed;
   opacity: 0.5;
 }
+
 .login-button.active {
   cursor: pointer;
   opacity: 1;
   background-color: #1a90ff;
   box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
 }
+
 .login-button.active:hover {
   background-color: #00bfff;
   color: white;
@@ -400,6 +385,7 @@ function switchToSignIn() {
   font-size: 1rem;
   color: lightblue;
 }
+
 .toggle a {
   margin-left: 0.5rem;
   color: #9be9ff;
@@ -407,6 +393,7 @@ function switchToSignIn() {
   text-decoration: underline;
   transition: color 0.3s ease;
 }
+
 .toggle a:hover {
   color: #00bfff;
 }

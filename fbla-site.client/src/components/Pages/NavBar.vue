@@ -1,61 +1,78 @@
+<script setup>
+import { RouterLink } from 'vue-router'
+import { useAuthStore } from '@/stores/authentication.store'
+
+const authStore = useAuthStore();
+
+</script>
+
+
 <template>
   <nav class="navbar">
-    <div class="School-Title"><RouterLink class="nav-link" to="/">
-      <div class="logo-name">
-        <img src="../../assets/Logo.png" class="logo"/> Summit Valley School District
-      </div>
-    </RouterLink>
-    <RouterLink class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
+    <div class="School-Title">
+      <RouterLink class="nav-link" to="/">
+        <div class="logo-name">
+          <img src="../../assets/Logo.png" class="logo" /> Summit Valley School District
+        </div>
+      </RouterLink>
+      <RouterLink class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
       <RouterLink class="nav-link" to="/Postings">View Postings</RouterLink>
-  </div>
+      <RouterLink v-if="authStore.authenticated" class="nav-link" to="/Admin">Admin Page
+      </RouterLink>
+    </div>
     <div class="nav-links">
       <RouterLink class="nav-link" to="/LoginPage">Login</RouterLink>
     </div>
   </nav>
 
-  </template>
+</template>
 
-  <script setup>
-  import { RouterLink } from 'vue-router'
-  </script>
-
-  <style scoped>
-  /*NavBar Styling*/
-  .navbar {
-    position: fixed;
-    top: 0;
-    z-index: 1000; /*The overlay hierarchy (lower < higher)*/
-    width: 100%;
-    background: linear-gradient(to right, #1a1a1a, #2a2b2b); /*Changes NavBar background color*/
-    padding: .75rem 1rem;
-    display: flex;
-    align-items: center; /*Just makes values in middle vertically*/
-    justify-content: space-between;
-    box-shadow: 0 2px 8px rgba(0, 255, 255, 0.247); /*Gives ambiance*/
-  }
-
-  /*School Text*/
+<style scoped>
 /*NavBar Styling*/
 .navbar {
   position: fixed;
   top: 0;
-  z-index: 1000; /*The overlay hierarchy (lower < higher)*/
+  z-index: 1000;
+  /*The overlay hierarchy (lower < higher)*/
   width: 100%;
-  background: linear-gradient(to right, #1a1a1a, #2a2b2b); /*Changes NavBar background color*/
+  background: linear-gradient(to right, #1a1a1a, #2a2b2b);
+  /*Changes NavBar background color*/
+  padding: .75rem 1rem;
+  display: flex;
+  align-items: center;
+  /*Just makes values in middle vertically*/
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 255, 255, 0.247);
+  /*Gives ambiance*/
+}
+
+/*School Text*/
+/*NavBar Styling*/
+.navbar {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  /*The overlay hierarchy (lower < higher)*/
+  width: 100%;
+  background: linear-gradient(to right, #1a1a1a, #2a2b2b);
+  /*Changes NavBar background color*/
   padding: .75rem 1rem;
   padding-top: 3px;
   padding-bottom: 3px;
   display: flex;
-  align-items: center; /*Just makes values in middle vertically*/
+  align-items: center;
+  /*Just makes values in middle vertically*/
   justify-content: space-between;
-  box-shadow: 0 2px 8px rgba(0, 255, 255, 0.247); /*Gives ambiance*/
+  box-shadow: 0 2px 8px rgba(0, 255, 255, 0.247);
+  /*Gives ambiance*/
 }
 
 /*School Text*/
 .School-Title {
   color: #ffffff;
   font-size: 1.5rem;
-  font-weight: 750; /*100-1000 higher = more bold*/
+  font-weight: 750;
+  /*100-1000 higher = more bold*/
   text-align: center;
   display: flex;
   align-items: center;
