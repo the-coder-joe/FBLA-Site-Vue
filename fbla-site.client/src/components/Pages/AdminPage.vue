@@ -17,12 +17,11 @@ const loading = ref(true);
 
 const visible = ref([]);
 
-// Fetch job postings when the component is mounted
-onMounted(async () => {
+async function getPostings() {
   try {
-    const response: Posting[] = await applicationService.getPostings();
+    const response: Posting[] = await applicationService.getPostingsQueue();
     postings.value = response;
-    postings.value.forEach(x=> {
+    postings.value.forEach(x => {
       visible[x.id] = false;
     });
   } catch (error) {
@@ -30,7 +29,28 @@ onMounted(async () => {
   } finally {
     loading.value = false;
   }
+}
+
+// Fetch job postings when the component is mounted
+onMounted(async () => {
+  getPostings();
 });
+
+function approve(posting: Posting) {
+  applicationService.approvalPosting(posting.id, true)
+    .then(() => {
+      getPostings();
+      visible.value[posting.id] = false;
+    });
+}
+
+function deny(posting: Posting) {
+  applicationService.approvalPosting(posting.id, false)
+    .then(() => {
+      getPostings();
+      visible.value[posting.id] = false;
+    });
+}
 </script>
 <template>
   <div class="postings">
@@ -51,31 +71,27 @@ onMounted(async () => {
         <PostingDisplay :posting="posting">
           <template #actions>
             <!-- Apply button linking to the application page -->
-            <Button class="view-button" label="Show" @click="visible[posting.id] = true" >View form</Button>
-            <Dialog
-  v-model:visible="visible[posting.id]"
-  modal
-  header="Approve Posting"
-  :style="{ width: '25rem', borderRadius: '10px', padding: '15px', boxShadow: '0px 0px 20px rgba(255, 255, 255, 1)' }"
->
+            <Button class="view-button" label="Show" @click="visible[posting.id] = true">View form</Button>
+            <Dialog v-model:visible="visible[posting.id]" modal header="Approve Posting"
+              :style="{ width: '50rem', borderRadius: '10px', padding: '15px', boxShadow: '0px 0px 20px rgba(255, 255, 255, 1)', backgroundColor: 'black' }">
 
               <div class="modal-list-item">
-              <div class="describer">Employer:</div>  {{ posting.employer }}
+                <div class="describer">Employer:</div> {{ posting.employer }}
               </div>
               <div class="modal-list-item">
-                <div class="describer">Job Title:</div>  {{ posting.title }}
+                <div class="describer">Job Title:</div> {{ posting.title }}
               </div>
               <div class="modal-list-item">
                 <div class="describer">Requirements:</div> {{ posting.requirements }}
               </div>
               <div class="modal-list-item">
-                <div class="describer">Job Description:</div>  {{ posting.description }}
+                <div class="describer">Job Description:</div> {{ posting.description }}
               </div>
               <div class="modal-list-item">
-              Additional Information:  {{ posting.additionalInformation }}
+                Additional Information: {{ posting.additionalInformation }}
               </div>
               <div class="modal-list-item">
-                <div class="describer">Contact Info:</div>  {{ posting.contactInformation }}
+                <div class="describer">Contact Info:</div> {{ posting.contactInformation }}
               </div>
               <div class="modal-list-item">
                 <div class="describer">Questions For Applicants:</div>
@@ -83,8 +99,8 @@ onMounted(async () => {
                   {{ q }}
                 </div>
                 <div class="approve-deny-button">
-                <Button class="approve-button">Approve</Button>
-                <Button class="deny-button">Deny</Button>
+                  <Button class="approve-button" @click="approve(posting)">Approve</Button>
+                  <Button class="deny-button" @click="deny(posting)">Deny</Button>
                 </div>
               </div>
             </Dialog>
@@ -102,6 +118,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 800px;
 }
 
 /* Loading message styling */
@@ -188,28 +205,28 @@ a:hover {
 }
 
 .describer {
-color: var(--primary-color)
+  color: var(--primary-color)
 }
 
 .view-button {
   border: 1px solid rgb(0 0 0);
-    padding: 10px;
-    color: rgb(250 250 250);
-    background-color: black;
-    border-radius: 10px;
+  padding: 10px;
+  color: rgb(250 250 250);
+  background-color: black;
+  border-radius: 10px;
 }
 
 .approve-button {
   background-color: green;
-  color:white;
-  margin:10px;
+  color: white;
+  margin: 10px;
 }
 
 .deny-button {
   background-color: red;
-  color:white;
+  color: white;
   float: right;
-  margin:10px;
+  margin: 10px;
 }
 
 .p-dialog-mask {
@@ -221,11 +238,10 @@ color: var(--primary-color)
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
   }
 }
-
-
 </style>
