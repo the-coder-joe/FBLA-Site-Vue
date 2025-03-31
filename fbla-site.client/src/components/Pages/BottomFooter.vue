@@ -16,9 +16,6 @@
         <h3>Quick Links</h3>
         <ul>
           <li><RouterLink to="/SourcesPage">Sources</RouterLink></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Use</a></li>
-          <li><a href="#">Contact Form</a></li>
         </ul>
       </div>
     </div>
@@ -40,7 +37,7 @@ import { RouterLink } from 'vue-router'
   padding: 2rem 1rem 1rem;
   font-size: 0.95rem;
   border-top: 1px solid #333;
-  box-shadow: 0 -2px 8px rgba(0, 255, 255, 0.1);
+  box-shadow: 0 2px 2cap rgba(0, 255, 255, .5);
 }
 
 .footer-content {

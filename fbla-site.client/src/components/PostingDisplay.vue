@@ -88,6 +88,7 @@ const props = defineProps<{
   color: black;
   clip-path: url(#stickyClip); /* Applying the clipping path for rounded sticky note edges */
   padding: 20px;
+
 }
 
 /* Responsive design: Adjust sticky shadow height and font size on larger screens */

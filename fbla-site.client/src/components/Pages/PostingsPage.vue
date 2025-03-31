@@ -84,6 +84,7 @@
     flex-wrap: wrap;
     gap: 20px;
     margin-left: 120px;
+    margin-bottom: 290px;
   }
 
   /* Individual posting item styling */
