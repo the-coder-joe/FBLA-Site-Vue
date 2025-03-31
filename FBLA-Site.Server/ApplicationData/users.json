@@ -83,5 +83,30 @@
     "Email": "Bigemaila",
     "Role": "student",
     "Hash": "541691c145ccc34dec8bbe5753471844be0926c4d775b899a7e5d558932a6056ae972e7d1511e532e967a0304d293039736f0e866f4a99185d367f6cf20fa39d"
+  },
+  {
+    "Email": "Student",
+    "Role": "student",
+    "Hash": "18baf00332708f008b517934c2dd89b49078d492771b0811fa19b46183107cc0ce9527b03583cb10a94bd02d874bec724f28e1b1e775f63b548110ea6efcb5d9"
+  },
+  {
+    "Email": "Employer",
+    "Role": "employer",
+    "Hash": "18baf00332708f008b517934c2dd89b49078d492771b0811fa19b46183107cc0ce9527b03583cb10a94bd02d874bec724f28e1b1e775f63b548110ea6efcb5d9"
+  },
+  {
+    "Email": "Admin",
+    "Role": "admin",
+    "Hash": "18baf00332708f008b517934c2dd89b49078d492771b0811fa19b46183107cc0ce9527b03583cb10a94bd02d874bec724f28e1b1e775f63b548110ea6efcb5d9"
+  },
+  {
+    "Email": "Employer@gmail.com",
+    "Role": "employer",
+    "Hash": "7fc3f398e72db3033099aa0a99266ca031ab70dd9c16d806079c22c17765680a753b81e2fe3e7b00b4d5fef9312e9bf7c14421bc6909dae826ba57c6fec53ea9"
+  },
+  {
+    "Email": "Admin@gmail.com",
+    "Role": "admin",
+    "Hash": "7fc3f398e72db3033099aa0a99266ca031ab70dd9c16d806079c22c17765680a753b81e2fe3e7b00b4d5fef9312e9bf7c14421bc6909dae826ba57c6fec53ea9"
   }
 ]
