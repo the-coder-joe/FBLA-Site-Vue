@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
@@ -20,6 +20,8 @@ interface Posting {
 const route = useRoute()
 const postingId = parseInt(route.params.postingId as string, 10)
 const applicationService = new ApplicationService()
+
+const router = useRouter();
 
 const posting = ref<Posting | null>(null)
 const studentAnswers = ref<string[]>([])
@@ -64,7 +66,8 @@ function submitApplication() {
   toastMessage.value = 'Application submitted successfully!'
   setTimeout(() => {
     toastMessage.value = ''
-  }, 3000)
+    router.push({ name: 'home' });
+  }, 2000)
 }
 </script>
 

@@ -10,9 +10,6 @@
             <a href="https://primevue.org" target="_blank">PrimeVue Documentation</a>
           </li>
           <li>
-            <a href="https://stackoverflow.com/questions" target="_blank">Stack Overflow</a>
-          </li>
-          <li>
             <a href="https://vuejs.org/guide/introduction" target="_blank">Vue Documentation</a>
           </li>
           <li>
@@ -20,6 +17,15 @@
           </li>
           <li>
             <a href="https://vite.dev/" target="_blank">Vite Documentation</a>
+          </li>
+          <li>
+            <a href="https://github.com/" target="_blank">Github</a>
+          </li>
+          <li>
+            <a href="https://visualstudio.microsoft.com/" target="_blank">Visual Studio</a>
+          </li>
+          <li>
+            <a href="https://stackoverflow.com/questions" target="_blank">Stack Overflow</a>
           </li>
         </ul>
       </div>
