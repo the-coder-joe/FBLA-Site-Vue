@@ -10,17 +10,5 @@
     "Questions": [
       "Question example??"
     ]
-  },
-  {
-    "Id": 10,
-    "Title": "Coding manager",
-    "Employer": "Microsoft",
-    "Requirements": "Must have 60 years experience",
-    "Description": "Manage a team of programmers",
-    "AdditionalInformation": "Backbreaking labor",
-    "ContactInformation": "",
-    "Questions": [
-      "Are you prepared to serve your country?"
-    ]
   }
 ]

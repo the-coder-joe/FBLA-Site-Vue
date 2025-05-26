@@ -75,5 +75,30 @@
     "Questions": [
       "Can you work from home."
     ]
+  },
+  {
+    "Id": 12,
+    "Title": "Marketing manager",
+    "Employer": "Fbla",
+    "Requirements": "5 years of experience",
+    "Description": "Market manger",
+    "AdditionalInformation": "Remote",
+    "ContactInformation": "",
+    "Questions": [
+      "Can you work from home?"
+    ]
+  },
+  {
+    "Id": 13,
+    "Title": "Marketing",
+    "Employer": "Fbla",
+    "Requirements": "Must have years",
+    "Description": "You will do marketing",
+    "AdditionalInformation": "Remote work",
+    "ContactInformation": "",
+    "Questions": [
+      "How good are you at coding?",
+      "How old are  you?"
+    ]
   }
 ]
