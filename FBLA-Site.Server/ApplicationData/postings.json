@@ -63,5 +63,17 @@
     "Questions": [
       "What makes you a good choice for this position?"
     ]
+  },
+  {
+    "Id": 11,
+    "Title": "Event manager",
+    "Employer": "Fbla",
+    "Requirements": "You must have at least 5 years of experience",
+    "Description": "Manage events",
+    "AdditionalInformation": "Can work remote",
+    "ContactInformation": "",
+    "Questions": [
+      "Can you work from home."
+    ]
   }
 ]

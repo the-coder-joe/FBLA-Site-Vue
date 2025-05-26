@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "Id": 9,
+    "Title": "Programmer",
+    "Employer": "Amazon",
+    "Requirements": "Must be 100 years old",
+    "Description": "Write some code",
+    "AdditionalInformation": "Info here",
+    "ContactInformation": "",
+    "Questions": [
+      "Question example??"
+    ]
+  },
+  {
+    "Id": 10,
+    "Title": "Coding manager",
+    "Employer": "Microsoft",
+    "Requirements": "Must have 60 years experience",
+    "Description": "Manage a team of programmers",
+    "AdditionalInformation": "Backbreaking labor",
+    "ContactInformation": "",
+    "Questions": [
+      "Are you prepared to serve your country?"
+    ]
+  }
+]

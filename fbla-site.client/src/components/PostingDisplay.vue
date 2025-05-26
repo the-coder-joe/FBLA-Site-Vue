@@ -24,8 +24,8 @@ const props = defineProps<{
         </svg>
         <!-- Sticky note content -->
         <div class="posting">
-          <h2>{{ posting.title }} at {{ posting.employer }}</h2>
-          <p>{{ posting.description }}</p>
+          <h2 style="margin-bottom: 5px; text-align: center;">{{ posting.title }} at {{ posting.employer }}</h2>
+          <p style="text-align: center;">{{ posting.description }}</p>
           <!-- Slot for rendering additional action buttons (like apply buttons) -->
           <slot name="actions"></slot>
         </div>
