@@ -228,7 +228,7 @@ a:hover {
 .filter-move,
 .filter-enter-active,
 .filter-leave-active {
-  transition: all 0.5s ease;
+  transition: all 1s cubic-bezier(0.18, 0.89, 0.4, 1.02);
 }
 
 .filter-enter-from {
@@ -239,7 +239,7 @@ a:hover {
 
 .filter-leave-to {
   opacity: 0;
-  transform: scale(0.75);
+  transform: scale(0.35) rotateZ(-10deg);
 }
 
 /* ensure leaving items are taken out of layout flow so that moving
