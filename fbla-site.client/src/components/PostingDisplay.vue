@@ -73,10 +73,10 @@ const props = defineProps<{
 /* The sticky note appearance and layout */
 .posting {
   background: linear-gradient(180deg,
-      rgba(187, 235, 255, 1) 0%,
-      rgba(187, 235, 255, 1) 12%,
-      rgba(170, 220, 241, 1) 75%,
-      rgba(195, 229, 244, 1) 100%);
+      rgb(114, 213, 255) 0%,
+      rgb(114, 213, 255) 12%,
+      rgb(124, 205, 240) 75%,
+      rgb(149, 213, 241) 100%);
   width: 100%;
   height: 100%;
   display: flex;
