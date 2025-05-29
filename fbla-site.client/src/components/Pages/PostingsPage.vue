@@ -11,6 +11,8 @@ import InputText from 'primevue/inputtext';
 // Initialize application service to fetch job postings
 const applicationService = new ApplicationService();
 
+const numberOfPostingsToShow = 10; // Number of postings to show at a time
+
 // Reactive variable to store job postings
 const postings = ref<Posting[]>([]);
 const filteredPostings = ref<Posting[]>([]);
@@ -81,11 +83,22 @@ onMounted(async () => {
     <div class="header">
       <div style="display: flex; align-items: baseline; gap: 2rem;">
         <h1>Job Postings</h1>
-        <p>Check out the latest job postings from employers in your area.</p>
       </div>
       <InputText v-model="searchQuery" placeholder="Search job postings..." class="search-bar"
         @input="filterPostingsThrottled()">
       </InputText>
+    </div>
+
+    <div class="information">
+      <p>
+        Search job postings by title, employer, or description. You can find and apply for postings that intrest you all
+        on the same page!
+      </p>
+
+      <div>
+        Showing {{ filteredPostings.length }} of {{ postings.length }} postings.
+      </div>
+
     </div>
 
     <!-- Loading indicator while fetching job postings -->
@@ -124,6 +137,8 @@ onMounted(async () => {
   flex-direction: column;
   align-items: center;
   margin-bottom: -100px;
+  width: 100%;
+  height: 100%;
 }
 
 /* Loading message styling */
@@ -145,7 +160,8 @@ onMounted(async () => {
   flex-wrap: wrap;
   gap: 20px;
   margin-bottom: 290px;
-  justify-content: center;;
+  justify-content: center;
+  ;
 }
 
 /* Individual posting item styling */
@@ -157,15 +173,17 @@ onMounted(async () => {
 
 /* Header section styling */
 .header {
-  margin-top: 30px;
+  margin-top: 10px;
   text-align: center;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 90%;
   margin-bottom: 0;
   font-size: 25px;
+  width: 95%;
+  color: rgb(196, 196, 196);
+  margin-inline: 20px;
 }
 
 /* Header paragraph styling */
@@ -206,6 +224,15 @@ a:hover {
 /* Smooth transition effect for sticky containers */
 .sticky-container {
   transition: transform 0.3s ease, width 0.3s ease;
+}
+
+.information {
+  font-size: 18px;
+  text-align: center;
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .search-bar-container {
