@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBLA-Site.Server", "FBLA-Si
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "fbla-site.client", "fbla-site.client\fbla-site.client.esproj", "{A95DAB4E-8C74-4B98-8246-1BE5A064A263}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{D01BAA95-556E-46EB-8204-FBAA5620D39A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,8 +24,17 @@ Global
 		{A95DAB4E-8C74-4B98-8246-1BE5A064A263}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A95DAB4E-8C74-4B98-8246-1BE5A064A263}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A95DAB4E-8C74-4B98-8246-1BE5A064A263}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{D01BAA95-556E-46EB-8204-FBAA5620D39A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D01BAA95-556E-46EB-8204-FBAA5620D39A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D01BAA95-556E-46EB-8204-FBAA5620D39A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D01BAA95-556E-46EB-8204-FBAA5620D39A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D01BAA95-556E-46EB-8204-FBAA5620D39A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D01BAA95-556E-46EB-8204-FBAA5620D39A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D494BAEE-B107-47FA-9DFF-9ADAF67B0003}
 	EndGlobalSection
 EndGlobal
