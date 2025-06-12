@@ -1,15 +1,13 @@
-﻿using FBLA_Site.Server.Models;
-using FBLA_Site.Server.Utils;
-using Microsoft.AspNetCore.Mvc.Formatters;
+﻿using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace FBLA_Site.Server.Services
+namespace FBLA_Site
 {
     public class UserAuthenticationService
     {
-        private readonly JsonUtils<List<User>> userUtils = new JsonUtils<List<User>>("users");
         private readonly int hashIters = 100000;
+        private readonly UserRepository userRepository = new UserRepository();
         public void CreateUser(string username, string partiallyHashedPassword, string role)
         {
             string hashedPassword = HashPassword(partiallyHashedPassword);
@@ -21,13 +19,12 @@ namespace FBLA_Site.Server.Services
                 Role = role
             };
 
-            List<User> users = userUtils.GetData() ?? new List<User>();
-            users.Add(user);
-            userUtils.SetData(users);
+            userRepository.AddUser(user);
         }
         public User? Authenticate(string username, string partiallyHashedPassword)
         {
-            User? user = this.userUtils.GetData()?.FirstOrDefault(p => p?.Email == username);
+            User? user = userRepository.GetUserByUsername(username);
+
             if (user == null)
                 return null;
 
@@ -39,7 +36,6 @@ namespace FBLA_Site.Server.Services
 
         private string HashPassword(string partiallyHashedPassword)
         {
-
             using (SHA512 sha512 = SHA512.Create())
             {
                 byte[] hash = Encoding.UTF8.GetBytes(partiallyHashedPassword);

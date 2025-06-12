@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace FBLA_Site.Server.Controllers
+namespace FBLA_Site
 {
     public class HomeController : Controller
     {
