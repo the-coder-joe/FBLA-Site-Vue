@@ -55,7 +55,7 @@ function deny(posting: Posting) {
 <template>
   <div class="postings">
     <!-- Header section with title and description -->
-    <div class="header">
+    <div class="header glass">
       <h1>Approve Postings</h1>
       <p>Approve employer postings to add them to postings page or deny.</p>
     </div>

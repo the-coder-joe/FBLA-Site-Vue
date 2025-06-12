@@ -1,6 +1,6 @@
 <template>
     <div class="page">
-      <div class="header">
+      <div class="header glass">
         <h1>Sources</h1>
         <p>Below is a list of references and sources used in creating this project.</p>
       </div>

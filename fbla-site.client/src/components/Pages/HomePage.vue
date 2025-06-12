@@ -28,7 +28,7 @@
 
   <!-- Information section including about us text and image carousel -->
   <section class="information-container">
-    <div class="about-container">
+    <div class="about-container dark-glass">
       <h1 id="about-us">Our Values</h1>
       <p>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  At Summit Valley School District, we are committed to fostering a community of respect, collaboration, and
@@ -126,11 +126,8 @@
     min-width: 28rem;
     max-width: 90%;
     max-width: 1000px;
-    background-color: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(5px);
     padding: 20px;
     border-radius: 40px;
-    box-shadow: 0px 0px 20px rgba(75, 75, 75, 0.611);
     font-size: 20px;
   }
 

@@ -139,13 +139,13 @@ function switchToSignIn() {
       <div class="toast" v-if="toastMessage">{{ toastMessage }}</div>
     </Transition>
 
-    <div class="header">
+    <div class="header glass">
       <h1 v-if="!isSignUp">Sign In</h1>
       <h1 v-else>Create Account</h1>
       <p v-if="!isSignUp">Use your credentials to access your account.</p>
       <p v-else>Create a new account to get started.</p>
     </div>
-    <div class="form">
+    <div class="form dark-glass">
       <!-- SIGN IN FORM -->
       <template v-if="!isSignUp">
         <div class="form-group">
@@ -289,8 +289,6 @@ function switchToSignIn() {
   display: flex;
   flex-direction: column;
   width: 90%;max-width: 1000px;
-  box-shadow: #4040408f 0px 0px 20px;
-  background: linear-gradient(145deg, #12121b, #0a1418);
   border-radius: 10px;
 }
 

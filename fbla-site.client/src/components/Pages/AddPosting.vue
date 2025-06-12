@@ -5,13 +5,21 @@ import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import Button from 'primevue/button'
 import { Posting } from '@/models/application.models'
+import PostingDisplay from '../PostingDisplay.vue'
 
-// Form fields
-const employerName = ref('')
-const jobTitle = ref('')  // Swapped order: now employerName comes first, then jobTitle
-const jobDescription = ref('')
-const jobRequirements = ref('')
-const additionalInfo = ref('')
+const posting = ref<Posting>({
+  id: 0,
+  title: '',
+  employer: '',
+  description: '',
+  requirements: '',
+  additionalInformation: '',
+  contactInformation: '',
+  questions: []
+})
+
+const submitted = ref(false);
+const previewing = ref(false);
 
 // Dynamic questions array
 const questions = ref<{ id: string; question: string }[]>([])
@@ -20,160 +28,180 @@ function addQuestion() {
   questions.value.push({ id: Math.random().toString(36).substring(7), question: '' })
 }
 
-// Function to remove a question input field
 function removeQuestion(index: number) {
   questions.value.splice(index, 1)
 }
 
-// Toast message state
-const toastMessage = ref('')
-
 // Form validation (required: title, employer, description)
 const isFormValid = computed(() => {
-  return jobTitle.value.trim() !== '' &&
-  employerName.value.trim() !== '' &&
-  jobDescription.value.trim() !== '' &&
-  jobRequirements.value.trim() !== ''
+  return posting.value.title.trim() !== '' &&
+    posting.value.employer.trim() !== '' &&
+    posting.value.description.trim() !== '' &&
+    posting.value.requirements.trim() !== ''
 })
 
 // Access the ApplicationService
 const applicationService = new ApplicationService()
 
 async function submitForm() {
-  // Build Posting object (id: 0 indicates new posting)
-  const postingData: Posting = {
-    id: 0,
-    title: jobTitle.value,
-    employer: employerName.value,
-    description: jobDescription.value,
-    requirements: jobRequirements.value,
-    additionalInformation: additionalInfo.value,
-    contactInformation: '',  // Removed contact info (sent as blank)
-    questions: questions.value.map(q => q.question).filter(q => q.trim() !== '')
-  }
-
-  console.log('📤 Payload being sent:', postingData)
-
   try {
-    const result = await applicationService.addPosting(postingData)
-    console.log('Server response:', result)
-
-    // Show toast confirmation
-    toastMessage.value = 'Posting submitted successfully!'
-
-    // Clear form fields on success
-    employerName.value = ''
-    jobTitle.value = ''
-    jobDescription.value = ''
-    jobRequirements.value = ''
-    additionalInfo.value = ''
-    questions.value = []
-
-    // Hide toast after 3 seconds
-    setTimeout(() => {
-      toastMessage.value = ''
-    }, 3000)
+    posting.value.questions = questions.value.map(q => q.question)
+    await applicationService.addPosting(posting.value)
   } catch (err) {
     console.error('Error adding posting:', err)
   }
+  submitted.value = true;
+  previewing.value = false;
+}
+
+function previewForm() {
+  // Add questions to posting for preview
+  posting.value.questions = questions.value.map(q => q.question)
+  previewing.value = true;
+}
+
+function editForm() {
+  previewing.value = false;
+}
+
+function resetForm() {
+  posting.value = {
+    id: 0,
+    title: '',
+    employer: '',
+    description: '',
+    requirements: '',
+    additionalInformation: '',
+    contactInformation: '',
+    questions: []
+  }
+  questions.value = []
+  submitted.value = false
+  previewing.value = false
 }
 </script>
 
 <template>
   <div class="page">
-    <!-- Page Header with instructions for adding a job posting -->
-    <div class="header">
-      <h1>Add Posting</h1>
-      <p>Here, you can create a new job posting by providing a title, description, and any additional questions for applicants.</p>
+    <div class="header glass">
+        <div>
+          <h1>Add a Job Posting</h1>
+          <p>
+            Create a new job posting by providing a title, employer, description, requirements, and any additional questions for applicants.<br>
+            <span class="header-tip">Tip: Preview your posting before submitting to see how it will appear to job seekers!</span>
+          </p>
+      </div>
     </div>
 
-    <!-- Job posting form -->
-    <div class="form">
-      <!-- Employer Name (now first) -->
-      <div class="form-group">
-        <div class="field-description">
-          <label for="employer" class="field-label">Employer Name</label>
-          <span>Enter the name of the employer.</span>
+    <Transition name="dissolve" mode="out-in">
+      <div v-if="submitted" class="preview-container light-glass">
+        <h2 class="center-text">Posting Submitted Successfully!</h2>
+        <p style="text-align: center; font-size: 1.2rem; color: gray;">
+          Your job posting has been submitted successfully. It will be reviewed and published shortly.
+        </p>
+        <PostingDisplay :posting="posting" />
+        <div style="display: flex; gap: 3rem; justify-content: center; margin-top: 4rem;">
+          <Button @click="resetForm" label="Add Another Posting"/>
         </div>
-        <InputText class="field" id="employer" v-model="employerName" />
       </div>
-      <!-- Job Title (now second) -->
-      <div class="form-group">
-        <div class="field-description">
-          <label for="title" class="field-label">Job Title</label>
-          <span>Enter the title of the job posting.</span>
+
+      <div v-else-if="previewing" class="preview-container light-glass">
+        <h2 class="center-text">Preview of Your Posting</h2>
+        <p style="text-align: center; font-size: 1.2rem; color: gray;">
+          Preview your job posting before submitting to ensure all details are correct.
+        </p>
+        <PostingDisplay :posting="posting" />
+        <div style="display: flex; gap: 3rem; justify-content: center; margin-top: 4rem;">
+          <Button style="padding: 1rem;" @click="editForm" label="Edit" />
+          <Button style="padding: 1rem;" @click="submitForm" label="Submit" />
         </div>
-        <InputText class="field" id="title" v-model="jobTitle" />
       </div>
-      <!-- Job Description -->
-      <div class="form-group">
-        <div class="field-description">
-          <label for="description" class="field-label">Job Description</label>
-          <span>Provide a detailed description of the job.</span>
-        </div>
-        <InputText class="field" id="description" v-model="jobDescription" />
-      </div>
-      <!-- Job Requirements -->
-      <div class="form-group">
-        <div class="field-description">
-          <label for="requirements" class="field-label">Job Requirements</label>
-          <span>List the requirements for the job.</span>
-        </div>
-        <InputText class="field" id="requirements" v-model="jobRequirements" />
-      </div>
-      <!-- Additional Information -->
-      <div class="form-group">
-        <div class="field-description">
-          <label for="additionalInfo" class="field-label">Additional Information</label>
-          <span>Provide any additional information about the job.</span>
-        </div>
-        <InputText class="field" id="additionalInfo" v-model="additionalInfo" />
-      </div>
-      <!-- Questions -->
-      <div class="form-group">
-        <div class="field-description">
-          <label for="questions" class="field-label">Questions</label>
-          <span>Provide any additional questions for applicants.</span>
-          <div style="display: flex; flex-direction: row-reverse; flex-grow: 1">
-            <Button @click="addQuestion" label="Add Question" style="width: fit-content; margin-inline: 10px;"/>
+
+      <div v-else class="form dark-glass">
+        <!-- Employer Name -->
+        <div class="form-group">
+          <div class="field-description">
+            <label for="employer" class="field-label">Employer Name</label>
+            <span>Enter the name of the employer.</span>
           </div>
+          <InputText class="field" id="employer" v-model="posting.employer" />
         </div>
-        <transition-group name="fade" tag="div">
-          <div v-for="(question, index) in questions" :key="question.id" class="dynamic-question-container">
-            <Textarea class="field dynamic-question" v-model="questions[index].question" />
-            <Button @click="removeQuestion(index)" icon="pi pi-times" />
+        <!-- Job Title -->
+        <div class="form-group">
+          <div class="field-description">
+            <label for="title" class="field-label">Job Title</label>
+            <span>Enter the title of the job posting.</span>
           </div>
-        </transition-group>
+          <InputText class="field" id="title" v-model="posting.title" />
+        </div>
+        <!-- Job Description -->
+        <div class="form-group">
+          <div class="field-description">
+            <label for="description" class="field-label">Job Description</label>
+            <span>Provide a detailed description of the job.</span>
+          </div>
+          <InputText class="field" id="description" v-model="posting.description" />
+        </div>
+        <!-- Job Requirements -->
+        <div class="form-group">
+          <div class="field-description">
+            <label for="requirements" class="field-label">Job Requirements</label>
+            <span>List the requirements for the job.</span>
+          </div>
+          <InputText class="field" id="requirements" v-model="posting.requirements" />
+        </div>
+        <!-- Additional Information -->
+        <div class="form-group">
+          <div class="field-description">
+            <label for="additionalInfo" class="field-label">Additional Information</label>
+            <span>Provide any additional information about the job.</span>
+          </div>
+          <InputText class="field" id="additionalInfo" v-model="posting.additionalInformation" />
+        </div>
+        <!-- Questions -->
+        <div class="form-group">
+          <div class="field-description">
+            <label for="questions" class="field-label">Questions</label>
+            <span>Provide any additional questions for applicants.</span>
+            <div style="display: flex; flex-direction: row-reverse; flex-grow: 1">
+              <Button @click="addQuestion" label="Add Question" style="width: fit-content; margin-inline: 10px;" />
+            </div>
+          </div>
+          <transition-group name="fade" tag="div">
+            <div v-for="(question, index) in questions" :key="question.id" class="dynamic-question-container">
+              <Textarea class="field dynamic-question" v-model="questions[index].question" />
+              <Button @click="removeQuestion(index)" icon="pi pi-times" />
+            </div>
+          </transition-group>
+        </div>
+        <!-- Preview Button (disabled if form is invalid) -->
+        <Button @click="previewForm" label="Preview" :disabled="!isFormValid" />
       </div>
-      <!-- Submit Button (disabled if form is invalid) -->
-      <Button @click="submitForm" label="Submit" :disabled="!isFormValid" />
-    </div>
-    <!-- Toast Confirmation -->
-    <div v-if="toastMessage" class="toast-message">{{ toastMessage }}</div>
+    </Transition>
   </div>
 </template>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: all 0.5s ease;
-}
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-
-/* Header section styling */
-.header {
-  margin-top: 30px;
-  text-align: center;
+.preview-container {
   display: flex;
   flex-direction: column;
+  padding: 4rem;
+  max-width: 1200px;
+  border-radius: 10px;
+  padding-top: 1rem;
   align-items: center;
-  margin-bottom: 2rem;
-  font-size: 25px;
 }
-.header p {
-  font-size: 18px;
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 
 /* Page styling */
@@ -190,8 +218,6 @@ async function submitForm() {
   flex-direction: column;
   width: 90%;
   max-width: 1200px;
-  box-shadow: #4040408f 0px 0px 20px;
-  background: linear-gradient(145deg, #12121b, #0a1418);
   margin-bottom: 80px;
   border-radius: 10px;
 }
@@ -205,7 +231,9 @@ async function submitForm() {
   font-size: large;
   transition: all 0.3s;
 }
-.field:hover, .field:focus {
+
+.field:hover,
+.field:focus {
   padding: 0.6rem;
   border-color: lightblue;
   margin-block: 0;
@@ -225,7 +253,8 @@ async function submitForm() {
 }
 
 /* Form group hover effect */
-.form-group:hover, .form-group:focus-within {
+.form-group:hover,
+.form-group:focus-within {
   box-shadow: #2e2e2eb7 5px 5px 20px;
   background-color: #1a202faa;
 }
@@ -242,7 +271,7 @@ async function submitForm() {
   align-items: baseline;
 }
 
-@media (max-width: 700px)  {
+@media (max-width: 700px) {
   .field-description {
     flex-direction: column;
     align-items: center;
@@ -267,13 +296,29 @@ async function submitForm() {
   margin-inline: 10px;
 }
 
-/* Toast styling */
-.toast-message {
-  margin-top: 1rem;
-  background-color: #1a90ff;
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
+.dissolve-enter-active,
+.dissolve-leave-active {
+  transition: all 0.4s ease;
+}
+
+.dissolve-enter-active,
+.dissolve-leave-active {
+  /* position: absolute; */
+}
+
+.dissolve-enter-from{
+  opacity: 0;
+  transform: translateX(200px);
+}
+
+
+.dissolve-leave-to {
+  opacity: 0;
+  transform: translateX(-200px);
+}
+
+.center-text {
   text-align: center;
+  font-size: 35px;
 }
 </style>

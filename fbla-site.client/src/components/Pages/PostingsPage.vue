@@ -80,26 +80,30 @@ onMounted(async () => {
 <template>
   <div class="postings">
     <!-- Header section with title and description -->
-    <div class="header">
-      <div style="display: flex; align-items: baseline; gap: 2rem;">
-        <h1>Job Postings</h1>
+    <div class="header glass">
+      <div class="header-content">
+        <div style="display: flex; align-items: baseline; gap: 2rem;">
+          <h1>Job Postings</h1>
+        </div>
+        <InputText v-model="searchQuery" placeholder="Search job postings..." class="search-bar"
+          @input="filterPostingsThrottled()">
+        </InputText>
       </div>
-      <InputText v-model="searchQuery" placeholder="Search job postings..." class="search-bar"
-        @input="filterPostingsThrottled()">
-      </InputText>
+      <div class="information">
+        <p>
+          Search job postings by title, employer, or description. You can find and apply for postings that intrest you
+          all
+          on the same page!
+        </p>
+
+        <div>
+          Showing {{ filteredPostings.length }} of {{ postings.length }} postings.
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="information">
-      <p>
-        Search job postings by title, employer, or description. You can find and apply for postings that intrest you all
-        on the same page!
-      </p>
-
-      <div>
-        Showing {{ filteredPostings.length }} of {{ postings.length }} postings.
-      </div>
-
-    </div>
 
     <!-- Loading indicator while fetching job postings -->
     <div v-if="loading" class="loading">Loading...</div>
@@ -171,25 +175,6 @@ onMounted(async () => {
   border-radius: 5px;
 }
 
-/* Header section styling */
-.header {
-  margin-top: 10px;
-  text-align: center;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0;
-  font-size: 25px;
-  width: 95%;
-  color: rgb(196, 196, 196);
-  margin-inline: 20px;
-}
-
-/* Header paragraph styling */
-.header p {
-  font-size: 18px;
-}
 
 /* Styling for the apply button */
 .apply-button {
@@ -229,7 +214,7 @@ a:hover {
 .information {
   font-size: 18px;
   text-align: center;
-  width: 95%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;

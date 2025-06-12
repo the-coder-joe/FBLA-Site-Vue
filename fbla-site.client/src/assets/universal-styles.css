@@ -1,18 +1,60 @@
-.top-header {
-        background-color: #ffffff21;
-    backdrop-filter: blur(8px);
-    padding-inline: 20px;
-    border-radius: 30px;
-    box-shadow: 4px 3px 20px #e3e3e380;
-margin-top: 15px;
-    text-align: center;
-    display: flex
-;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 95%;
-    margin-bottom: 0;
-    font-size: 25px;
+.header {
+  margin: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 25px;
+  padding: 2rem;
+  padding-inline: 4rem;
+  border-radius: 20px;
+  max-width: 90%;
+  min-width: 50%;
+  width: fit-content;
+}
 
+.header p {
+  font-size: 18px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.header-icon {
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+.header-tip {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #a0aec0;
+}
+
+.light-glass {
+  box-shadow: 10px 6px 10px rgba(126, 182, 198, 0.179);
+  background-color: #1279b017;
+  backdrop-filter: brightness(1.8) blur(12px);
+  border-radius: 20px;
+  border: 3px solid rgba(0, 77, 149, 0.062);
+}
+
+.glass {
+  box-shadow: 10px 6px 10px rgba(45, 53, 78, 0.337);
+  background-color: #13213574;
+  backdrop-filter: brightness(1.6) blur(8px);
+  border: 3px solid rgba(0, 77, 149, 0.062);
+  border-radius: 20px;
+}
+
+.dark-glass {
+  box-shadow: 10px 6px 10px rgba(13, 16, 24, 0.829);
+  background-color: #0d151ea2;
+  backdrop-filter: brightness(0.7) blur(6px);
+  border-radius: 20px;
 }
