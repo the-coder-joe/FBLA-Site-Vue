@@ -112,7 +112,7 @@ onMounted(async () => {
 
     <!-- Display job postings when available -->
     <template v-if="!loading && filteredPostings.length > 0">
-      <TransitionGroup name="filter" tag="div" class="postings-list">
+      <TransitionGroup name="filter" tag="div" class="postings-list light-glass">
         <template v-for="posting in filteredPostings" :key="posting.id">
           <PostingDisplay :posting="posting">
             <template #actions>
@@ -165,7 +165,9 @@ onMounted(async () => {
   gap: 20px;
   margin-bottom: 290px;
   justify-content: center;
-  ;
+  padding: 20px;
+  padding-bottom: 40px;
+  max-width: 90%;
 }
 
 /* Individual posting item styling */

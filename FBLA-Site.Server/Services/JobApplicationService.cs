@@ -6,6 +6,7 @@ namespace FBLA_Site
     {
         private readonly JobPostingQueueRepository jobPostingQueueRepository = new JobPostingQueueRepository();
         private readonly JobPostingRepository jobPostingRepository = new JobPostingRepository();
+        private readonly JobApplicationRepository jobApplicationRepository = new JobApplicationRepository();
 
         public void AddPosting(Posting posting)
         {
@@ -37,6 +38,13 @@ namespace FBLA_Site
             return this.jobPostingQueueRepository.getPostingQueue() ?? new List<Posting>();
         }
 
+        public Posting? GetPostingById(int id)
+        {
+            List<Posting> postings = this.GetPostings();
+            Posting? posting = postings.FirstOrDefault(p => p.Id == id);
+            return posting;
+        }
+
         public void ApprovePosting(int id, bool isApproved)
         {
             List<Posting> postingsQ = this.GetPostingsQueue();
@@ -54,6 +62,22 @@ namespace FBLA_Site
                 this.jobPostingRepository.AddPosting(posting);
                 this.jobPostingQueueRepository.RemovePosting(posting);
             }
+        }
+
+        public void SubmitJobApplication(Application application)
+        { 
+            var applications = this.jobApplicationRepository.GetApplications();
+
+            int nextId = applications.Count > 0 ? applications.Max(a => a.Id) + 1 : 1;
+
+            application.Id = nextId; 
+
+            this.jobApplicationRepository.AddAppliction(application);
+        }
+
+        public List<Application> GetJobApplications()
+        {
+            return this.jobApplicationRepository.GetApplications();
         }
     }
 }
