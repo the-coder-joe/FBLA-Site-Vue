@@ -10,6 +10,7 @@ import Aura from '@primeuix/themes/aura';
 import { definePreset } from '@primeuix/themes'
 import Button from 'primevue/button'
 import { createPinia } from 'pinia'
+import ToastService from 'primevue/toastservice';
 
 const pinia = createPinia();
 
@@ -33,6 +34,8 @@ const MyPreset = definePreset(Aura, {
 });
 
 const app = createApp(App);
+
+app.use(ToastService);
 app.use(pinia);
 app.use((new Router).getRouter());
 app.use(PrimeVue,
