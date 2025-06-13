@@ -37,7 +37,7 @@ import { RouterLink } from 'vue-router'
   padding: 2rem 1rem 1rem;
   font-size: 0.95rem;
   border-top: 1px solid #333;
-  box-shadow: 0 2px 2cap rgba(0, 255, 255, .5);
+  box-shadow: 0 0 10px 3px rgba(0, 255, 255, 0.062);
 }
 
 .footer-content {

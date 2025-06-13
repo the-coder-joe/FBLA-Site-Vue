@@ -72,7 +72,7 @@ function logout() {
   z-index: 1000;
   /*The overlay hierarchy (lower < higher)*/
   width: 100%;
-  background: linear-gradient(to right, #1a1a1a, #2a2b2b);
+  background: linear-gradient(to right, #1a1a1aff, #2a2b2bff);
   /*Changes NavBar background color*/
   padding: .75rem 1rem;
   padding-top: 3px;
@@ -81,7 +81,7 @@ function logout() {
   align-items: center;
   /*Just makes values in middle vertically*/
   justify-content: space-between;
-  box-shadow: 0 2px 8px rgba(0, 255, 255, 0.247);
+  box-shadow: 0 2px 8px 0px rgba(0, 255, 255, 0.097);
   /*Gives ambiance*/
 }
 

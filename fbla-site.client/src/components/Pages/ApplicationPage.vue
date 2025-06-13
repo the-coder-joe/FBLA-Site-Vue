@@ -73,7 +73,7 @@ function submitApplication() {
 
 <template>
   <div class="application-page" v-if="posting">
-    <div class="posting-details">
+    <div class="posting-details light-glass">
       <h1>{{ posting.title }}</h1>
       <h2>{{ posting.employer }}</h2>
       <p><strong>Description:</strong> {{ posting.description }}</p>
@@ -81,7 +81,7 @@ function submitApplication() {
       <p><strong>Additional Information:</strong> {{ posting.additionalInformation }}</p>
     </div>
 
-    <div class="application-form">
+    <div class="application-form glass">
       <h2>Apply for this Job</h2>
       <div class="form-group">
         <label for="studentName">Your Name</label>
@@ -123,8 +123,6 @@ function submitApplication() {
 
 .posting-details {
   width: 90%;max-width: 1000px;
-  background-color: rgba(17, 17, 17, 0.85);
-  box-shadow: #4040408f 0px 0px 20px;
   padding: 2rem;
   margin-bottom: 2rem;
   border-radius: 10px;
@@ -152,8 +150,7 @@ function submitApplication() {
 
 .application-form {
   width: 90%;max-width: 1000px;
-  background-color: rgba(17, 17, 17, 0.85);
-  box-shadow: #4040408f 0px 0px 20px;
+
   padding: 2rem;
   border-radius: 10px;
 }
@@ -183,7 +180,7 @@ function submitApplication() {
   font-size: 1rem;
   transition: all 0.3s;
   background-color: #141417;
-  color: #9be9ff;
+  color: #9be9ff5e;
 }
 
 .field:focus {
