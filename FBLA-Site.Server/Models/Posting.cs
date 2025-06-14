@@ -1,5 +1,5 @@
 ﻿// Posting.cs
-namespace FBLA_Site.Server.Models
+namespace FBLA_Site
 {
     public class Posting
     {

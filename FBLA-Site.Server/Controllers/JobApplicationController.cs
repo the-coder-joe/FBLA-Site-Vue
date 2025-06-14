@@ -1,70 +1,48 @@
-﻿using FBLA_Site.Server.Models;
-using FBLA_Site.Server.Utils;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
-namespace FBLA_Site.Server.Controllers
+namespace FBLA_Site
 {
     [ApiController]
     [Route("api/[controller]/[Action]")]
     public class JobApplicationController : Controller
 
     {
-        private JsonUtils<List<Posting>> postingUtils = new JsonUtils<List<Posting>>("postings");
-        private JsonUtils<List<Posting>> postingQueue = new JsonUtils<List<Posting>>("postingQueue");
-
-        [HttpGet]
-        public JsonResult GetJobApplications(Application app)
-        {
-            return Json(new { });
-        }
+        private readonly JobApplicationService jobApplicationService = new JobApplicationService();
 
         [HttpPost]
         public JsonResult AddPosting([FromBody] Posting posting)
         {
-            // 1. Log the incoming data
-            Console.WriteLine("Posting data: " + JsonSerializer.Serialize(posting));
+            jobApplicationService.AddPosting(posting);
 
-            // 2. Load existing postings from JSON
-            List<Posting> postings = postingUtils.GetData() ?? new List<Posting>();
-            List<Posting> postingQ = postingQueue.GetData() ?? new List<Posting>();
-
-            // 3. Assign an ID if none is set yet (or if it’s -1)
-            if (posting.Id <= 0)
-            {
-                if (postings.Count == 0 && postingQ.Count == 0)
-                    posting.Id = 1;
-                else
-                    posting.Id = postings.Concat(postingQ).Max(p => p.Id) + 1;
-            }
-
-            // 4. Add the new posting
-
-
-            postingQ.Add(posting);
-
-            // 5. Save postings back to JSON
-            postingQueue.SetData(postingQ);
-
-            // 6. Return success
             return Json(new { Success = true, CreatedId = posting.Id });
         }
-
 
 
         [HttpGet]
         public JsonResult GetPostings()
         {
-            List<Posting> postings = postingUtils.GetData() ?? new List<Posting>();
+            List<Posting> postings = this.jobApplicationService.GetPostings();
 
             return Json(postings);
+        }
+
+        [HttpGet("{id}")]
+        public JsonResult GetPostingById(int id)
+        {
+            Posting? posting = this.jobApplicationService.GetPostingById(id);
+            if (posting == null)
+            {
+                return Json(new ErrorResponse { Success = false, Message = $"Posting with Id {id} does not exist." });
+            }
+            return Json(posting);
         }
 
         [HttpGet]
         public JsonResult GetPostingQueue()
         {
-            List<Posting> postingQ = postingQueue.GetData() ?? new List<Posting>();
+            List<Posting> postingQ = this.jobApplicationService.GetPostingsQueue();
 
             return Json(postingQ);
         }
@@ -72,27 +50,41 @@ namespace FBLA_Site.Server.Controllers
         [HttpPost]
         public IActionResult PostingApproval(ApplicationApproval approval)
         {
-            List<Posting> postingsQ = postingQueue.GetData() ?? new List<Posting>();
-            List<Posting> postings = postingUtils.GetData() ?? new List<Posting>();
+            try
+            {
+                this.jobApplicationService.ApprovePosting(approval.Id, approval.IsApproved);
 
-            Posting? posting = postingsQ.FirstOrDefault(p => p.Id == approval.Id);
-
-            if (posting == null)
+            }
+            catch (Exception ex)
             {
                 return Json(new ErrorResponse { Success = false, Message = $"Application with Id {approval.Id} does not exist." });
             }
 
-            if (approval.IsApproved)
-            {
-                postings.Add(posting);
-                postingUtils.SetData(postings);
-
-            }
-
-            postingsQ.Remove(posting);
-            postingQueue.SetData(postingsQ);
+            var postings = this.jobApplicationService.GetPostings();
 
             return Json(postings);
+        }
+
+        [HttpPost]
+        public IActionResult SubmitJobApplication(Application application)
+        {
+            try
+            {
+                this.jobApplicationService.SubmitJobApplication(application);
+            }
+            catch (Exception ex)
+            {
+                return Json(new ErrorResponse { Success = false, Message = ex.Message });
+            }
+            return Json(new { Success = true });
+        }
+
+        [HttpGet]
+        public IActionResult GetJobApplications()
+        {
+            List<Application> applications = this.jobApplicationService.GetJobApplications();
+
+            return Json(applications);
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using FBLA_Site.Server.Models;
-using System.Text.Json;
+﻿using System.Text.Json;
 
-namespace FBLA_Site.Server.Utils
+namespace FBLA_Site
 {
     public class JsonUtils<T>
     {
