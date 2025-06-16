@@ -1,16 +1,24 @@
 <script setup>
 import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authentication.store'
+import { useToast } from 'primevue/usetoast';
 
 const authStore = useAuthStore();
+const toast = useToast();
 
-const router=useRouter();
+const router = useRouter();
 
 function logout() {
   authStore.authenticated = false;
   authStore.role = '';
   authStore.username = '';
-  router.push({name: 'home'});
+  router.push({ name: 'home' });
+  toast.add({
+    severity: 'info',
+    summary: 'Logged Out',
+    detail: 'You have successfully logged out.',
+    life: 3000
+  });
 }
 </script>
 
@@ -23,7 +31,8 @@ function logout() {
           <span class="logo-text"> Summit Valley School District</span>
         </div>
       </RouterLink>
-      <RouterLink v-if="authStore.role === 'employer' || authStore.role === 'admin'" class="nav-link" to="/AddPosting">Add A Posting</RouterLink>
+      <RouterLink v-if="authStore.role === 'employer' || authStore.role === 'admin'" class="nav-link" to="/AddPosting">
+        Add A Posting</RouterLink>
       <RouterLink class="nav-link" to="/Postings">View Postings</RouterLink>
       <RouterLink v-if="authStore.role === 'admin'" class="nav-link" to="/Admin">Admin Page
       </RouterLink>
@@ -147,7 +156,7 @@ body {
   }
 
   .navbar {
-      padding: 0 !important;
+    padding: 0 !important;
   }
 
   .logo {
