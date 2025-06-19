@@ -37,24 +37,25 @@
 }
 
 .light-glass {
-  box-shadow: 10px 6px 10px rgba(126, 182, 198, 0.179);
-  background-color: #1279b017;
-  backdrop-filter: brightness(1.8) blur(12px);
+  box-shadow: 10px 6px 20px rgba(121, 140, 145, 0.179);
+  background-color: #687a8f0f;
+  backdrop-filter: brightness(1.4) blur(6px) saturate(0);
   border-radius: 20px;
-  border: 3px solid rgba(0, 77, 149, 0.062);
+  border: 1px solid rgba(208, 208, 208, 0.1);
 }
 
 .glass {
   box-shadow: 10px 6px 10px rgba(45, 53, 78, 0.337);
-  background-color: #13213574;
+  background-color: #13213554;
   backdrop-filter: brightness(1.6) blur(8px);
-  border: 3px solid rgba(0, 77, 149, 0.062);
+  border: 1px solid rgba(155, 175, 194, 0.115);
   border-radius: 20px;
 }
 
 .dark-glass {
-  box-shadow: 10px 6px 10px rgba(13, 16, 24, 0.829);
-  background-color: #0d151ea2;
-  backdrop-filter: brightness(0.7) blur(6px);
+  box-shadow: 10px 6px 10px rgba(13, 16, 24, 0.706);
+  background-color: #0c182437;
+  backdrop-filter: brightness(0.9) blur(6px);
   border-radius: 20px;
+  border: 1px solid rgba(71, 71, 71, 0.265);
 }

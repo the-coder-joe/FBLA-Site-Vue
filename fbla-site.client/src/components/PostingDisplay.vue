@@ -73,10 +73,10 @@ const props = defineProps<{
 /* The sticky note appearance and layout */
 .posting {
   background: linear-gradient(180deg,
-      rgb(114, 213, 255) 0%,
-      rgb(114, 213, 255) 12%,
-      rgb(124, 205, 240) 75%,
-      rgb(149, 213, 241) 100%);
+      rgb(84, 184, 226) 0%,
+      rgb(106, 197, 236) 12%,
+      rgb(102, 172, 201) 75%,
+      rgb(124, 177, 200) 100%);
   width: 100%;
   height: 100%;
   display: flex;
@@ -85,7 +85,7 @@ const props = defineProps<{
   align-items: center;
   font-family: 'Kalam', cursive; /* Font style for sticky note text */
   font-size: 1rem;
-  color: black;
+  color: rgb(0, 0, 0);
   clip-path: url(#stickyClip); /* Applying the clipping path for rounded sticky note edges */
   padding: 20px;
 

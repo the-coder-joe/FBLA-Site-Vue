@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
-using FBLA_Site.Server.Models;
-using FBLA_Site.Server.Utils;
 using Microsoft.AspNetCore.Mvc;
-using FBLA_Site.Server.Services;
-namespace FBLA_Site.Server.Controllers
+namespace FBLA_Site
 {
     [ApiController]
     [Route("api/[controller]/[Action]")]

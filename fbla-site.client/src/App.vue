@@ -1,6 +1,8 @@
 <template>
   <Toast/>
   <BaseLayout />
+
+  <div id="shiny-light"></div>
 </template>
 
 <script setup>
@@ -31,6 +33,4 @@ document.addEventListener('mousemove', (event) => {
   box-shadow: 0px 0px 100px 100px rgba(159, 159, 159, 0.03);
   z-index: 1000;
 }
-
-
 </style>

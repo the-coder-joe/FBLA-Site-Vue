@@ -1,0 +1,29 @@
+[
+  {
+    "Id": -1,
+    "ForPostingId": 0,
+    "Name": "Bob",
+    "ContactInfo": "9812930",
+    "Answers": [
+      "fsda"
+    ]
+  },
+  {
+    "Id": 0,
+    "ForPostingId": 1,
+    "Name": "string",
+    "ContactInfo": "string",
+    "Answers": [
+      "string"
+    ]
+  },
+  {
+    "Id": 1,
+    "ForPostingId": 1,
+    "Name": "string",
+    "ContactInfo": "string",
+    "Answers": [
+      "string"
+    ]
+  }
+]
