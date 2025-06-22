@@ -73,4 +73,21 @@ export class AuthenticationService {
     const r = await response.json();
     return { success: r.success, role: r.role, id: r.id };
   }
+
+  // Fetch user analytics data
+  public async fetchUserStats(): Promise<{ total: number; students: number; employers: number; admins: number }> {
+    const response = await fetch(`${BASE_URL}/api/Users/GetAllUsers`);
+    const users = await response.json();
+
+    const students = users.filter((user: any) => user.role === 'student').length;
+    const employers = users.filter((user: any) => user.role === 'employer').length;
+    const admins = users.filter((user: any) => user.role === 'admin').length;
+
+    return {
+      total: users.length,
+      students,
+      employers,
+      admins
+    };
+  }
 }

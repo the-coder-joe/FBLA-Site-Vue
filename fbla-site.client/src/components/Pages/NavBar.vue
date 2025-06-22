@@ -48,6 +48,7 @@ function logout() {
       <div class="dropdown-content" v-show="showAdminDropdown">
         <RouterLink class="nav-link dropdown-link" to="/Admin">Approve Postings</RouterLink>
         <RouterLink class="nav-link dropdown-link" :to="{ path: '/LoginPage', query: { mode: 'signup' } }"> Create Account </RouterLink>
+        <RouterLink class="nav-link dropdown-link" to="/Analytics">Analytics</RouterLink>
       </div>
     </div>
     </div>

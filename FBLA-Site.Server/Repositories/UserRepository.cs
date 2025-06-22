@@ -3,8 +3,10 @@
     public class UserRepository
     {
         private readonly JsonUtils<List<User>> userUtils = new JsonUtils<List<User>>("users");
-
-
+        public List<User> GetAllUsers()
+        {
+            return userUtils.GetData() ?? new List<User>();
+        }       
         public void AddUser(User user)
         {
             List<User> users = userUtils.GetData() ?? new List<User>();
