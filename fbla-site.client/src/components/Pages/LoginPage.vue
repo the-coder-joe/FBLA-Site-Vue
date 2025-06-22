@@ -1,12 +1,21 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { ref, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { ref, computed, onMounted } from 'vue'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Dropdown from 'primevue/dropdown'
 import ApplicationService from '@/services/application.service'
 import { AuthenticationService } from '@/services/authentication.service'
 import { useAuthStore } from '@/stores/authentication.store'
+
+const route = useRoute()
+
+onMounted(() => {
+  if (route.query.mode === 'signup') {
+    isSignUp.value = true
+  }
+})
+
 
 const authenticationService = new AuthenticationService();
 
@@ -34,6 +43,7 @@ function submitSignIn() {
     .then((success) => {
       if (success){
         if(authStore.role == 'admin') {
+        isSignUp.value = true;
         router.push('/Admin')
         }
         if(authStore.role == 'employer') {
@@ -83,8 +93,12 @@ function showToast(message) {
   }, 3000)
 }
 
-// Dummy logic
 function submitSignUp() {
+  if (signUpPassword.value !== confirmPassword.value) {
+    signUpErrorMessage.value = 'Passwords do not match.'
+    return
+  }
+
   authenticationService.register(
     signUpEmail.value,
     signUpPassword.value,
@@ -104,6 +118,7 @@ function submitSignUp() {
       signUpErrorMessage.value = 'An error occurred. Please try again later.'
     })
 }
+
 
 // Clear all fields and error messages.
 function clearAllFields() {
@@ -143,7 +158,7 @@ function switchToSignIn() {
       <h1 v-if="!isSignUp">Sign In</h1>
       <h1 v-else>Create Account</h1>
       <p v-if="!isSignUp">Use your credentials to access your account.</p>
-      <p v-else>Create a new account to get started.</p>
+      <p v-else>Create a new account</p>
     </div>
     <div class="form dark-glass">
       <!-- SIGN IN FORM -->
@@ -171,10 +186,6 @@ function switchToSignIn() {
         </div>
         <Button @click="submitSignIn" :disabled="isSignInDisabled" label="Sign In" class="login-button"
           :class="{ active: !isSignInDisabled }" />
-        <div class="toggle">
-          <span>Don't have an account?</span>
-          <a href="#" @click.prevent="switchToSignUp">Create one</a>
-        </div>
       </template>
 
       <!-- CREATE ACCOUNT FORM -->
@@ -220,10 +231,6 @@ function switchToSignIn() {
         </div>
         <Button @click="submitSignUp" :disabled="isSignUpDisabled" label="Create Account" class="login-button"
           :class="{ active: !isSignUpDisabled }" />
-        <div class="toggle">
-          <span>Already have an account?</span>
-          <a href="#" @click.prevent="switchToSignIn">Sign In</a>
-        </div>
       </template>
     </div>
   </div>
