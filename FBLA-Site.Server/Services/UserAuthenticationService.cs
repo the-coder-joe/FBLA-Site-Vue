@@ -48,7 +48,9 @@ namespace FBLA_Site
                 return BitConverter.ToString(hash).Replace("-", "").ToLower();
             }
         }
-
+        public List<User> GetAllUsers()
+        {
+            return userRepository.GetAllUsers();
+        }
     }
-
 }
