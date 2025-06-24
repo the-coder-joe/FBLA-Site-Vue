@@ -108,5 +108,30 @@
     "Email": "Admin@gmail.com",
     "Role": "admin",
     "Hash": "7fc3f398e72db3033099aa0a99266ca031ab70dd9c16d806079c22c17765680a753b81e2fe3e7b00b4d5fef9312e9bf7c14421bc6909dae826ba57c6fec53ea9"
+  },
+  {
+    "Email": "a",
+    "Role": "admin",
+    "Hash": "36494350646ab64a788e9edc552fd1e3093b705608e06e4ccf1a93ecc728d4f7b74446fb8c4ecfb3b88b7a72ebec1aa8b81aa41c09b53c410c6279766669c3c2"
+  },
+  {
+    "Email": "test@gmail.com",
+    "Role": "employer",
+    "Hash": "31c19745095ffbca13c7d3c31ec3596089429678dce1352ed864e8bd194b39b0c1452221ef073b1ae2cb611241ee98efdf0738ddd6630444dc86ac48842c20a8"
+  },
+  {
+    "Email": "test@gmail.com",
+    "Role": "employer",
+    "Hash": "5615ed8ae8b5fb15e244249d3a5f9af2bfade3005ddbe32917ba38cc34625fc6e7a1c8580c2410c85b6336198d11f9f5e000872e172009b161fdbfd615545d9f"
+  },
+  {
+    "Email": "test@gmail.com",
+    "Role": "employer",
+    "Hash": "16b48eb7d6dc5ac125b42b04eeb9108fe7ce45a6ca3f8ec7c94820861431512ccbc89d7659b3876e462d1357145c32d39c96e63f47624690a5afdb11ef1c3a9d"
+  },
+  {
+    "Email": "test@gmail.com",
+    "Role": "employer",
+    "Hash": "5615ed8ae8b5fb15e244249d3a5f9af2bfade3005ddbe32917ba38cc34625fc6e7a1c8580c2410c85b6336198d11f9f5e000872e172009b161fdbfd615545d9f"
   }
 ]
