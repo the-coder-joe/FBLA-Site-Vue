@@ -123,5 +123,7 @@ const props = defineProps<{
   .sticky-content {
     font-size: 1.875rem;
   }
+
 }
 </style>
+

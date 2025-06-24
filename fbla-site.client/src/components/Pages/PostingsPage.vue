@@ -85,9 +85,6 @@ onMounted(async () => {
         <div style="display: flex; align-items: baseline; gap: 2rem;">
           <h1>Job Postings</h1>
         </div>
-        <InputText v-model="searchQuery" placeholder="Search job postings..." class="search-bar"
-          @input="filterPostingsThrottled()">
-        </InputText>
       </div>
       <div class="information">
         <p>
@@ -97,7 +94,13 @@ onMounted(async () => {
         </p>
 
         <div>
+          <div class="search">
+            <InputText v-model="searchQuery" placeholder="Search job postings..." class="search-bar"
+              @input="filterPostingsThrottled()">
+            </InputText>
+          </div>
           Showing {{ filteredPostings.length }} of {{ postings.length }} postings.
+
         </div>
 
       </div>
@@ -220,6 +223,7 @@ a:hover {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  min-width: 200px;
 }
 
 .search-bar-container {
@@ -228,9 +232,11 @@ a:hover {
   justify-content: flex-start;
   margin-bottom: 20px;
   margin-inline: 20px;
+  display: block;
 }
 
 .search-bar {
+  min-width: 200px;
   border: 1px solid #ccc;
   width: 30%;
   padding: 10px;
@@ -260,5 +266,24 @@ a:hover {
    animations can be calculated correctly. */
 .filter-leave-active {
   position: absolute;
+}
+
+@media screen and (max-width: 1200) {
+  .search {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+  }
+
+}
+
+@media screen and (max-width: 1200) {
+}
+
+@media screen and (max-width: 1200px) {
+  .information {
+    flex-direction: column;
+  }
 }
 </style>
