@@ -6,6 +6,9 @@ import PostingDisplay from '../PostingDisplay.vue';
 import Button from 'primevue/button';
 import { RouterLink } from 'vue-router';
 import { Dialog } from 'primevue';
+import { useToast } from 'primevue/usetoast'
+
+const toast = useToast()
 
 // Initialize application service to fetch job postings
 const applicationService = new ApplicationService();
@@ -39,42 +42,59 @@ onMounted(async () => {
 function approve(posting: Posting) {
   applicationService.approvalPosting(posting.id, true)
     .then(() => {
-      getPostings();
-      visible.value[posting.id] = false;
+      toast.add({
+        severity: 'success',
+        summary: 'Approved',
+        detail: `Posting "${posting.title}" approved successfully.`,
+        life: 3000
+      })
+      visible.value[posting.id] = false
+      postings.value = postings.value.filter(p => p.id !== posting.id)
     });
 }
 
 function deny(posting: Posting) {
   applicationService.approvalPosting(posting.id, false)
     .then(() => {
-      getPostings();
-      visible.value[posting.id] = false;
+      toast.add({
+        severity: 'error',
+        summary: 'Denied',
+        detail: `Posting "${posting.title}" was denied successfully.`,
+        life: 3000
+      })
+      visible.value[posting.id] = false
+      postings.value = postings.value.filter(p => p.id !== posting.id)
     });
 }
+
+
 </script>
+
 <template>
   <div class="postings">
-    <!-- Header section with title and description -->
+    <!-- Header -->
     <div class="header glass">
       <h1>Approve Postings</h1>
       <p>Approve employer postings to add them to postings page or deny.</p>
     </div>
 
-    <!-- Loading indicator while fetching job postings -->
+    <!-- Loading / Empty States -->
     <div v-if="loading" class="loading">Loading...</div>
-    <!-- Display message if no postings are available -->
-    <div v-if="postings.length === 0" class="no-postings">No postings available.</div>
+    <div v-else-if="postings.length === 0" class="no-postings">No postings available.</div>
 
-    <!-- Display job postings when available -->
-    <div v-else class="postings-list">
-      <template v-for="posting in postings" :key="posting.id">
+    <!-- Postings with Animation -->
+    <TransitionGroup name="pop" tag="div" class="postings-list">
+      <div v-for="posting in postings" :key="posting.id" class="posting-wrapper">
         <PostingDisplay :posting="posting">
           <template #actions>
-            <!-- Apply button linking to the application page -->
             <Button class="view-button" label="Show" @click="visible[posting.id] = true">View form</Button>
-            <Dialog v-model:visible="visible[posting.id]" modal header="Approve Posting"
-              :style="{ width: '50rem', borderRadius: '10px', padding: '15px', boxShadow: '0px 0px 20px rgba(255, 255, 255, 1)', backgroundColor: 'black' }">
 
+            <Dialog
+              v-model:visible="visible[posting.id]"
+              modal
+              header="Approve Posting"
+              :style="{ width: '50rem', borderRadius: '10px', padding: '15px', boxShadow: '0px 0px 20px rgba(255, 255, 255, 1)', backgroundColor: 'black' }"
+            >
               <div class="modal-list-item">
                 <div class="describer">Employer:</div> {{ posting.employer }}
               </div>
@@ -88,27 +108,43 @@ function deny(posting: Posting) {
                 <div class="describer">Job Description:</div> {{ posting.description }}
               </div>
               <div class="modal-list-item">
-               <div class="describer"> Additional Information:</div> {{ posting.additionalInformation }}
+                <div class="describer">Additional Information:</div> {{ posting.additionalInformation }}
               </div>
               <div class="modal-list-item">
                 <div class="describer">Questions For Applicants:</div>
-                <div v-for="q in posting.questions">
+                <div v-for="(q, i) in posting.questions" :key="i">
                   {{ q }}
                 </div>
-                <div class="approve-deny-button">
-                  <Button class="approve-button" @click="approve(posting)">Approve</Button>
-                  <Button class="deny-button" @click="deny(posting)">Deny</Button>
-                </div>
+              </div>
+
+              <div class="approve-deny-button">
+                <Button class="approve-button" @click="approve(posting)">Approve</Button>
+                <Button class="deny-button" @click="deny(posting)">Deny</Button>
               </div>
             </Dialog>
           </template>
         </PostingDisplay>
-      </template>
-    </div>
+      </div>
+    </TransitionGroup>
   </div>
 </template>
 
+
 <style scoped>
+/* Transition animations for approve/deny removal */
+.pop-enter-active,
+.pop-leave-active {
+  transition: all 0.4s ease;
+}
+.pop-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.posting-wrapper {
+  transition: all 0.4s ease;
+}
+
 /* Container styling for the job postings section */
 .postings {
   padding: 20px;

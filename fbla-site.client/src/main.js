@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import Router from './scripts/router'
 import { PrimeVue } from '@primevue/core'
+import ProgressSpinner from 'primevue/progressspinner'
 import InputText from 'primevue/inputtext'
 import FloatLabel from 'primevue/floatlabel'
 import Aura from '@primeuix/themes/aura';
@@ -45,6 +46,7 @@ app.use(PrimeVue,
     }
   });
 
+app.component('ProgressSpinner', ProgressSpinner)
 app.component('InputText', InputText);
 app.component('FloatLabel', FloatLabel);
 app.component('Button', Button);

@@ -93,10 +93,8 @@ onMounted(async () => {
         <p>
           Search job postings by title, employer, or description. You can find and apply for postings that intrest you
           all
-          on the same page!
-        </p>
-
-        <div>
+          on the same page! 
+        </p> &nbsp;<div>
           Showing {{ filteredPostings.length }} of {{ postings.length }} postings.
         </div>
 
