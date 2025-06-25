@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
+import ProgressSpinner from 'primevue/progressspinner'
 import ApplicationService from '@/services/application.service'
 import { Application } from '@/models/application.models'
 
@@ -21,13 +22,13 @@ interface Posting {
 const route = useRoute()
 const postingId = parseInt(route.params.postingId as string, 10)
 const applicationService = new ApplicationService()
-
-const router = useRouter();
+const router = useRouter()
 
 const posting = ref<Posting | null>(null)
 const studentAnswers = ref<string[]>([])
 const studentName = ref('')
 const studentContact = ref('')
+const loading = ref(false)
 const toastMessage = ref('')
 
 onMounted(async () => {
@@ -52,7 +53,9 @@ const isAppFormValid = computed(() => {
   return studentName.value.trim() !== '' && studentContact.value.trim() !== ''
 })
 
-function submitApplication() {
+async function submitApplication() {
+  loading.value = true
+
   console.log('Application Submitted:')
   console.log('Student Name:', studentName.value)
   console.log('Student Contact:', studentContact.value)
@@ -80,52 +83,76 @@ function submitApplication() {
   studentContact.value = ''
   studentAnswers.value = studentAnswers.value.map(() => '')
 
-  // toast
-  toastMessage.value = 'Application submitted successfully!'
+  showToast('Application submitted successfully!')
+  setTimeout(() => {
+    router.push({ name: 'home' })
+  }, 2000)
+
+  setTimeout(() => {
+    loading.value = false
+  }, 2000)
+
+  router.push({ name: 'home', query: { toast: 'Application submitted successfully!' } })
+
+}
+
+// Show toast
+function showToast(message: string) {
+  toastMessage.value = message
   setTimeout(() => {
     toastMessage.value = ''
-    router.push({ name: 'home' });
-  }, 2000)
+  }, 3000)
 }
 </script>
 
 <template>
-  <div class="application-page" v-if="posting">
-    <div class="posting-details light-glass">
-      <h1>{{ posting.title }}</h1>
-      <h2>{{ posting.employer }}</h2>
-      <p><strong>Description:</strong> {{ posting.description }}</p>
-      <p><strong>Requirements:</strong> {{ posting.requirements }}</p>
-      <p><strong>Additional Information:</strong> {{ posting.additionalInformation }}</p>
+  <div class="page">
+    <Transition name="toast">
+      <div class="toast" v-if="toastMessage">{{ toastMessage }}</div>
+    </Transition>
+
+    <div class="application-page" v-if="posting">
+      <div class="posting-details light-glass">
+        <h1>{{ posting.title }}</h1>
+        <h2>{{ posting.employer }}</h2>
+        <p><strong>Description:</strong> {{ posting.description }}</p>
+        <p><strong>Requirements:</strong> {{ posting.requirements }}</p>
+        <p><strong>Additional Information:</strong> {{ posting.additionalInformation }}</p>
+      </div>
+
+      <div class="application-form glass">
+        <h2>Apply for this Job</h2>
+        <div class="form-group">
+          <label for="studentName">Your Name</label>
+          <InputText id="studentName" v-model="studentName" class="field" placeholder="Enter your name" />
+        </div>
+        <div class="form-group">
+          <label for="studentContact">Contact Information</label>
+          <InputText id="studentContact" v-model="studentContact" class="field" placeholder="Enter your email or phone" />
+        </div>
+
+        <div v-for="(question, index) in posting.questions" :key="index" class="form-group question-group">
+          <label :for="'question' + index">{{ question }}</label>
+          <Textarea :id="'question' + index" v-model="studentAnswers[index]" class="field" placeholder="Your answer" />
+        </div>
+
+        <template v-if="!loading">
+          <Button
+            @click="submitApplication"
+            label="Submit Application"
+            class="btn submit-btn"
+            :disabled="!isAppFormValid"
+          />
+        </template>
+        <template v-else>
+          <ProgressSpinner style="width: 30px; height: 30px; margin-top: 10px;" />
+        </template>
+      </div>
     </div>
 
-    <div class="application-form glass">
-      <h2>Apply for this Job</h2>
-      <div class="form-group">
-        <label for="studentName">Your Name</label>
-        <InputText id="studentName" v-model="studentName" class="field" placeholder="Enter your name" />
-      </div>
-      <div class="form-group">
-        <label for="studentContact">Contact Information</label>
-        <InputText id="studentContact" v-model="studentContact" class="field" placeholder="Enter your email or phone" />
-      </div>
-
-      <div v-for="(question, index) in posting.questions" :key="index" class="form-group question-group">
-        <label :for="'question' + index">{{ question }}</label>
-        <Textarea :id="'question' + index" v-model="studentAnswers[index]" class="field" placeholder="Your answer" />
-      </div>
-
-      <Button
-        @click="submitApplication"
-        label="Submit Application"
-        class="btn submit-btn"
-        :disabled="!isAppFormValid"
-      />
+    <div v-else class="loading">
+      <p>Loading posting details...</p>
     </div>
-    <div v-if="toastMessage" class="toast-message">{{ toastMessage }}</div>
-  </div>
-  <div v-else class="loading">
-    <p>Loading posting details...</p>
   </div>
 </template>
 
@@ -229,20 +256,29 @@ function submitApplication() {
   color: #cceeff;
 }
 
-/* Toast styling */
-.toast-message {
-  margin-top: 1rem;
-  background-color: #1a90ff;
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
-  text-align: center;
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #1f1f1f;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  font-size: 14px;
+  opacity: 0.95;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: all 0.5s ease;
+
+.toast-enter-active,
+.toast-leave-active {
+  transition: opacity 0.5s, transform 0.5s;
 }
-.fade-enter-from, .fade-leave-to {
+
+.toast-enter-from,
+.toast-leave-to {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateY(-20px);
 }
+
 </style>

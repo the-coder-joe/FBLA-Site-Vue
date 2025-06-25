@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useRoute } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useToast } from 'primevue/usetoast'
+
+const route = useRoute()
+const toast = useToast()
+
+const toastMessage = ref('')
+
 
 // Array of image filenames used in the carousel
 const images = ref([
@@ -12,9 +20,26 @@ const images = ref([
 
 // Importing the PrimeVue carousel component
 import Carousel from 'primevue/carousel';
+const toastVisible = ref(false)
+
+onMounted(() => {
+  const toastMsg = route.query.toast as string
+  if (toastMsg) {
+    toast.add({
+      severity: 'info',
+      summary: 'Notice',
+      detail: toastMsg,
+      life: 3000
+    })
+  }
+})
+
+
 </script>
 
 <template>
+<Toast />
+
   <!-- Background section with the main image and title -->
   <div class="main-bg">
     <div class="main-bg-pic">
@@ -54,6 +79,37 @@ import Carousel from 'primevue/carousel';
 </template>
 
 <style lang="css" scoped>
+
+.toast {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1a1a1a;
+  color: #9be9ff;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.toast-enter-active,
+.toast-leave-active {
+  transition: opacity 0.5s;
+}
+
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+}
+
+.toast-enter-to,
+.toast-leave-from {
+  opacity: 1;
+}
+
 /* Styling for the carousel component */
 :deep(.p-carousel-item) {
   width: 80px;

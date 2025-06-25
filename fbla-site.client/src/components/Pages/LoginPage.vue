@@ -4,6 +4,7 @@ import { ref, computed, onMounted } from 'vue'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Dropdown from 'primevue/dropdown'
+import ProgressSpinner from 'primevue/progressspinner'
 import ApplicationService from '@/services/application.service'
 import { AuthenticationService } from '@/services/authentication.service'
 import { useAuthStore } from '@/stores/authentication.store'
@@ -16,16 +17,15 @@ onMounted(() => {
   }
 })
 
-
 const authenticationService = new AuthenticationService();
+const loading = ref(false)
 
 // Switch between Sign In and Create Account modes
 const isSignUp = ref(false)
 
 // Allows redirect after successful sign-in
 const router = useRouter()
-
-const authStore = useAuthStore();
+const authStore = useAuthStore()
 
 // Sign In form fields
 const email = ref('')
@@ -33,31 +33,32 @@ const password = ref('')
 const showPassword = ref(false)
 const signInErrorMessage = ref('')
 
-// Disable Sign In button if fields are empty
 const isSignInDisabled = computed(() =>
   email.value.trim() === '' || password.value.trim() === ''
 )
 
-function submitSignIn() {
-  authenticationService.login(email.value, password.value)
-    .then((success) => {
-      if (success){
-        if(authStore.role == 'admin') {
-        isSignUp.value = true;
+async function submitSignIn() {
+  loading.value = true
+  try {
+    const success = await authenticationService.login(email.value, password.value)
+    if (success) {
+      if (authStore.role === 'admin') {
+        isSignUp.value = true
         router.push('/Admin')
-        }
-        if(authStore.role == 'employer') {
-          router.push('/AddPosting')
-        }
-        if(authStore.role == 'student') {
-          router.push('/Postings')
-        }
+      } else if (authStore.role === 'employer') {
+        router.push('/AddPosting')
+      } else if (authStore.role === 'student') {
+        router.push('/Postings')
       }
-      else
-        signInErrorMessage.value = 'Invalid email or password.'
-    })
+    } else {
+      signInErrorMessage.value = 'Invalid email or password.'
+    }
+  } catch (err) {
+    console.error(err)
+    signInErrorMessage.value = 'Login failed. Try again.'
+  }
+  loading.value = false
 }
-
 
 // Create Account form fields
 const signUpEmail = ref('')
@@ -66,7 +67,6 @@ const confirmPassword = ref('')
 const showSignUpPassword = ref(false)
 const signUpErrorMessage = ref('')
 
-// Role selection for Create Account
 const roles = ref([
   { label: 'Student', value: 'student' },
   { label: 'Employer', value: 'employer' },
@@ -74,7 +74,6 @@ const roles = ref([
 ])
 const signUpRole = ref(null)
 
-// Disable Create Account button only if any field is empty.
 const isSignUpDisabled = computed(() =>
   !signUpRole.value ||
   signUpEmail.value.trim() === '' ||
@@ -82,52 +81,49 @@ const isSignUpDisabled = computed(() =>
   confirmPassword.value.trim() === ''
 )
 
-// Toast message
 const toastMessage = ref('')
 
-// Show a toast
-function showToast(message) {
+function showToast(message: string) {
   toastMessage.value = message
   setTimeout(() => {
     toastMessage.value = ''
-  }, 3000)
+  }, 5000)
 }
 
-function submitSignUp() {
+async function submitSignUp() {
   if (signUpPassword.value !== confirmPassword.value) {
     signUpErrorMessage.value = 'Passwords do not match.'
     return
   }
 
-  authenticationService.register(
-    signUpEmail.value,
-    signUpPassword.value,
-    signUpRole.value.value
-  )
-    .then((success) => {
-      if (success.success) {
-        showToast('Account created successfully!')
-        clearAllFields()
-        isSignUp.value = false
-      } else {
-        signUpErrorMessage.value = 'Failed to create account. Please try again.'
-      }
-    })
-    .catch((error) => {
-      console.error('Error during registration:', error)
-      signUpErrorMessage.value = 'An error occurred. Please try again later.'
-    })
+  loading.value = true
+  try {
+    const success = await authenticationService.register(
+      signUpEmail.value,
+      signUpPassword.value,
+      signUpRole.value.value
+    )
+
+    if (success.success) {
+      showToast('Account created successfully!')
+      clearAllFields()
+      isSignUp.value = false
+    } else {
+      signUpErrorMessage.value = 'Failed to create account. Please try again.'
+    }
+  } catch (error) {
+    console.error('Error during registration:', error)
+    signUpErrorMessage.value = 'An error occurred. Please try again later.'
+  }
+  loading.value = false
 }
 
-
-// Clear all fields and error messages.
 function clearAllFields() {
-  // Sign In fields
   email.value = ''
   password.value = ''
   signInErrorMessage.value = ''
   showPassword.value = false
-  // Create Account fields
+
   signUpEmail.value = ''
   signUpPassword.value = ''
   confirmPassword.value = ''
@@ -136,7 +132,6 @@ function clearAllFields() {
   signUpRole.value = null
 }
 
-// Swich between Sign In and Create Account forms
 function switchToSignUp() {
   clearAllFields()
   isSignUp.value = true
@@ -160,6 +155,7 @@ function switchToSignIn() {
       <p v-if="!isSignUp">Use your credentials to access your account.</p>
       <p v-else>Create a new account</p>
     </div>
+
     <div class="form dark-glass">
       <!-- SIGN IN FORM -->
       <template v-if="!isSignUp">
@@ -170,6 +166,7 @@ function switchToSignIn() {
           </div>
           <InputText id="email" v-model="email" class="field" />
         </div>
+
         <div class="form-group">
           <div class="field-description">
             <label for="password" class="field-label">Password</label>
@@ -180,17 +177,20 @@ function switchToSignIn() {
             <input type="checkbox" id="showPassword" v-model="showPassword" />
             <label for="showPassword">Show Password</label>
           </div>
-          <div v-if="signInErrorMessage" class="error-message">
-            {{ signInErrorMessage }}
-          </div>
+          <div v-if="signInErrorMessage" class="error-message">{{ signInErrorMessage }}</div>
         </div>
-        <Button @click="submitSignIn" :disabled="isSignInDisabled" label="Sign In" class="login-button"
-          :class="{ active: !isSignInDisabled }" />
+
+        <template v-if="!loading">
+          <Button @click="submitSignIn" :disabled="isSignInDisabled" label="Sign In" class="login-button"
+            :class="{ active: !isSignInDisabled }" />
+        </template>
+        <template v-else>
+          <ProgressSpinner style="width: 30px; height: 30px; margin-top: 10px" />
+        </template>
       </template>
 
       <!-- CREATE ACCOUNT FORM -->
       <template v-else>
-        <!-- Role Selection -->
         <div class="form-group">
           <div class="field-description">
             <label for="role" class="field-label">Role</label>
@@ -199,6 +199,7 @@ function switchToSignIn() {
           <Dropdown id="role" v-model="signUpRole" :options="roles" optionLabel="label" placeholder="Select a role"
             class="field" />
         </div>
+
         <div class="form-group">
           <div class="field-description">
             <label for="signUpEmail" class="field-label">Email</label>
@@ -206,6 +207,7 @@ function switchToSignIn() {
           </div>
           <InputText id="signUpEmail" v-model="signUpEmail" class="field" />
         </div>
+
         <div class="form-group">
           <div class="field-description">
             <label for="signUpPassword" class="field-label">Password</label>
@@ -214,6 +216,7 @@ function switchToSignIn() {
           <InputText :type="showSignUpPassword ? 'text' : 'password'" id="signUpPassword" v-model="signUpPassword"
             class="field" />
         </div>
+
         <div class="form-group">
           <div class="field-description">
             <label for="confirmPassword" class="field-label">Confirm Password</label>
@@ -225,16 +228,21 @@ function switchToSignIn() {
             <input type="checkbox" id="showSignUpPassword" v-model="showSignUpPassword" />
             <label for="showSignUpPassword">Show Password</label>
           </div>
-          <div v-if="signUpErrorMessage" class="error-message">
-            {{ signUpErrorMessage }}
-          </div>
+          <div v-if="signUpErrorMessage" class="error-message">{{ signUpErrorMessage }}</div>
         </div>
-        <Button @click="submitSignUp" :disabled="isSignUpDisabled" label="Create Account" class="login-button"
-          :class="{ active: !isSignUpDisabled }" />
+
+        <template v-if="!loading">
+          <Button @click="submitSignUp" :disabled="isSignUpDisabled" label="Create Account" class="login-button"
+            :class="{ active: !isSignUpDisabled }" />
+        </template>
+        <template v-else>
+          <ProgressSpinner style="width: 30px; height: 30px; margin-top: 10px" />
+        </template>
       </template>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .page {

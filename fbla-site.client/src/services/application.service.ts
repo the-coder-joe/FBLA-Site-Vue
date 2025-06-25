@@ -157,4 +157,18 @@ export default class ApplicationService {
 
     return response.json();
   }
+  
+  public async fetchPostingStats(): Promise<{ total: number; approved: number; pending: number }> {
+    const [allPostings, queuePostings] = await Promise.all([
+      this.getPostings(),
+      this.getPostingsQueue()
+    ]);
+
+    const total = allPostings.length + queuePostings.length;
+    const approved = allPostings.length;
+    const pending = queuePostings.length;
+
+  return { total, approved, pending };
+}
+
 }
