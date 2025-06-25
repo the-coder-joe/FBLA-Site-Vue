@@ -18,5 +18,14 @@
 
             return user;
         }
+
+        public List<int> GetAllUserIds()
+        {
+            List<User>? users = this.userUtils.GetData();
+            if (users == null)
+                return new List<int>();
+            return users.Select(u => u.Id).ToList();
+        }
+
     }
 }

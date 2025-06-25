@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter } from 'vue-router';
+import { createMemoryHistory, createRouter, RouteRecordRaw } from 'vue-router';
 
 import HomePage from '@/components/Pages/HomePage.vue';
 import AddPosting from '@/components/Pages/AddPosting.vue';
@@ -9,6 +9,7 @@ import ApplicationPage from '@/components/Pages/ApplicationPage.vue';
 import AdminPage from '@/components/Pages/AdminPage.vue';
 import SourcesPage from '@/components/Pages/SourcesPage.vue';
 import { useAuthStore } from '@/stores/authentication.store';
+import EmployerView from '@/components/Pages/EmployerView.vue';
 
 export default class Router {
   private router: any;
@@ -22,7 +23,7 @@ export default class Router {
     Router.instance = this;
     const authStore = useAuthStore();
 
-    const routes = [
+    const routes: RouteRecordRaw[] = [
       { path: '/', name: 'home', component: HomePage, meta: { authRequired: false } },
       { path: '/AddPosting', component: AddPosting, meta: { authRequired: false } },
       { path: '/Postings', component: PostingsPage, meta: { authRequired: false } },
@@ -30,8 +31,9 @@ export default class Router {
       { path: '/LoginPage', component: LoginPage, meta: { authRequired: false } },
       { path: '/SourcesPage', component: SourcesPage, meta: { authRequired: false } },
       { path: '/Admin', name: 'admin', component: AdminPage, meta: { authRequired: true } },
+      { path: '/EmployerView', name:'employer', component: EmployerView, meta: { authRequired: false } },
       { path: '/:pathMatch(.*)*', component: NotFound, meta: { authRequired: false } }
-    ]
+    ];
 
     this.router = createRouter({
       history: createMemoryHistory(),
@@ -40,7 +42,7 @@ export default class Router {
         if (savedPosition) {
           return savedPosition
         }
-        return { top: 0}
+        return { top: 0 }
       }
     });
 

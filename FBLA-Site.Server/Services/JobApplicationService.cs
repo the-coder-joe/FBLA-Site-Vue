@@ -4,15 +4,15 @@ namespace FBLA_Site
 {
     public class JobApplicationService
     {
-        private readonly JobPostingQueueRepository jobPostingQueueRepository = new JobPostingQueueRepository();
-        private readonly JobPostingRepository jobPostingRepository = new JobPostingRepository();
-        private readonly JobApplicationRepository jobApplicationRepository = new JobApplicationRepository();
+        private readonly JobPostingQueueRepository jobPostingQueueRepository = new();
+        private readonly JobPostingRepository jobPostingRepository = new();
+        private readonly JobApplicationRepository jobApplicationRepository = new();
 
-        public void AddPosting(Posting posting)
+        public void AddPosting(Posting posting, int submittedBy)
         {
             // 2. Load existing postings from JSON
-            List<Posting> postings = jobPostingRepository.GetPostings() ?? new List<Posting>();
-            List<Posting> postingQ = jobPostingQueueRepository.getPostingQueue() ?? new List<Posting>();
+            List<Posting> postings = this.jobPostingRepository.GetPostings() ?? new List<Posting>();
+            List<Posting> postingQ = this.jobPostingQueueRepository.getPostingQueue() ?? new List<Posting>();
 
             // 3. Assign an ID if none is set yet (or if it’s -1)
             if (posting.Id <= 0)
@@ -25,7 +25,7 @@ namespace FBLA_Site
 
             // 4. Add the new posting
 
-            jobPostingQueueRepository.AddPosting(posting);
+            this.jobPostingQueueRepository.AddPosting(posting);
         }
 
         public List<Posting> GetPostings()
@@ -40,15 +40,27 @@ namespace FBLA_Site
 
         public Posting? GetPostingById(int id)
         {
-            List<Posting> postings = this.GetPostings();
+            List<Posting> postings = GetPostings();
             Posting? posting = postings.FirstOrDefault(p => p.Id == id);
             return posting;
         }
 
+        public List<Posting> GetPostingsByUserId(int id)
+        {
+            List<Application> applications = this.jobApplicationRepository.GetApplications() ?? [];
+            List<Posting> postings = this.jobPostingRepository.GetPostings() ?? [];
+
+            List<Posting> postingsOfEmployer = postings
+                .Where((x) => x.SubmittedById == id)
+                .ToList();
+
+            return postingsOfEmployer;
+        }
+
         public void ApprovePosting(int id, bool isApproved)
         {
-            List<Posting> postingsQ = this.GetPostingsQueue();
-            List<Posting> postings = this.GetPostings();
+            List<Posting> postingsQ = GetPostingsQueue();
+            List<Posting> postings = GetPostings();
 
             Posting? posting = postingsQ.FirstOrDefault(p => p.Id == id);
 
@@ -65,12 +77,12 @@ namespace FBLA_Site
         }
 
         public void SubmitJobApplication(Application application)
-        { 
-            var applications = this.jobApplicationRepository.GetApplications();
+        {
+            List<Application> applications = this.jobApplicationRepository.GetApplications();
 
             int nextId = applications.Count > 0 ? applications.Max(a => a.Id) + 1 : 1;
 
-            application.Id = nextId; 
+            application.Id = nextId;
 
             this.jobApplicationRepository.AddAppliction(application);
         }
@@ -78,6 +90,23 @@ namespace FBLA_Site
         public List<Application> GetJobApplications()
         {
             return this.jobApplicationRepository.GetApplications();
+        }
+
+        public List<Application> GetJobApplicationsByEmployerUserId(int id)
+        {
+            List<Application> applications = this.jobApplicationRepository.GetApplications() ?? [];
+            List<Posting> postings = this.jobPostingRepository.GetPostings() ?? [];
+
+            List<int> postingIdsOfEmployer = postings
+                .Where((x) => x.SubmittedById == id)
+                .Select((x) => x.Id)
+                .ToList();
+
+            List<Application> applicationsFromEmployer = applications
+                .Where((x) => postingIdsOfEmployer.Contains(x.Id))
+                .ToList();
+
+            return applicationsFromEmployer;
         }
     }
 }
