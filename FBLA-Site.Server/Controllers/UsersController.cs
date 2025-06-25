@@ -32,5 +32,15 @@ namespace FBLA_Site
 
             return Json(new { success = true, message = "User added successfully." });
         }
+        [HttpGet]
+        public JsonResult GetAllUsers()
+        {
+            var users = userAuthentication.GetAllUsers()
+            .Select(user => new { email = user.Email, role = user.Role })
+            .ToList();
+
+            return Json(users);
+        }
+
     }
 }

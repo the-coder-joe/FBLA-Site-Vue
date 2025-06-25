@@ -8,6 +8,7 @@ import PostingsPage from '@/components/Pages/PostingsPage.vue';
 import ApplicationPage from '@/components/Pages/ApplicationPage.vue';
 import AdminPage from '@/components/Pages/AdminPage.vue';
 import SourcesPage from '@/components/Pages/SourcesPage.vue';
+import AnalyticsPage from '@/components/Pages/Analytics.vue';
 import { useAuthStore } from '@/stores/authentication.store';
 
 export default class Router {
@@ -30,6 +31,7 @@ export default class Router {
       { path: '/LoginPage', component: LoginPage, meta: { authRequired: false } },
       { path: '/SourcesPage', component: SourcesPage, meta: { authRequired: false } },
       { path: '/Admin', name: 'admin', component: AdminPage, meta: { authRequired: true } },
+      { path: '/Analytics', name: 'analytics', component: AnalyticsPage, meta: { authRequired: true, role: 'admin' } },
       { path: '/:pathMatch(.*)*', component: NotFound, meta: { authRequired: false } }
     ]
 
