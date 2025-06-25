@@ -11,6 +11,7 @@ export class AuthenticationService {
     const resopnse = await this.verifyPassword(username, hashedPassword);
     const success = resopnse.success;
     const role = resopnse.role;
+    const id = resopnse.id;
 
     if (!success)
       return false;
@@ -56,7 +57,7 @@ export class AuthenticationService {
     return password;
   }
 
-  private async verifyPassword(email: string, hash: string): Promise<{ success: boolean, role: string }> {
+  private async verifyPassword(email: string, hash: string): Promise<{ success: boolean, role: string, id: number }> {
     const url = new URL(`${BASE_URL}/api/Users/Authenticate`);
     const response = await fetch(url.toString(), {
       method: 'POST',
@@ -70,6 +71,6 @@ export class AuthenticationService {
     });
 
     const r = await response.json();
-    return { success: r.success, role: r.role };;
+    return { success: r.success, role: r.role, id: r.id };
   }
 }

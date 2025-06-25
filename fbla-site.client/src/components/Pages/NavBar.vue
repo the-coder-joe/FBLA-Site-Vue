@@ -38,6 +38,10 @@ function logout() {
       </RouterLink>
 
       <RouterLink class="nav-link" to="/Postings">View Postings</RouterLink>
+      <RouterLink v-if="authStore.role === 'employer' || authStore.role === 'admin'" class="nav-link" to="/EmployerView">
+        Your Postings</RouterLink>
+      <RouterLink v-if="authStore.role === 'admin'" class="nav-link" to="/Admin">Admin Page
+      </RouterLink>
 
     <div v-if="authStore.role === 'admin'" class="dropdown" @mouseenter="showAdminDropdown = true" @mouseleave="showAdminDropdown = false">
       <span class="nav-link dropdown-label">Admin Menu ▾</span>
@@ -107,9 +111,9 @@ function logout() {
 }
 
 .dropdown-content {
-  min-width: 170px; 
+  min-width: 170px;
   margin-top: 2px;
-  padding: 5px 0;  
+  padding: 5px 0;
   display: none;
   position: absolute;
   background-color: #1a1a1a;

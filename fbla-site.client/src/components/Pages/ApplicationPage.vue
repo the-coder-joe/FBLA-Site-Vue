@@ -5,6 +5,7 @@ import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Textarea from 'primevue/textarea'
 import ApplicationService from '@/services/application.service'
+import { Application } from '@/models/application.models'
 
 interface Posting {
   id: number
@@ -56,6 +57,23 @@ function submitApplication() {
   console.log('Student Name:', studentName.value)
   console.log('Student Contact:', studentContact.value)
   console.log('Answers:', studentAnswers.value)
+
+  const applicationData: Application = {
+    forPostingId: posting.value?.id || 0,
+    name: studentName.value,
+    contactInfo: studentContact.value,
+    answers: studentAnswers.value,
+    id: 0
+  }
+
+  applicationService.submitApplication(applicationData)
+    .then(() => {
+      console.log('Application submitted successfully')
+    })
+    .catch((error) => {
+      console.error('Error submitting application:', error)
+      toastMessage.value = 'Failed to submit application. Please try again.'
+    })
 
   // Clear form fields
   studentName.value = ''

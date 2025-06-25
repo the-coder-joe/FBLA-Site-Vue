@@ -1,80 +1,160 @@
-import { Posting } from '@/models/application.models.js'; // Import the Posting type for type-checking
-import { BASE_URL } from '../models/constants'; // Import the base URL for API requests
+import { Application, Posting, PostingRequest } from '@/models/application.models.js';
+import { BASE_URL } from '../models/constants';
 
 export default class ApplicationService {
-  public async addPosting(posting: Posting): Promise<any> {
-    const url = new URL(`${BASE_URL}/api/JobApplication/AddPosting`);
+  public async addPosting(posting: Posting, userId: number): Promise<any> {
+    const url = new URL(`${BASE_URL}/api/JobApplication/AddPosting/${userId}`);
 
     const request = new Request(url, {
-      method: 'POST', // Use the POST method to submit data
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json', // Indicate that the body is JSON
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(posting) // Convert the posting object to a JSON string for the request body
+      body: JSON.stringify(posting)
     });
 
-    const response = await fetch(url, request); // Send the request to the server
+    const response = await fetch(url, request);
 
-    return response.json(); // Return the response as a JSON object
+    return response.json();
   }
 
-  // Function to fetch all job postings
+
   public async getPostings(): Promise<Posting[]> {
-    const url = new URL(`${BASE_URL}/api/JobApplication/GetPostings`); // Construct the URL for fetching postings
+    const url = new URL(`${BASE_URL}/api/JobApplication/GetPostings`);
 
     const request = new Request(url, {
-      method: 'GET', // Use the GET method to retrieve data
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json', // Indicate that the expected response is JSON
+        'Content-Type': 'application/json',
       }
     });
 
-    const response = await fetch(url, request); // Send the request to the server
+    const response = await fetch(url, request);
 
-    return response.json(); // Return the response as a JSON array of postings
+    return response.json();
   }
 
-  // Function to fetch a specific posting by its ID
-  public async getPosting(postingId: number): Promise<Posting> {
-    const postings = await this.getPostings(); // Get all postings first
 
-    // Find the posting that matches the provided postingId
+  public async getPosting(postingId: number): Promise<Posting> {
+    const postings = await this.getPostings();
+
+
     const posting = postings.find((posting) => posting.id === postingId);
     if (!posting) {
-      throw new Error(`Posting with id ${postingId} not found`); // If no posting is found, throw an error
+      throw new Error(`Posting with id ${postingId} not found`);
     }
 
-    return posting; // Return the found posting
+    return posting;
   }
 
   public async getPostingsQueue(): Promise<Posting[]> {
-    const url = new URL(`${BASE_URL}/api/JobApplication/GetPostingQueue`); // Construct the URL for fetching the postings queue
+    const url = new URL(`${BASE_URL}/api/JobApplication/GetPostingQueue`);
     const request = new Request(url, {
-      method: 'GET', // Use the GET method to retrieve data
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json', // Indicate that the expected response is JSON
+        'Content-Type': 'application/json',
       }
     });
-    const response = await fetch(url, request); // Send the request to the server
-    return response.json(); // Return the response as a JSON array of postings
+    const response = await fetch(url, request);
+    return response.json();
   }
 
   public async approvalPosting(postingId: number, approve: boolean): Promise<any> {
-    const url = new URL(`${BASE_URL}/api/JobApplication/PostingApproval`); // Construct the URL for approving a posting
+    const url = new URL(`${BASE_URL}/api/JobApplication/PostingApproval`);
 
     const request = new Request(url, {
-      method: 'POST', // Use the POST method to approve the posting
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json', // Indicate that the body is JSON
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         id: postingId,
-        isApproved: approve // Set the approved flag to true
-      }) // Convert the postingId to a JSON string for the request body
+        isApproved: approve
+      })
     });
 
-    const response = await fetch(url, request); // Send the request to the server
+    const response = await fetch(url, request);
 
-    return await response.json(); // Return the response as a JSON object
+    return await response.json();
+  }
+
+  public async getJobApplications(): Promise<any[]> {
+    const url = new URL(`${BASE_URL}/api/JobApplication/GetJobApplications`);
+
+    const request = new Request(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    const response = await fetch(url, request);
+
+    return response.json();
+  }
+
+  public async submitJobApplication(postingId: number, application: Application): Promise<any> {
+    const url = new URL(`${BASE_URL}/api/JobApplication/SubmitJobApplication`);
+
+    const request = new Request(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        forPostingId: postingId,
+        ...application
+      })
+    });
+
+    const response = await fetch(url, request);
+
+    return response.json();
+  }
+
+  public async getJobApplicationsByEmployerId(employerId: number): Promise<any[]> {
+    const url = new URL(`${BASE_URL}/api/JobApplication/GetJobApplicationsByEmployerId/${employerId}`);
+
+    const request = new Request(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    const response = await fetch(url, request);
+
+    return response.json();
+  }
+
+  public async getPostingsByEmployerId(employerId: number): Promise<Posting[]> {
+    const url = new URL(`${BASE_URL}/api/JobApplication/GetPostingsByEmployerId/${employerId}`);
+
+    const request = new Request(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    const response = await fetch(url, request);
+
+    return response.json();
+  }
+
+  public async submitApplication(Application: Application): Promise<any> {
+    const url = new URL(`${BASE_URL}/api/JobApplication/SubmitJobApplication`);
+
+    const request = new Request(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(Application)
+    });
+
+    const response = await fetch(url, request);
+
+    return response.json();
   }
 }

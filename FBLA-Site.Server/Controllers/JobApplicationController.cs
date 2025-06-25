@@ -11,12 +11,12 @@ namespace FBLA_Site
     {
         private readonly JobApplicationService jobApplicationService = new JobApplicationService();
 
-        [HttpPost]
-        public JsonResult AddPosting([FromBody] Posting posting)
+        [HttpPost("{id}")]
+        public JsonResult AddPosting(int id, [FromBody] Posting posting)
         {
-            jobApplicationService.AddPosting(posting);
+            jobApplicationService.AddPosting(posting, id);
 
-            return Json(new { Success = true, CreatedId = posting.Id });
+            return Json(new { Success = true });
         }
 
 
@@ -37,6 +37,18 @@ namespace FBLA_Site
                 return Json(new ErrorResponse { Success = false, Message = $"Posting with Id {id} does not exist." });
             }
             return Json(posting);
+        }
+
+        [HttpGet("{id}")]
+        public JsonResult GetPostingsByEmployerId(int id)
+        {
+            List<Posting> postings = this.jobApplicationService.GetPostingsByUserId(id);
+
+            if (postings == null)
+            {
+                return Json(new ErrorResponse { Success = false, Message = $"Posting with user Id {id} does not exist." });
+            }
+            return Json(postings);
         }
 
         [HttpGet]
@@ -83,6 +95,14 @@ namespace FBLA_Site
         public IActionResult GetJobApplications()
         {
             List<Application> applications = this.jobApplicationService.GetJobApplications();
+
+            return Json(applications);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetJobApplicationsByEmployerId(int id)
+        {
+            List<Application> applications = this.jobApplicationService.GetJobApplicationsByEmployerUserId(id);
 
             return Json(applications);
         }

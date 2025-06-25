@@ -12,11 +12,14 @@ namespace FBLA_Site
         {
             string hashedPassword = HashPassword(partiallyHashedPassword);
 
+            int newId = userRepository.GetAllUserIds().Max() + 1;
+
             User user = new User
             {
                 Email = username,
                 Hash = hashedPassword,
-                Role = role
+                Role = role,
+                Id = newId
             };
 
             userRepository.AddUser(user);

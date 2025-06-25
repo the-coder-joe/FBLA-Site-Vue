@@ -6,6 +6,9 @@ import Textarea from 'primevue/textarea'
 import Button from 'primevue/button'
 import { Posting } from '@/models/application.models'
 import PostingDisplay from '../PostingDisplay.vue'
+import { useAuthStore } from '@/stores/authentication.store'
+
+const authStore = useAuthStore();
 
 const posting = ref<Posting>({
   id: 0,
@@ -15,7 +18,8 @@ const posting = ref<Posting>({
   requirements: '',
   additionalInformation: '',
   contactInformation: '',
-  questions: []
+  questions: [],
+  submittedById: authStore.id
 })
 
 const submitted = ref(false);
@@ -45,8 +49,9 @@ const applicationService = new ApplicationService()
 
 async function submitForm() {
   try {
-    posting.value.questions = questions.value.map(q => q.question)
-    await applicationService.addPosting(posting.value)
+    posting.value.questions = questions.value.map(q => q.question);
+    const userId = authStore.id;
+    await applicationService.addPosting(posting.value, userId);
   } catch (err) {
     console.error('Error adding posting:', err)
   }
@@ -73,7 +78,8 @@ function resetForm() {
     requirements: '',
     additionalInformation: '',
     contactInformation: '',
-    questions: []
+    questions: [],
+    submittedById: authStore.id
   }
   questions.value = []
   submitted.value = false
@@ -119,7 +125,7 @@ function resetForm() {
 
       <div v-else class="form dark-glass">
         <!-- Employer Name -->
-        <div class="form-group">
+        <div class="form-group dark-glass">
           <div class="field-description">
             <label for="employer" class="field-label">Employer Name</label>
             <span>Enter the name of the employer.</span>
@@ -127,7 +133,7 @@ function resetForm() {
           <InputText class="field" id="employer" v-model="posting.employer" />
         </div>
         <!-- Job Title -->
-        <div class="form-group">
+        <div class="form-group dark-glass">
           <div class="field-description">
             <label for="title" class="field-label">Job Title</label>
             <span>Enter the title of the job posting.</span>
@@ -135,7 +141,7 @@ function resetForm() {
           <InputText class="field" id="title" v-model="posting.title" />
         </div>
         <!-- Job Description -->
-        <div class="form-group">
+        <div class="form-group dark-glass">
           <div class="field-description">
             <label for="description" class="field-label">Job Description</label>
             <span>Provide a detailed description of the job.</span>
@@ -143,7 +149,7 @@ function resetForm() {
           <InputText class="field" id="description" v-model="posting.description" />
         </div>
         <!-- Job Requirements -->
-        <div class="form-group">
+        <div class="form-group dark-glass">
           <div class="field-description">
             <label for="requirements" class="field-label">Job Requirements</label>
             <span>List the requirements for the job.</span>
@@ -151,7 +157,7 @@ function resetForm() {
           <InputText class="field" id="requirements" v-model="posting.requirements" />
         </div>
         <!-- Additional Information -->
-        <div class="form-group">
+        <div class="form-group dark-glass">
           <div class="field-description">
             <label for="additionalInfo" class="field-label">Additional Information</label>
             <span>Provide any additional information about the job.</span>
@@ -159,7 +165,7 @@ function resetForm() {
           <InputText class="field" id="additionalInfo" v-model="posting.additionalInformation" />
         </div>
         <!-- Questions -->
-        <div class="form-group">
+        <div class="form-group dark-glass">
           <div class="field-description">
             <label for="questions" class="field-label">Questions</label>
             <span>Provide any additional questions for applicants.</span>
