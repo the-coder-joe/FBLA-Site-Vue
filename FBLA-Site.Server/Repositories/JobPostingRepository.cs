@@ -2,19 +2,30 @@
 {
     public class JobPostingRepository
     {
-        private JsonUtils<List<Posting>> postingUtils = new JsonUtils<List<Posting>>("postings");
+        private readonly JsonUtils<List<Posting>> postingUtils = new("postings");
 
 
         public List<Posting>? GetPostings()
         {
-            return postingUtils.GetData();
+            return this.postingUtils.GetData();
         }
 
         public void AddPosting(Posting posting)
         {
-            var postings = postingUtils.GetData() ?? new List<Posting>();
+            List<Posting> postings = this.postingUtils.GetData() ?? new List<Posting>();
             postings.Add(posting);
-            postingUtils.SetData(postings);
+            this.postingUtils.SetData(postings);
+        }
+
+        public void DeletePosting(int id)
+        {
+            List<Posting> postings = this.postingUtils.GetData() ?? new List<Posting>();
+            int index = postings.FindIndex((x) => x.Id == id);
+            if (index < 0) return;
+
+            postings.RemoveAt(index);
+
+            this.postingUtils.SetData(postings);
         }
     }
 }

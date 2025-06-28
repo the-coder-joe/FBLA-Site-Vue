@@ -108,5 +108,10 @@ namespace FBLA_Site
 
             return applicationsFromEmployer;
         }
+
+        public void DeletePosting(int id)
+        {
+            jobPostingRepository.DeletePosting(id);
+        }
     }
 }

@@ -16,5 +16,23 @@
     "Email": "Employer@gmail.com",
     "Role": "employer",
     "Hash": "7fc3f398e72db3033099aa0a99266ca031ab70dd9c16d806079c22c17765680a753b81e2fe3e7b00b4d5fef9312e9bf7c14421bc6909dae826ba57c6fec53ea9"
+  },
+  {
+    "Id": 3,
+    "Email": "Admin",
+    "Role": "admin",
+    "Hash": "46b0bae4c1953b8ac325d7de364f94de32158f459cc00712815bac6e9bc326caad2f85099d281bc1aa01ed6f1cbf91e14d2e8cf0b50c0ed6d22f9d14c2d4f94d"
+  },
+  {
+    "Id": 4,
+    "Email": "Sentry",
+    "Role": "employer",
+    "Hash": "7fc3f398e72db3033099aa0a99266ca031ab70dd9c16d806079c22c17765680a753b81e2fe3e7b00b4d5fef9312e9bf7c14421bc6909dae826ba57c6fec53ea9"
+  },
+  {
+    "Id": 5,
+    "Email": "fdsa",
+    "Role": "employer",
+    "Hash": "386374a4657d724aa775894c4b23c3885580d8ed7bd131f445aec26c0256323e6726c1df862b9c245ddc4f1f48d7503645fac924d6ade5acbac2e3242d1ab098"
   }
 ]

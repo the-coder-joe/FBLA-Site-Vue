@@ -181,7 +181,7 @@ function resetForm() {
           </transition-group>
         </div>
         <!-- Preview Button (disabled if form is invalid) -->
-        <Button @click="previewForm" label="Preview" :disabled="!isFormValid" />
+        <Button @click="previewForm" label="Preview" :disabled="!isFormValid" class="full-btn" />
       </div>
     </Transition>
   </div>

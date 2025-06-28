@@ -86,8 +86,6 @@ function logout() {
 }
 
 .nav-links {
-  display: flex;
-  gap: .5rem;
 }
 
 .nav-link {
@@ -97,6 +95,13 @@ function logout() {
   display: block;
   user-select: none;
   cursor: pointer;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.nav-link.router-link-active {
+  color: #ffffffde;
+  border-bottom: 1px solid white;
 }
 
 .nav-link:hover,
@@ -148,7 +153,7 @@ function logout() {
 /* Existing logo styles */
 .logo {
   border-radius: 50%;
-  height: 65px;
+  height: 60px;
   padding-right: 10px;
 }
 

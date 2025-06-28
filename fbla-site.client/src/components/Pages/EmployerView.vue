@@ -19,7 +19,7 @@ const postings = ref<Posting[]>([]);
 const applications = ref<Application[]>([]);
 
 onMounted(async () => {
-  if (!(authStore?.role === 'employer')) {
+  if (!(authStore?.role === 'employer' || authStore?.role === 'admin')) {
     toast.add({ severity: 'error', summary: 'Access Denied', detail: 'You must be an employer to view this page.', life: 3000 });
     router.push('/'); // Redirect to home or another appropriate page
     return;
@@ -32,6 +32,19 @@ onMounted(async () => {
   }
 });
 
+async function del(id: number) {
+  applicationService.deletePosting(id).then(async () => {
+    postings.value = postings.value.filter(posting => posting.id !== id);
+    toast.add({ severity: 'success', summary: 'Posting Deleted', detail: 'The posting has been successfully deleted.', life: 3000 });
+    const employerId = authStore?.id;
+
+    postings.value = await applicationService.getPostingsByEmployerId(employerId);
+    applications.value = await applicationService.getJobApplicationsByEmployerId(employerId);
+  }).catch(error => {
+    console.error('Error deleting posting:', error);
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete the posting.', life: 3000 });
+  });
+}
 
 
 </script>
@@ -45,7 +58,11 @@ onMounted(async () => {
   <Accordion class="accordion">
     <AccordionPanel v-for="posting in postings" :key="posting.id" :value="posting.id" class="">
       <AccordionHeader>
-        <h2>{{ posting.title }}</h2>
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding-inline: 30px;">
+          <h2>{{ posting.title }}</h2>
+          <Button label="Delete Posting" class="p-button-danger" @click.stop="del(posting.id)" />
+        </div>
       </AccordionHeader>
 
       <AccordionContent>

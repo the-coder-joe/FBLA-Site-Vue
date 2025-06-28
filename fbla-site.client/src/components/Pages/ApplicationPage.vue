@@ -140,7 +140,7 @@ function showToast(message: string) {
           <Button
             @click="submitApplication"
             label="Submit Application"
-            class="btn submit-btn"
+            class="full-btn"
             :disabled="!isAppFormValid"
           />
         </template>
@@ -225,7 +225,7 @@ function showToast(message: string) {
   font-size: 1rem;
   transition: all 0.3s;
   background-color: #141417;
-  color: #9be9ff5e;
+  color: #d9d9d9;
 }
 
 .field:focus {

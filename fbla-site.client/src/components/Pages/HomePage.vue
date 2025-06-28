@@ -182,7 +182,7 @@ onMounted(() => {
 /* About section container styling */
 .about-container {
   color: rgb(218, 218, 218);
-  min-width: 28rem;
+  min-width: 2rem;
   max-width: 90%;
   max-width: 1000px;
   padding: 20px;

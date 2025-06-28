@@ -106,5 +106,12 @@ namespace FBLA_Site
 
             return Json(applications);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteJobPosting(int id)
+        {
+            jobApplicationService.DeletePosting(id);
+            return Json(new { Success = true });
+        }
     }
 }
