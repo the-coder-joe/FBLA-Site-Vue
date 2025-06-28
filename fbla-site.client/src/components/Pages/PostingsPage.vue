@@ -83,17 +83,17 @@ onMounted(async () => {
     <div class="header glass">
       <div class="header-content">
         <div style="display: flex; align-items: baseline; gap: 2rem;">
-          <h1>Job Postings</h1>
+          <h1 style="margin-inline: 21rem;">Job Postings</h1>
         </div>
         <InputText v-model="searchQuery" placeholder="Search job postings..." class="search-bar"
           @input="filterPostingsThrottled()">
         </InputText>
       </div>
       <div class="information">
-        <p>
+        <p style="max-width: 1000px; margin-right:10px;">
           Search job postings by title, employer, or description. You can find and apply for postings that intrest you
           all
-          on the same page! 
+          on the same page!
         </p> &nbsp;<div>
           Showing {{ filteredPostings.length }} of {{ postings.length }} postings.
         </div>
@@ -133,6 +133,10 @@ onMounted(async () => {
 
 <style scoped>
 /* Container styling for the job postings section */
+.header{
+  width: 90%
+}
+
 .postings {
   padding: 20px;
   display: flex;

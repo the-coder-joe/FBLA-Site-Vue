@@ -59,3 +59,31 @@
   border-radius: 20px;
   border: 1px solid rgba(71, 71, 71, 0.265);
 }
+
+.full-btn {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  background-color: #96d2e3 !important;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.full-btn:hover:not(:disabled) {
+  background-color: #abedff !important;
+  scale: 1.01;
+}
+
+.full-btn:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+:deep(.router-link-active) {
+  color: red!important;
+}

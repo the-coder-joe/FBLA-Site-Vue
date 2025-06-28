@@ -157,7 +157,7 @@ export default class ApplicationService {
 
     return response.json();
   }
-  
+
   public async fetchPostingStats(): Promise<{ total: number; approved: number; pending: number }> {
     const [allPostings, queuePostings] = await Promise.all([
       this.getPostings(),
@@ -170,5 +170,20 @@ export default class ApplicationService {
 
   return { total, approved, pending };
 }
+
+public async deletePosting(postingId: number): Promise<any> {
+    const url = new URL(`${BASE_URL}/api/JobApplication/DeleteJobPosting/${postingId}`);
+
+    const request = new Request(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    const response = await fetch(url, request);
+
+    return response.json();
+  }
 
 }

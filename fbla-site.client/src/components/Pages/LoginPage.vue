@@ -141,6 +141,18 @@ function switchToSignIn() {
   clearAllFields()
   isSignUp.value = false
 }
+
+window.addEventListener('keydown', handleKeyDown)
+
+function handleKeyDown(event: KeyboardEvent) {
+  if (event.key === 'Enter') {
+    if (!isSignUp.value && !isSignInDisabled.value && !loading.value) {
+      submitSignIn();
+    } else if (isSignUp.value && !isSignUpDisabled.value && !loading.value) {
+      submitSignUp();
+    }
+  }
+}
 </script>
 
 <template>
@@ -181,7 +193,7 @@ function switchToSignIn() {
         </div>
 
         <template v-if="!loading">
-          <Button @click="submitSignIn" :disabled="isSignInDisabled" label="Sign In" class="login-button"
+          <Button @click="submitSignIn" :disabled="isSignInDisabled" label="Sign In" class="full-btn"
             :class="{ active: !isSignInDisabled }" />
         </template>
         <template v-else>
@@ -232,7 +244,7 @@ function switchToSignIn() {
         </div>
 
         <template v-if="!loading">
-          <Button @click="submitSignUp" :disabled="isSignUpDisabled" label="Create Account" class="login-button"
+          <Button @click="submitSignUp" :disabled="isSignUpDisabled" label="Create Account" class="full-btn"
             :class="{ active: !isSignUpDisabled }" />
         </template>
         <template v-else>
@@ -303,7 +315,8 @@ function switchToSignIn() {
   padding: 30px;
   display: flex;
   flex-direction: column;
-  width: 90%;max-width: 1000px;
+  width: 90%;
+  max-width: 1000px;
   border-radius: 10px;
 }
 
@@ -424,7 +437,7 @@ function switchToSignIn() {
   color: #00bfff;
 }
 
-@media (max-width: 700px)  {
+@media (max-width: 700px) {
   .field-description {
     flex-direction: column;
     align-items: center;
